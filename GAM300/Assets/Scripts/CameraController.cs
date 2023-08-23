@@ -72,7 +72,7 @@ public class CameraController : MonoBehaviour
         if (!target)
             return;
 
-        RotateCam();
+        //RotateCam();
 
         mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 20.0f * Time.deltaTime);
     }
@@ -89,7 +89,11 @@ public class CameraController : MonoBehaviour
     {
         Vector3 moveVector = Vector3.Lerp(this.gameObject.transform.position, target.position, camSettings.moveSpeed * Time.deltaTime);
 
+        Quaternion rotationVector = Quaternion.Lerp(this.gameObject.transform.rotation, target.rotation, camSettings.moveSpeed * Time.deltaTime);
+
         transform.position = moveVector;
+
+        transform.rotation = rotationVector;
     }
 
     public void RotateCam()
