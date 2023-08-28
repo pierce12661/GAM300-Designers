@@ -154,7 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camSettings:
     zoomSpeed: 5
-    moveSpeed: 2
+    moveSpeed: 7
     rotationSpeed: 12
     originalFOV: 65
     zoomFOV: 55
@@ -717,8 +717,8 @@ MonoBehaviour:
   sphere: {fileID: 1830964391}
   carModel: {fileID: 1183493045}
   carNormal: {fileID: 1024687467}
-  acceleration: 3
-  steering: 80
+  acceleration: 5
+  steering: 70
   gravity: 10
   layerMask:
     serializedVersion: 2
@@ -1141,7 +1141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1259339223
 Transform:
   m_ObjectHideFlags: 0
@@ -2048,7 +2048,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830964388}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.04, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2063,14 +2063,14 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1830964388}
   serializedVersion: 2
-  m_Mass: 1500
-  m_Drag: 0
-  m_AngularDrag: 0
+  m_Mass: 200
+  m_Drag: 2
+  m_AngularDrag: 2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!135 &1830964392
 SphereCollider:
   m_ObjectHideFlags: 0
