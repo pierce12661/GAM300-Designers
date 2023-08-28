@@ -34,8 +34,7 @@ public class CarController : MonoBehaviour
 
         transform.position = sphere.transform.position - new Vector3(0, 0.4f, 0);
 
-        Debug.Log("speed = " + speed);
-        Debug.Log("current speed = " + currentSpeed);
+
     }
 
     private void FixedUpdate()
@@ -60,6 +59,8 @@ public class CarController : MonoBehaviour
         sphere.AddForce(Vector3.down * gravity, ForceMode.Acceleration);
 
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + currentRotate, 0), 5.0f * Time.deltaTime);
+
+        sphere.velocity = Vector3.ClampMagnitude(sphere.velocity, speed);
     }
 
     public void Steer(int direction, float amount)
@@ -81,7 +82,7 @@ public class CarController : MonoBehaviour
             Steer(dir, amount);
         }
 
-        currentSpeed = Mathf.SmoothStep(currentSpeed, speed, 12.0f * Time.deltaTime);
+        currentSpeed = Mathf.SmoothStep(currentSpeed, speed, 8.0f * Time.deltaTime);
         speed = 0;
         currentRotate = Mathf.Lerp(currentRotate, rotate, 4.0f * Time.deltaTime);
         rotate = 0;

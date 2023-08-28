@@ -717,7 +717,7 @@ MonoBehaviour:
   sphere: {fileID: 1830964391}
   carModel: {fileID: 1183493045}
   carNormal: {fileID: 1024687467}
-  acceleration: 0.1
+  acceleration: 3
   steering: 80
   gravity: 10
   layerMask:
