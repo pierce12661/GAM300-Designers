@@ -30,12 +30,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float maxSteerAngle;
     //[SerializeField] private float brakeForce;
 
+
     private void FixedUpdate()
     {
         GetInput();
         HandleMotor();
         HandleSteering();
         UpdateWheels();
+        UpdateCameraSpeed();
+
+        //Debug.Log(frontLeftWheelCollider.motorTorque);
+
+        //Debug.Log(this.gameObject.GetComponent<Rigidbody>().velocity.magnitude);
     }
 
     private void GetInput()
@@ -89,7 +95,22 @@ public class PlayerMovement : MonoBehaviour
 
         wheelCol.GetWorldPose(out pos, out rot);
 
-        wheelTransform.rotation = rot;
+        wheelTransform.rotation = Quaternion.Lerp(wheelTransform.rotation, rot, 5.0f * Time.deltaTime);
         wheelTransform.position = pos;
     }
+
+    private void UpdateCameraSpeed()
+    {
+        if (this.gameObject.GetComponent<Rigidbody>().velocity.magnitude > 3.5f)
+        {
+            CameraController.instance.camSettings.moveSpeed = Mathf.Lerp(CameraController.instance.camSettings.moveSpeed, 6, 1.0f * Time.deltaTime);
+        }
+        else
+        {
+            CameraController.instance.camSettings.moveSpeed = Mathf.Lerp(CameraController.instance.camSettings.moveSpeed, 3, 3.0f * Time.deltaTime);
+        }
+
+
+    }
+
 }
