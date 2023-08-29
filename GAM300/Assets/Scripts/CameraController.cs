@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
     Transform center;
     Transform target;
 
-    [HideInInspector] public Camera mainCam;
+    public Camera mainCam;
 
     private float camXrotation = 0;
     private float camYrotation = 0;
@@ -58,7 +58,7 @@ public class CameraController : MonoBehaviour
 
     private void Start()
     {
-        mainCam = Camera.main;
+        //mainCam = Camera.main;
         center = this.gameObject.transform.GetChild(0);
         target = playerObject.transform;
 
