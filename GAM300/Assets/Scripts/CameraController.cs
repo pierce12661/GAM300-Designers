@@ -45,7 +45,6 @@ public class CameraController : MonoBehaviour
 
     private float camXrotation = 0;
     private float camYrotation = 0;
-    private float shakeStrength;
 
     private Vector3 mainCamOriginalPos;
 
@@ -72,7 +71,7 @@ public class CameraController : MonoBehaviour
         if (!target)
             return;
 
-        RotateCam();
+        //RotateCam();
 
         mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 20.0f * Time.deltaTime);
     }
