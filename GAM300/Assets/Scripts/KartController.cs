@@ -66,6 +66,7 @@ public class KartController : MonoBehaviour
         GroundNormalRotation();
 
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
+
     }
 
     private void FixedUpdate()
