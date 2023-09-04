@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 public class Grapple : MonoBehaviour
 {
     [Header("References")]
-    //private PlayerMovement pm;
+    private KartController kc;
     public Transform cam;
     public Transform grappleStart;
     public LayerMask canBeGrappled;
@@ -17,6 +17,7 @@ public class Grapple : MonoBehaviour
     [Header("Grappling")]
     public float maxGrappleDistance;
     public float grappleDelayTime;
+    public Transform grappleAnchor;
 
     private Vector3 grapplePoint;
 
@@ -33,7 +34,7 @@ public class Grapple : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //pm = GetComponent<PlayerMovement>();
+        kc = GetComponent<KartController>();
     }
 
     // Update is called once per frame
@@ -74,28 +75,30 @@ public class Grapple : MonoBehaviour
 
         grappling = true;
 
-        // shoot line renderer in straight line depending on where cam is facing
+        // shoot line renderer in straight line from grappler start point to anchor point
         RaycastHit hit;
-        if (Physics.Raycast(cam.position, cam.forward, out hit, maxGrappleDistance, canBeGrappled))
+        if (Vector3.Distance(grappleStart.position, grappleAnchor.position) < maxGrappleDistance)
         {
-            grapplePoint = hit.point;
+            if (Physics.Raycast(grappleStart.position, (grappleAnchor.position - grappleStart.position), out hit, maxGrappleDistance, canBeGrappled))
+            {
+                grapplePoint = hit.point;
 
-            Invoke(nameof(ExecuteGrapple), grappleDelayTime);
+                Invoke(nameof(ExecuteGrapple), grappleDelayTime);
+            }
+            else
+            {
+                grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+
+                Invoke(nameof(StopGrapple), grappleDelayTime);
+            }
+            lr.enabled = true;
+            lr.SetPosition(1, grapplePoint);
         }
-        else
-        {
-            grapplePoint = cam.position + cam.forward * maxGrappleDistance;
-
-            Invoke(nameof(StopGrapple), grappleDelayTime);
-        }
-
-        lr.enabled = true;
-        lr.SetPosition(1, grapplePoint);
     }
 
     private void ExecuteGrapple()
     {
-
+        kc.BoostKart();
     }
 
     private void StopGrapple()

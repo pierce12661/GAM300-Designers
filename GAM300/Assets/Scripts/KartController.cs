@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TMPro;
+using Unity.VisualScripting;
 
 public class KartController : MonoBehaviour
 {
@@ -25,15 +26,21 @@ public class KartController : MonoBehaviour
     
     private float newRotation;
 
+    // Boosting
+    private bool isBoosting;
+    private float boostInitialCD;
+
     [Header("Speed Settings")]
     [SerializeField] private float maxSpeed;
     [SerializeField] private float steerSpeed;
+    [SerializeField] private float boostCountdown;
 
     public TextMeshProUGUI speedmeter; // IMPORTANT !!!!!!!!!!!!!!!! CLEAN UP LATER 
 
 
     private void Start()
     {
+        boostInitialCD = boostCountdown;
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
 
         boostSpeed = maxSpeed + 10.0f; //sets a max speed
@@ -42,15 +49,17 @@ public class KartController : MonoBehaviour
 
     private void Update()
     {
-        transform.position = sphere.transform.position; //makes the kart parent follow the sphere. 
+        Debug.Log(maxSpeed);
 
-        maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
+        transform.position = sphere.transform.position; //makes the kart parent follow the sphere. 
 
         GetInput();
 
         Steering();
 
         SpeedMeter();
+
+        BoostTimer();
     }
 
     private void FixedUpdate()
@@ -64,6 +73,26 @@ public class KartController : MonoBehaviour
         Vector3 vel = transform.forward * currentSpeed; //directly affects velocity of the vehicle in the direction that the kart is facing
         vel.y = sphere.velocity.y;
         sphere.velocity = vel;
+    }
+
+    public void BoostKart()
+    {
+        isBoosting = true;
+        maxSpeed = boostSpeed;
+    }
+    
+    public void BoostTimer() 
+    { 
+        if (isBoosting && boostCountdown > 0)
+        {
+            boostCountdown -= Time.deltaTime;
+        }
+        else
+        {
+            boostCountdown = 2f;
+            maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
+            isBoosting = false;
+        }
     }
 
     public void GetInput()

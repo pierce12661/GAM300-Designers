@@ -72,7 +72,7 @@ public class CameraController : MonoBehaviour
         if (!target)
             return;
 
-        RotateCam();
+        //RotateCam();
 
         mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 20.0f * Time.deltaTime);
     }
