@@ -45,7 +45,6 @@ public class CameraController : MonoBehaviour
 
     private float camXrotation = 0;
     private float camYrotation = 0;
-    private float shakeStrength;
 
     private Vector3 mainCamOriginalPos;
 
