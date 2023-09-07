@@ -52,13 +52,13 @@ public class KartController : MonoBehaviour
         boostInitialCD = boostCountdown;
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
 
-        boostSpeed = maxSpeed + 10.0f; //sets a max speed
+        boostSpeed = maxSpeed + 15.0f; //sets a max speed
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
     }
 
     private void Update()
     {
-        Debug.Log(maxSpeed);
+        //Debug.Log(currentSpeed);
 
         transform.position = sphere.transform.position; //makes the kart parent follow the sphere. 
 
@@ -69,6 +69,7 @@ public class KartController : MonoBehaviour
         SpeedMeter();
 
         BoostTimer();
+        
         TireRotation();
 
         GroundNormalRotation();
