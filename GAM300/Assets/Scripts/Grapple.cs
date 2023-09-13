@@ -25,6 +25,7 @@ public class Grapple : MonoBehaviour
     public Transform anchorMid;
     public Transform anchorRight;
     public Transform grappleAnchor;
+    public SpringJoint joint;
 
     private Vector3 grapplePoint;
 
@@ -54,7 +55,7 @@ public class Grapple : MonoBehaviour
         {
             grappleAnchor = GameObject.FindGameObjectWithTag("LeftAnchor").transform;
             //StartGrappleAnchor();
-            StartGrappleBoost();
+            StartGrappleAnchor();
         }
         if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, anchorMid.position) < maxGrappleDistance)
         {
@@ -66,7 +67,7 @@ public class Grapple : MonoBehaviour
         {
             grappleAnchor = GameObject.FindGameObjectWithTag("RightAnchor").transform;
             //StartGrappleAnchor();
-            StartGrappleBoost();
+            StartGrappleAnchor();
         }
 
         currentSpeed = kc.GetCurrentSpeed();
@@ -75,10 +76,10 @@ public class Grapple : MonoBehaviour
             StopGrapple();
         }
 
-        //if (Input.GetKeyDown(grappleRemoveKey))
-        //{
-        //    StopGrapple();
-        //}
+        if (Input.GetKeyDown(grappleRemoveKey))
+        {
+            StopAnchor();
+        }
         #endregion
 
         // if timer > 0, keep counting down
@@ -86,6 +87,9 @@ public class Grapple : MonoBehaviour
         {
             grapplingCDTimer -= Time.deltaTime;
         }
+
+        Debug.Log("Max distance: " + joint.maxDistance);
+        Debug.Log("Min distance: " + joint.minDistance);
     }
 
     void LateUpdate()
@@ -130,9 +134,52 @@ public class Grapple : MonoBehaviour
         }
     }
 
-    private void ExecuteGrapple()
+    private void StartGrappleAnchor()
     {
-        
+        if (grapplingCDTimer > 0)
+        {
+            return;
+        }
+
+        grappling = true;
+
+        // shoot line renderer in straight line from grappler start point to anchor point
+        RaycastHit hit;
+        if (Vector3.Distance(grappleStart.position, grappleAnchor.position) < maxGrappleDistance)
+        {
+            if (Physics.Raycast(grappleStart.position, (grappleAnchor.position - grappleStart.position), out hit, maxGrappleDistance, canBeGrappled))
+            {
+                grapplePoint = hit.point;
+
+                Invoke(nameof(GrappleAnchor), grappleDelayTime);
+            }
+            else
+            {
+                grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+
+                Invoke(nameof(StopAnchor), grappleDelayTime);
+            }
+            lr.enabled = true;
+            lr.SetPosition(1, grapplePoint);
+        }
+    }
+
+    private void GrappleAnchor()
+    {
+        joint = gameObject.AddComponent<SpringJoint>();
+        joint.autoConfigureConnectedAnchor = false;
+        joint.connectedAnchor = grapplePoint;
+
+        float distanceFromPoint = Vector3.Distance(grappleStart.position, grappleAnchor.position);
+
+        // distance that grapple will try to keep from grapple point
+        joint.maxDistance = distanceFromPoint * 0.6f;
+        joint.minDistance = distanceFromPoint * 0.05f;
+
+        // values
+        joint.spring = 1f;
+        joint.damper = 2f;
+        joint.massScale = 2.5f;
     }
 
     private void GrappleBoost()
@@ -142,6 +189,18 @@ public class Grapple : MonoBehaviour
 
     private void StopGrapple()
     {
+        grappling = false;
+        grapplingCDTimer = grapplingCD;
+        grappleAnchor = null;
+
+        lr.enabled = false;
+    }
+
+    private void StopAnchor()
+    {
+        Destroy(joint);
+        Destroy(gameObject.GetComponent<Rigidbody>());
+
         grappling = false;
         grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
