@@ -111,6 +111,11 @@ public class KartController : MonoBehaviour
         }
     }
 
+    public float GetCurrentSpeed()
+    {
+        return currentSpeed;
+    }
+
     public void GetInput()
     {
         acceleration = Input.GetAxis(VERTICAL);

@@ -13,6 +13,7 @@ public class Grapple : MonoBehaviour
     public Transform grappleStart;
     public LayerMask canBeGrappled;
     public LineRenderer lr;
+    private float currentSpeed;
 
     [Header("Grappling")]
     public float maxGrappleDistance;
@@ -51,27 +52,33 @@ public class Grapple : MonoBehaviour
         #region Grapple Inputs
         if (Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, anchorLeft.position) < maxGrappleDistance)
         {
-            grappleAnchor = anchorLeft;
+            grappleAnchor = GameObject.FindGameObjectWithTag("LeftAnchor").transform;
             //StartGrappleAnchor();
             StartGrappleBoost();
         }
         if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, anchorMid.position) < maxGrappleDistance)
         {
-            grappleAnchor = anchorMid;
+            grappleAnchor = GameObject.FindGameObjectWithTag("MidAnchor").transform;
             StartGrappleBoost();
         }
 
         if (Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, anchorRight.position) < maxGrappleDistance)
         {
-            grappleAnchor = anchorRight;
+            grappleAnchor = GameObject.FindGameObjectWithTag("RightAnchor").transform;
             //StartGrappleAnchor();
             StartGrappleBoost();
         }
 
-        if (Input.GetKeyDown(grappleRemoveKey))
+        currentSpeed = kc.GetCurrentSpeed();
+        if (currentSpeed > 30f && currentSpeed < 33f)
         {
             StopGrapple();
         }
+
+        //if (Input.GetKeyDown(grappleRemoveKey))
+        //{
+        //    StopGrapple();
+        //}
         #endregion
 
         // if timer > 0, keep counting down

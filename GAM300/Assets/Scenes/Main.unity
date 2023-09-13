@@ -270,9 +270,9 @@ GameObject:
   - component: {fileID: 338641166}
   - component: {fileID: 338641165}
   - component: {fileID: 338641164}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: Right
-  m_TagString: Untagged
+  m_TagString: RightAnchor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -464,7 +464,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 590268410}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: MAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1001,9 +1001,9 @@ GameObject:
   - component: {fileID: 1082963303}
   - component: {fileID: 1082963302}
   - component: {fileID: 1082963301}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: Middle
-  m_TagString: Untagged
+  m_TagString: MidAnchor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2104,6 +2104,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrappleV2
       objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 573feb4a28bf0e44799fe6e645b5f75b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 573feb4a28bf0e44799fe6e645b5f75b, type: 3}
 --- !u!4 &1781115723 stripped
@@ -2404,7 +2408,7 @@ GameObject:
   - component: {fileID: 2041916339}
   m_Layer: 7
   m_Name: Left
-  m_TagString: Untagged
+  m_TagString: LeftAnchor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2592,7 +2596,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2125843144}
-  m_Layer: 9
+  m_Layer: 7
   m_Name: RAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
