@@ -14,12 +14,20 @@ public class KartController : MonoBehaviour
     // Inputs
     private float acceleration;
     private float steerAmount;
+    private float reverseTimer;
+    [HideInInspector] public bool isReversing;
+    private bool isBraking;
+    private bool reverseCheck;
+    private bool reverseStop;
 
     // Speed Settings 
-    private float currentSpeed;
-    private float boostSpeed;
-    private float originalSpeed;
-    private float realSpeed;
+    [HideInInspector] public float currentSpeed;
+    [HideInInspector] public float slowSpeed;
+    [HideInInspector] public float boostSpeed;
+    [HideInInspector] public float originalSpeed;
+    [HideInInspector] public float realSpeed;
+    [HideInInspector] public float brakeSpeed;
+    [HideInInspector] public float reverseSpeed;
 
     // Rotation
     private float newRotation;
@@ -28,8 +36,8 @@ public class KartController : MonoBehaviour
     private bool touchingGround;
 
     [Header("Speed Settings")]
-    [SerializeField] private float maxSpeed;
-    [SerializeField] private float steerSpeed;
+    public float maxSpeed;
+    public float steerSpeed;
 
     [Header("Tires")]
     [SerializeField] private Transform frontLeftTire;
@@ -41,19 +49,19 @@ public class KartController : MonoBehaviour
 
     private Quaternion carRot;
 
+
     private void Start()
     {
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
 
-        boostSpeed = maxSpeed + 10.0f; //sets a max speed
-        originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
+        SpeedSettings();
     }
 
     private void Update()
     {
         transform.position = sphere.transform.position; //makes the kart parent follow the sphere. 
 
-        maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
+        ResetSpeed();
 
         GetInput();
 
@@ -87,27 +95,85 @@ public class KartController : MonoBehaviour
         acceleration = Input.GetAxis(VERTICAL);
         steerAmount = Input.GetAxis(HORIZONTAL);
 
-        if (touchingGround)
+        if (!Traps.instance.trapHit)
         {
             if (acceleration != 0)
             {
-                Accelerate();
+                if (touchingGround)
+                {
+                    Accelerate();
+                }
             }
             else
             {
                 ReleaseAcceleration();
             }
+
+            ReversingChecker();
         }
     }
 
     public void Accelerate()
     {
-        currentSpeed = Mathf.Lerp(currentSpeed, acceleration * maxSpeed, 1.2f * Time.deltaTime); //takes Input amount * speed that is set in Inspector
+        if (acceleration < 0 && realSpeed > 0) //controlling the braking speed.
+        {
+            isBraking = true;
+            maxSpeed = brakeSpeed;
+        }
+
+        currentSpeed = Mathf.Lerp(currentSpeed, acceleration * maxSpeed, 1.1f * Time.deltaTime); //takes Input amount * speed that is set in Inspector
     }
 
     public void ReleaseAcceleration()
     {
-        currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.5f * Time.deltaTime); //Deccelerate till stop
+        currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.08f * Time.deltaTime); //Deccelerate till stop
+    }
+
+    public void ResetSpeed()
+    {
+        if (!isReversing || !reverseStop || !isBraking)
+        {
+            maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost or reverse
+        }
+    }
+
+    public void ReversingChecker()
+    {
+        //ReverseSpeed
+
+        if (realSpeed < 0) //crosschecks with actual speed to check if it is reversing. If the vehicle is reversing, actual speed will reflect as negative.
+        {
+            isReversing = true;
+            maxSpeed = reverseSpeed; //25% of the original movespeed. caps reversing speed.
+        }
+        else
+        {
+            isReversing = false;
+        }
+
+
+        //ReversePause
+
+        if (realSpeed > 10f) 
+        {
+            reverseCheck = true; //if the speed reaches this point, when reversing there will be a momentary pause. checks if the reverse needs to be paused.
+            reverseTimer = 0;
+        }
+
+        if (reverseCheck && realSpeed < 1.5f)
+        {
+            reverseStop = true; //if the check hits and the speed is less than 2, the maxspeed will cap at 2, causing the vehicle to "pause". 
+
+            reverseTimer += 1.0f * Time.deltaTime; //timer for when to stop the pause
+
+            maxSpeed = 2f; //so there is a momentary pause when reversing. not instant reverse. more realistic feeling
+
+            if (reverseTimer >= 1.2f) //once this timer reaches, no more pause
+            {
+                reverseStop = false;
+                reverseCheck = false;
+            }
+        }
     }
 
     public void Steering()
@@ -196,5 +262,15 @@ public class KartController : MonoBehaviour
         }
 
         speedmeter.text = realVelocity.ToString("f2");
+    }
+
+    public void SpeedSettings()
+    {
+        originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
+        boostSpeed = maxSpeed + 10.0f; //sets a max speed
+        reverseSpeed = originalSpeed * 0.25f;
+        brakeSpeed = originalSpeed * 0.3f;
+        slowSpeed = maxSpeed - 25.0f; //sets a slow debuff speed
+        
     }
 }
