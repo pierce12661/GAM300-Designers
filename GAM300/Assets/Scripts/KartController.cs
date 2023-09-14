@@ -50,10 +50,15 @@ public class KartController : MonoBehaviour
     private Quaternion carRot;
 
 
+    [Header("Boost")]
+    private bool isBoosting;
+    private float boostInitialCD;
+    [SerializeField] private float boostCountdown;
+
     private void Start()
     {
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
-
+        boostInitialCD = boostCountdown;
         SpeedSettings();
     }
 
@@ -72,6 +77,8 @@ public class KartController : MonoBehaviour
         TireRotation();
 
         GroundNormalRotation();
+
+        BoostTimer();
 
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 
@@ -267,10 +274,35 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        boostSpeed = maxSpeed + 10.0f; //sets a max speed
+        boostSpeed = maxSpeed + 15.0f; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed - 25.0f; //sets a slow debuff speed
         
+    }
+
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
+    public void BoostKart()
+    {
+        isBoosting = true;
+        maxSpeed = boostSpeed;
+    }
+
+    public void BoostTimer()
+    {
+        if (isBoosting && boostCountdown > 0)
+        {
+            boostCountdown -= Time.deltaTime;
+        }
+        else
+        {
+            boostCountdown = 2f;
+            maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
+            isBoosting = false;
+        }
     }
 }
