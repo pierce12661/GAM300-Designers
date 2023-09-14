@@ -13,7 +13,7 @@ public class Grapple : MonoBehaviour
     public Transform grappleStart;
     public LayerMask canBeGrappled;
     public LineRenderer lr;
-    private float currentSpeed;
+    private float maxSpeed;
 
     [Header("Grappling")]
     public float maxGrappleDistance;
@@ -21,9 +21,10 @@ public class Grapple : MonoBehaviour
 
     public GameObject grapplerObj;
     public GameObject grappleLookAt;
-    public Transform anchorLeft;
-    public Transform anchorMid;
-    public Transform anchorRight;
+    public Transform anchors;
+    //public Transform anchorLeft;
+    //public Transform anchorMid;
+    //public Transform anchorRight;
     public Transform grappleAnchor;
     public SpringJoint joint;
 
@@ -51,27 +52,25 @@ public class Grapple : MonoBehaviour
     void Update()
     {
         #region Grapple Inputs
-        if (Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, anchorLeft.position) < maxGrappleDistance)
+        if (Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
         {
             grappleAnchor = GameObject.FindGameObjectWithTag("LeftAnchor").transform;
-            //StartGrappleAnchor();
             StartGrappleAnchor();
         }
-        if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, anchorMid.position) < maxGrappleDistance)
+        if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
         {
             grappleAnchor = GameObject.FindGameObjectWithTag("MidAnchor").transform;
             StartGrappleBoost();
         }
 
-        if (Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, anchorRight.position) < maxGrappleDistance)
+        if (Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
         {
             grappleAnchor = GameObject.FindGameObjectWithTag("RightAnchor").transform;
-            //StartGrappleAnchor();
             StartGrappleAnchor();
         }
 
-        currentSpeed = kc.GetCurrentSpeed();
-        if (currentSpeed > 30f && currentSpeed < 33f)
+        maxSpeed = kc.GetMaxSpeed();
+        if (maxSpeed > 30f && maxSpeed < 33f)
         {
             StopGrapple();
         }
@@ -173,7 +172,7 @@ public class Grapple : MonoBehaviour
         float distanceFromPoint = Vector3.Distance(grappleStart.position, grappleAnchor.position);
 
         // distance that grapple will try to keep from grapple point
-        joint.maxDistance = distanceFromPoint * 0.6f;
+        joint.maxDistance = distanceFromPoint * 0.1f;
         joint.minDistance = distanceFromPoint * 0.05f;
 
         // values

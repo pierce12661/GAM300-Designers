@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TMPro;
-using Unity.VisualScripting;
 
 public class KartController : MonoBehaviour
 {
@@ -38,16 +37,9 @@ public class KartController : MonoBehaviour
 
     private bool touchingGround;
 
-    // Boosting
-    private bool isBoosting;
-    private float boostInitialCD;
-
     [Header("Speed Settings")]
     public float maxSpeed;
     public float steerSpeed;
-    [SerializeField] public float maxSpeed;
-    [SerializeField] public float steerSpeed;
-    [SerializeField] private float boostCountdown;
 
     [Header("Tires")]
     [SerializeField] private Transform frontLeftTire;
@@ -60,20 +52,23 @@ public class KartController : MonoBehaviour
     private Quaternion carRot;
 
 
+    [Header("Boost")]
+    private bool isBoosting;
+    private float boostInitialCD;
+    [SerializeField] private float boostCountdown;
+
     private void Start()
     {
-        boostInitialCD = boostCountdown;
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
-
+        boostInitialCD = boostCountdown;
         SpeedSettings();
     }
 
     private void Update()
     {
-        //Debug.Log(currentSpeed);
+        transform.position = sphere.transform.position; //makes the kart parent follow the sphere. 
 
         ResetSpeed();
-        transform.position = sphere.transform.position; //makes the kart parent follow the sphere. 
 
         GetInput();
 
@@ -81,11 +76,11 @@ public class KartController : MonoBehaviour
 
         SpeedMeter();
 
-        BoostTimer();
-        
         TireRotation();
 
         GroundNormalRotation();
+
+        BoostTimer();
 
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 
@@ -102,31 +97,6 @@ public class KartController : MonoBehaviour
         Vector3 vel = transform.forward * currentSpeed; //directly affects velocity of the vehicle in the direction that the kart is facing
         vel.y = sphere.velocity.y;
         sphere.velocity = vel;
-    }
-
-    public void BoostKart()
-    {
-        isBoosting = true;
-        maxSpeed = boostSpeed;
-    }
-    
-    public void BoostTimer() 
-    { 
-        if (isBoosting && boostCountdown > 0)
-        {
-            boostCountdown -= Time.deltaTime;
-        }
-        else
-        {
-            boostCountdown = 2f;
-            maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
-            isBoosting = false;
-        }
-    }
-
-    public float GetCurrentSpeed()
-    {
-        return currentSpeed;
     }
 
     public void GetInput()
@@ -323,12 +293,37 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        boostSpeed = maxSpeed + 10.0f; //sets a max speed
+        boostSpeed = maxSpeed + 15.0f; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed - 25.0f; //sets a slow debuff speed
         highSpeedSteer = steerSpeed / 2; //for capping steering angle if the speed is high
         oringalSteerSpeed = steerSpeed;
         
+    }
+
+    public float GetMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
+    public void BoostKart()
+    {
+        isBoosting = true;
+        maxSpeed = boostSpeed;
+    }
+
+    public void BoostTimer()
+    {
+        if (isBoosting && boostCountdown > 0)
+        {
+            boostCountdown -= Time.deltaTime;
+        }
+        else
+        {
+            boostCountdown = 2f;
+            maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
+            isBoosting = false;
+        }
     }
 }
