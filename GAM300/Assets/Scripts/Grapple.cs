@@ -87,10 +87,13 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
-        Debug.Log("Max distance: " + joint.maxDistance);
-        Debug.Log("Min distance: " + joint.minDistance);
+        if (joint != null)
+        {
+            Debug.Log("Max distance: " + joint.maxDistance);
+            Debug.Log("Min distance: " + joint.minDistance);
+        }
     }
-
+    
     void LateUpdate()
     {
         if (grappling && grappleAnchor != null)
@@ -171,14 +174,14 @@ public class Grapple : MonoBehaviour
 
         float distanceFromPoint = Vector3.Distance(grappleStart.position, grappleAnchor.position);
 
-        // distance that grapple will try to keep from grapple point
+        // distance that grapple will try to keep from grapple point, increaing max will increase length of the grapple
         joint.maxDistance = distanceFromPoint * 0.1f;
-        joint.minDistance = distanceFromPoint * 0.05f;
+        joint.minDistance = distanceFromPoint * 0f;
 
         // values
-        joint.spring = 1f;
-        joint.damper = 2f;
-        joint.massScale = 2.5f;
+        joint.spring = 12f;
+        joint.damper = 10f;
+        joint.massScale = 5f;
     }
 
     private void GrappleBoost()
