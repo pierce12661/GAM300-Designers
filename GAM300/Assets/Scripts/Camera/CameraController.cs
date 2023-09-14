@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour
     private float camXrotation = 0;
     private float camYrotation = 0;
 
-    private Vector3 mainCamOriginalPos;
+    [HideInInspector] public Vector3 mainCamOriginalPos;
 
     public GameObject playerObject;
 
@@ -73,7 +73,9 @@ public class CameraController : MonoBehaviour
 
         //RotateCam();
 
-        mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 20.0f * Time.deltaTime);
+        ReverseCam();
+
+        mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 10.0f * Time.deltaTime);        
     }
 
     private void LateUpdate()
@@ -111,5 +113,19 @@ public class CameraController : MonoBehaviour
         Quaternion rotation = Quaternion.Slerp(center.transform.localRotation, Quaternion.Euler(rotatingAngle), camSettings.rotationSpeed * Time.deltaTime);
 
         center.transform.localRotation = rotation;
+
+        
+    }
+
+    public void ReverseCam()
+    {
+        if (playerObject.GetComponent<KartController>().isReversing)
+        {
+            center.localRotation = Quaternion.Lerp(center.localRotation, Quaternion.Euler(0, 180, 0), 3.0f * Time.deltaTime);
+        }
+        else
+        {
+            center.localRotation = Quaternion.Lerp(center.localRotation, Quaternion.Euler(0, 0, 0), 5.0f * Time.deltaTime);
+        }
     }
 }
