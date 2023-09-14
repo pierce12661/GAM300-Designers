@@ -116,16 +116,16 @@ public class CameraController : MonoBehaviour
 
         
     }
-
+    
     public void ReverseCam()
     {
         if (playerObject.GetComponent<KartController>().isReversing)
         {
-            center.localRotation = Quaternion.Lerp(center.localRotation, Quaternion.Euler(0, 180, 0), 3.0f * Time.deltaTime);
+            center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 180, 0), 3.0f * Time.deltaTime);
         }
         else
         {
-            center.localRotation = Quaternion.Lerp(center.localRotation, Quaternion.Euler(0, 0, 0), 5.0f * Time.deltaTime);
+            center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 0, 0), 6.0f * Time.deltaTime);
         }
     }
 }
