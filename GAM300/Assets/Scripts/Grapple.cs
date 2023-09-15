@@ -87,8 +87,8 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
-        Debug.Log("Max distance: " + joint.maxDistance);
-        Debug.Log("Min distance: " + joint.minDistance);
+        //Debug.Log("Max distance: " + joint.maxDistance);
+        //Debug.Log("Min distance: " + joint.minDistance);
     }
 
     void LateUpdate()
