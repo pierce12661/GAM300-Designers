@@ -7,6 +7,7 @@ TagManager:
   - LeftAnchor
   - MidAnchor
   - RightAnchor
+  - Anchors
   layers:
   - Default
   - TransparentFX

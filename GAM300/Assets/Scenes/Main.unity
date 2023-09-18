@@ -192,7 +192,7 @@ Transform:
   m_Children:
   - {fileID: 1061740827}
   m_Father: {fileID: 1007942410}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &275166722
 BoxCollider:
@@ -488,7 +488,7 @@ Transform:
   m_Children:
   - {fileID: 157386332}
   m_Father: {fileID: 1007942410}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &605419221
 BoxCollider:
@@ -655,7 +655,7 @@ Transform:
   m_Children:
   - {fileID: 1372740975}
   m_Father: {fileID: 1007942410}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &703215233
 BoxCollider:
@@ -1169,7 +1169,7 @@ GameObject:
   - component: {fileID: 1007942410}
   m_Layer: 7
   m_Name: Anchors
-  m_TagString: Untagged
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1186,6 +1186,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1742992301}
   - {fileID: 703215232}
   - {fileID: 605419220}
   - {fileID: 275166721}
@@ -1754,7 +1755,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1439715947}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1772828, y: -0.65, z: 14.48}
+  m_LocalPosition: {x: -13.5, y: -0.65, z: 14.48}
   m_LocalScale: {x: 0.8, y: 0.1, z: 0.4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2220,7 +2221,7 @@ MonoBehaviour:
   grappleDelayTime: 0.25
   grapplerObj: {fileID: 618725697}
   grappleLookAt: {fileID: 847389585}
-  anchors: {fileID: 1007942410}
+  anchors: {fileID: 0}
   grappleAnchor: {fileID: 0}
   joint: {fileID: 0}
   grapplingCD: 1
@@ -2233,6 +2234,67 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8ac2fd771e6cace4b8b54bf827f09c2d, type: 3}
   m_PrefabInstance: {fileID: 1151414372}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1742992300
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1742992301}
+  - component: {fileID: 1742992302}
+  - component: {fileID: 1742992303}
+  m_Layer: 0
+  m_Name: AnchorTrigger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1742992301
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742992300}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 16.82}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1007942410}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1742992302
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742992300}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 60, y: 7, z: 24.461353}
+  m_Center: {x: 0, y: 0, z: 5.307935}
+--- !u!114 &1742992303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1742992300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a559a4d7e90329b439f055c40f99b4e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kartObject: {fileID: 1631193087}
+  grappleScript: {fileID: 0}
+  anchors: {fileID: 0}
 --- !u!1 &1788269213 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ac2fd771e6cace4b8b54bf827f09c2d, type: 3}

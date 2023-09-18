@@ -52,32 +52,35 @@ public class Grapple : MonoBehaviour
     void Update()
     {
         #region Grapple Inputs
-        if (Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
+        if (anchors != null)
         {
-            grappleAnchor = GameObject.FindGameObjectWithTag("LeftAnchor").transform;
-            StartGrappleAnchor();
-        }
-        if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
-        {
-            grappleAnchor = GameObject.FindGameObjectWithTag("MidAnchor").transform;
-            StartGrappleBoost();
-        }
+            if (Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
+            {
+                grappleAnchor = GameObject.FindGameObjectWithTag("LeftAnchor").transform;
+                StartGrappleAnchor();
+            }
+            if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
+            {
+                grappleAnchor = GameObject.FindGameObjectWithTag("MidAnchor").transform;
+                StartGrappleBoost();
+            }
 
-        if (Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
-        {
-            grappleAnchor = GameObject.FindGameObjectWithTag("RightAnchor").transform;
-            StartGrappleAnchor();
-        }
+            if (Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
+            {
+                grappleAnchor = GameObject.FindGameObjectWithTag("RightAnchor").transform;
+                StartGrappleAnchor();
+            }
 
-        maxSpeed = kc.GetMaxSpeed();
-        if (maxSpeed > 30f && maxSpeed < 33f)
-        {
-            StopGrapple();
-        }
+            maxSpeed = kc.GetMaxSpeed();
+            if (maxSpeed > 30f && maxSpeed < 33f)
+            {
+                StopGrapple();
+            }
 
-        if (Input.GetKeyDown(grappleRemoveKey))
-        {
-            StopAnchor();
+            if (Input.GetKeyDown(grappleRemoveKey))
+            {
+                StopAnchor();
+            }
         }
         #endregion
 
@@ -87,11 +90,11 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
-        if (joint != null)
-        {
-            Debug.Log("Max distance: " + joint.maxDistance);
-            Debug.Log("Min distance: " + joint.minDistance);
-        }
+        //if (joint != null)
+        //{
+        //    Debug.Log("Max distance: " + joint.maxDistance);
+        //    Debug.Log("Min distance: " + joint.minDistance);
+        //}
     }
     
     void LateUpdate()
