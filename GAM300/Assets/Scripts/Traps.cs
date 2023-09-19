@@ -17,6 +17,11 @@ public class Traps : MonoBehaviour
     private float stunnedTime;
     private float forceTime;
 
+    private float multiplier;
+
+
+    Vector3 spinRotation;
+
     private void Awake()
     {
         instance = this;
@@ -33,7 +38,11 @@ public class Traps : MonoBehaviour
 
         PendulumTrap(playerObject);
 
+        //spinRotation = Quaternion.ei(playerObject.transform.rotation.x, playerObject.transform.rotation.y + 2f, playerObject.transform.rotation.z);
+
         WallTrap();
+
+        //Debug.Log(spinRotation);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -116,14 +125,15 @@ public class Traps : MonoBehaviour
         {
             stunnedTime += 1.0f * Time.deltaTime;
 
-            player.GetComponent<KartController>().transform.localRotation = Quaternion.Lerp(player.GetComponent<KartController>().transform.localRotation,
-                Quaternion.Euler(player.GetComponent<KartController>().transform.localRotation.x, player.GetComponent<KartController>().transform.localRotation.y + 1f,
-                player.GetComponent<KartController>().transform.localRotation.z), 3.0f * Time.deltaTime);
+            //playerObject.transform.rotation = Quaternion.Lerp(playerObject.transform.rotation, spinRotation, 3.0f * Time.deltaTime);
+
+            Debug.Log("isStunned");
 
             if (stunnedTime > 2.5f)
             {
                 stunned = false;
                 stunnedTime = 0;
+                Debug.Log("offStun");
             }
         }
     }
@@ -134,12 +144,22 @@ public class Traps : MonoBehaviour
         {
             if(forceTime < 0.15f)
             {
-                Vector3 direction = playerObject.GetComponent<KartController>().sphere.position - transform.position;
+                forceTime += 1.0f * Time.deltaTime;
 
-                playerObject.GetComponent<KartController>().sphere.AddForce(direction *  60, ForceMode.Acceleration);
+                Vector3 direction = playerObject.transform.forward;
 
-                //Debug.Log(-playerObject.transform.forward);
-                //Debug.Log("realspeed = " + playerObject.GetComponent<KartController>().realSpeed);
+                playerObject.GetComponent<KartController>().currentSpeed = -5;
+
+                if (playerObject.GetComponent<KartController>().realSpeed < 12)
+                {
+                    multiplier = 70f;
+                }
+                else
+                {
+                    multiplier = 120f;
+                }
+
+                playerObject.GetComponent<KartController>().sphere.AddForce(-direction * multiplier, ForceMode.Acceleration);
             }
             else
             {

@@ -50,6 +50,9 @@ public class CameraController : MonoBehaviour
 
     public GameObject playerObject;
 
+    private float reverseElapsedTime;
+
+
     private void Awake()
     {
         instance = this;
@@ -121,10 +124,14 @@ public class CameraController : MonoBehaviour
     {
         if (playerObject.GetComponent<KartController>().isReversing)
         {
-            center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 180, 0), 3.0f * Time.deltaTime);
+            reverseElapsedTime += 1.0f * Time.deltaTime;
+
+            if(reverseElapsedTime > 2.5f)
+                center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 180, 0), 3.0f * Time.deltaTime);
         }
         else
         {
+            reverseElapsedTime = 0;
             center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 0, 0), 6.0f * Time.deltaTime);
         }
     }

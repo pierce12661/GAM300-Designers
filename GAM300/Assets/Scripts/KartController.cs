@@ -15,6 +15,8 @@ public class KartController : MonoBehaviour
     private float acceleration;
     private float steerAmount;
     private float reverseTimer;
+    private float airTime;
+
     [HideInInspector] public bool isReversing;
     private bool isBraking;
     private bool reverseCheck;
@@ -51,9 +53,12 @@ public class KartController : MonoBehaviour
 
     private Quaternion carRot;
 
-    [SerializeField] private Transform speedParticlesHolder_1, speedParticlesHolder_2;
-    private float particleTimer;
 
+    //Particles
+
+    [SerializeField] private Transform speedParticlesHolder_1, speedParticlesHolder_2;
+    [SerializeField] private GameObject exhaustParticles;
+    private float particleTimer;
 
     [Header("Boost")]
     private bool isBoosting;
@@ -102,6 +107,21 @@ public class KartController : MonoBehaviour
         Vector3 vel = transform.forward * currentSpeed; //directly affects velocity of the vehicle in the direction that the kart is facing
         vel.y = sphere.velocity.y;
         sphere.velocity = vel;
+
+        if (!touchingGround) //Pseudo Gravity when airtime
+        {
+            airTime += 1.0f * Time.deltaTime;
+
+            if(airTime > 1f)
+            {
+                Debug.Log("airTime hit");
+                sphere.AddForce(-transform.up * 10, ForceMode.Acceleration);    
+            }
+        }
+        else
+        {
+            airTime = 0;
+        }
     }
 
     public void GetInput()
@@ -155,7 +175,7 @@ public class KartController : MonoBehaviour
     {
         //ReverseSpeed
 
-        if (realSpeed < 0) //crosschecks with actual speed to check if it is reversing. If the vehicle is reversing, actual speed will reflect as negative.
+        if (realSpeed < 0 && acceleration < 0) //crosschecks with actual speed to check if it is reversing. If the vehicle is reversing, actual speed will reflect as negative.
         {
             isReversing = true;
             maxSpeed = reverseSpeed; //25% of the original movespeed. caps reversing speed.
@@ -269,7 +289,7 @@ public class KartController : MonoBehaviour
     {
         RaycastHit hit;
 
-        if(Physics.Raycast(transform.position, -transform.up,out hit, 0.75f))
+        if(Physics.Raycast(transform.position, -transform.up,out hit, 1.25f))
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * transform.rotation, 7.5f * Time.deltaTime);
             touchingGround = true;
@@ -316,6 +336,11 @@ public class KartController : MonoBehaviour
     {
         isBoosting = true;
         maxSpeed = boostSpeed;
+
+        sphere.AddForce(gameObject.GetComponent<Grapple>().grapplerObj.transform.forward * 1000, ForceMode.Acceleration); //boost force
+
+        exhaustParticles.SetActive(true); //activate particles
+        exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.one, 20.0f * Time.deltaTime);
     }
 
     public void BoostTimer()
