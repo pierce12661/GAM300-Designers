@@ -9,7 +9,7 @@ public class KartController : MonoBehaviour
     private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
 
-    [SerializeField] private Rigidbody sphere;
+    public Rigidbody sphere;
 
     // Inputs
     private float acceleration;
@@ -51,6 +51,9 @@ public class KartController : MonoBehaviour
 
     private Quaternion carRot;
 
+    [SerializeField] private Transform speedParticlesHolder_1, speedParticlesHolder_2;
+    private float particleTimer;
+
 
     [Header("Boost")]
     private bool isBoosting;
@@ -82,6 +85,8 @@ public class KartController : MonoBehaviour
 
         BoostTimer();
 
+        SpeedParticles();
+
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 
     }
@@ -104,7 +109,7 @@ public class KartController : MonoBehaviour
         acceleration = Input.GetAxis(VERTICAL);
         steerAmount = Input.GetAxis(HORIZONTAL);
 
-        if (!Traps.instance.trapHit)
+        if (!Traps.instance.trapHit && !Traps.instance.stunned)
         {
             if (acceleration != 0)
             {
@@ -187,7 +192,7 @@ public class KartController : MonoBehaviour
 
     public void Steering()
     {
-        if (touchingGround)
+        if (touchingGround && !Traps.instance.stunned)
         {
             if (realSpeed >= 0.01f || realSpeed <= -0.001) //If the kart is at rest, unable to rotate
             {
@@ -324,6 +329,30 @@ public class KartController : MonoBehaviour
             boostCountdown = 2f;
             maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
             isBoosting = false;
+        }
+    }
+
+    public void SpeedParticles()
+    {
+        if(realSpeed > 25)
+        {
+            particleTimer += 1.0f * Time.deltaTime;
+
+            if(particleTimer > 10)
+            {
+                speedParticlesHolder_2.localScale = Vector3.Lerp(speedParticlesHolder_2.localScale,Vector3.one, 1.0f * Time.deltaTime);
+            }
+            else if(particleTimer > 4)
+            {
+                speedParticlesHolder_1.localScale = Vector3.Lerp(speedParticlesHolder_1.localScale, Vector3.one, 2.0f * Time.deltaTime);
+            }
+        }
+        else
+        {
+            speedParticlesHolder_1.localScale = Vector3.Lerp(speedParticlesHolder_1.localScale, Vector3.zero, 4.0f * Time.deltaTime);
+            speedParticlesHolder_2.localScale = Vector3.Lerp(speedParticlesHolder_2.localScale, Vector3.zero, 1.0f * Time.deltaTime);
+
+            particleTimer = 0;
         }
     }
 }
