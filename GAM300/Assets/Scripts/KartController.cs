@@ -11,6 +11,8 @@ public class KartController : MonoBehaviour
 
     [SerializeField] private Rigidbody sphere;
 
+    private Grapple grappleScript;
+
     // Inputs
     private float acceleration;
     private float steerAmount;
@@ -23,7 +25,7 @@ public class KartController : MonoBehaviour
     // Speed Settings 
     [HideInInspector] public float currentSpeed;
     [HideInInspector] public float slowSpeed;
-    [HideInInspector] public float boostSpeed;
+    //[HideInInspector] public float boostSpeed;
     [HideInInspector] public float originalSpeed;
     [HideInInspector] public float realSpeed;
     [HideInInspector] public float brakeSpeed;
@@ -53,12 +55,16 @@ public class KartController : MonoBehaviour
     [Header("Boost")]
     private bool isBoosting;
     private float boostInitialCD;
+    private float boostSpeed = 10f;
     [SerializeField] private float boostCountdown;
 
     private void Start()
     {
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
         boostInitialCD = boostCountdown;
+
+        grappleScript = this.GetComponent<Grapple>();
+
         SpeedSettings();
     }
 
@@ -274,7 +280,7 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        boostSpeed = maxSpeed + 15.0f; //sets a max speed
+        //boostSpeed = maxSpeed + 15.0f; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed - 25.0f; //sets a slow debuff speed
@@ -290,6 +296,7 @@ public class KartController : MonoBehaviour
     {
         isBoosting = true;
         maxSpeed = boostSpeed;
+        //sphere.velocity = new Vector3(grappleScript.grappleAnchor.position.x, 0f, grappleScript.grappleAnchor.position.z) * boostSpeed;
     }
 
     public void BoostTimer()

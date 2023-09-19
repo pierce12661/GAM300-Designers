@@ -7,27 +7,22 @@ public class AnchorTrigger : MonoBehaviour
 {
     public GameObject kartObject;
     public Grapple grappleScript;
-    public Transform anchors;
+    //public Transform anchors;
 
     private void Start()
     {
         grappleScript = kartObject.GetComponent<Grapple>();
-        anchors = grappleScript.anchors;
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name);
-
-        if (other.gameObject.name == "Sphere" && anchors == null)
+        if (grappleScript.anchors == null)
         {
-            anchors = GameObject.FindGameObjectWithTag("Anchors").transform;
-            grappleScript.anchors = anchors;
+            grappleScript.anchors = grappleScript.closestAnchor.transform;
         }
-        else
-        {
-            anchors = null;
-            grappleScript.anchors = anchors;
-        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        grappleScript.anchors = null;
     }
 }
