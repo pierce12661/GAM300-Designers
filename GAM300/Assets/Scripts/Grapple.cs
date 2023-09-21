@@ -54,19 +54,24 @@ public class Grapple : MonoBehaviour
         #region Grapple Inputs
         if (Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
         {
-            grappleAnchor = GameObject.FindGameObjectWithTag("LeftAnchor").transform;
-            StartGrappleAnchor();
-        }
-        if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
-        {
-            grappleAnchor = GameObject.FindGameObjectWithTag("MidAnchor").transform;
-            StartGrappleBoost();
-        }
+            if (joint == null && Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            {
+                grappleAnchor = FindClosestLeftAnchor().transform;
+                StartGrappleAnchor();
+                StartGrappleBoost();
+            }
+            if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            {
+                grappleAnchor = FindClosestMidAnchor().transform;
+                StartGrappleBoost();
+            }
 
-        if (Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, anchors.position) < maxGrappleDistance)
-        {
-            grappleAnchor = GameObject.FindGameObjectWithTag("RightAnchor").transform;
-            StartGrappleAnchor();
+            if (joint == null && Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            {
+                grappleAnchor = FindClosestRightAnchor().transform;
+                StartGrappleAnchor();
+                StartGrappleBoost();
+            }
         }
 
         maxSpeed = kc.GetMaxSpeed();
@@ -87,8 +92,7 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
-        //Debug.Log("Max distance: " + joint.maxDistance);
-        //Debug.Log("Min distance: " + joint.minDistance);
+        closestAnchor = FindClosestAnchor();
     }
 
     void LateUpdate()

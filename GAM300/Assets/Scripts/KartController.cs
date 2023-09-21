@@ -329,7 +329,7 @@ public class KartController : MonoBehaviour
         boostSpeed = maxSpeed + 15.0f; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
-        slowSpeed = maxSpeed - 25.0f; //sets a slow debuff speed
+        slowSpeed = maxSpeed * 0.1f; //sets a slow debuff speed
         highSpeedSteer = steerSpeed / 2; //for capping steering angle if the speed is high
         oringalSteerSpeed = steerSpeed;
         

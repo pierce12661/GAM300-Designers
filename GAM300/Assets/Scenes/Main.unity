@@ -27510,14 +27510,13 @@ MonoBehaviour:
   isReversing: 0
   currentSpeed: 0
   slowSpeed: 0
-  boostSpeed: 0
   originalSpeed: 0
   realSpeed: 0
   brakeSpeed: 0
   reverseSpeed: 0
   highSpeedSteer: 0
   oringalSteerSpeed: 0
-  maxSpeed: 30
+  maxSpeed: 40
   steerSpeed: 100
   frontLeftTire: {fileID: 922985758}
   frontRightTire: {fileID: 1064537240}
@@ -42374,7 +42373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1956729634
 Transform:
   m_ObjectHideFlags: 0
