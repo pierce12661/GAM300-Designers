@@ -83,4 +83,9 @@ public class CameraShake : MonoBehaviour
             obj.localEulerAngles = originalRot + Random.insideUnitSphere * strength;
         }
     }
+
+    public void BoostShake()
+    {
+        camShaking = true;
+    }
 }

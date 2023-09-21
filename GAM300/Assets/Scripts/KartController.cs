@@ -53,17 +53,22 @@ public class KartController : MonoBehaviour
 
     private Quaternion carRot;
 
-
-    //Particles
-
-    [SerializeField] private Transform speedParticlesHolder_1, speedParticlesHolder_2;
-    [SerializeField] private GameObject exhaustParticles;
     private float particleTimer;
 
     [Header("Boost")]
-    private bool isBoosting;
+    [HideInInspector] public bool isBoosting;
+    [HideInInspector] public float boostParticleTimer;
     private float boostInitialCD;
     [SerializeField] private float boostCountdown;
+
+    //Particles
+
+    [Header("Particles")]
+    [SerializeField] private Transform speedParticlesHolder_1;
+    [SerializeField] private Transform speedParticlesHolder_2;
+    [SerializeField] private GameObject exhaustParticlesHolder;
+    [SerializeField] private Transform FlameLeft, FlameRight;
+    [SerializeField] private Transform SmokeLeft, SmokeRight;
 
     private void Start()
     {
@@ -90,6 +95,9 @@ public class KartController : MonoBehaviour
 
         BoostTimer();
 
+        //Particles
+
+        BoostParticles();
         SpeedParticles();
 
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
@@ -339,8 +347,7 @@ public class KartController : MonoBehaviour
 
         sphere.AddForce(gameObject.GetComponent<Grapple>().grapplerObj.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
-        exhaustParticles.SetActive(true); //activate particles
-        exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.one, 20.0f * Time.deltaTime);
+        CameraShake.instance.BoostShake();
     }
 
     public void BoostTimer()
@@ -354,6 +361,38 @@ public class KartController : MonoBehaviour
             boostCountdown = 2f;
             maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
             isBoosting = false;
+        }
+    }
+
+    public void BoostParticles()
+    {
+        if (isBoosting)
+        {
+            exhaustParticlesHolder.SetActive(true); //activate particles
+            //exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.one, 20.0f * Time.deltaTime);
+
+            FlameLeft.localScale = Vector3.Lerp(FlameLeft.localScale, Vector3.one, 20.0f * Time.deltaTime);
+            FlameRight.localScale = Vector3.Lerp(FlameRight.localScale, Vector3.one, 20.0f * Time.deltaTime);
+            SmokeLeft.localScale = Vector3.Lerp(SmokeLeft.localScale, Vector3.one, 20.0f * Time.deltaTime);
+            SmokeRight.localScale = Vector3.Lerp(SmokeRight.localScale, Vector3.one, 20.0f * Time.deltaTime);
+
+            boostParticleTimer = 0;
+        }
+        else
+        {
+            //exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.zero, 10.0f * Time.deltaTime);
+
+            boostParticleTimer += 1.0f * Time.deltaTime;
+
+            FlameLeft.localScale = Vector3.Lerp(FlameLeft.localScale, Vector3.zero, 5.0f * Time.deltaTime);
+            FlameRight.localScale = Vector3.Lerp(FlameRight.localScale, Vector3.zero, 5.0f * Time.deltaTime);
+            SmokeLeft.localScale = Vector3.Lerp(SmokeLeft.localScale, Vector3.zero, 5.0f * Time.deltaTime);
+            SmokeRight.localScale = Vector3.Lerp(SmokeRight.localScale, Vector3.zero, 5.0f * Time.deltaTime);
+
+            if (boostParticleTimer > 3f)
+            {
+                exhaustParticlesHolder.SetActive(false);
+            }
         }
     }
 

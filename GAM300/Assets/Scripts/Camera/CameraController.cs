@@ -10,11 +10,11 @@ public class CameraController : MonoBehaviour
     public class CameraSettings
     {
         [Header("Camera Settings")]
-        public float zoomSpeed;
+        public float boostZoomSpeed;
         public float moveSpeed;
         public float rotationSpeed;
         public float originalFOV;
-        public float zoomFOV;
+        public float boostFOV;
         public float mouseX_Sensitivity;
         public float mouseY_Sensitivity;
         public float maxVerticalClampAngle;
@@ -78,6 +78,8 @@ public class CameraController : MonoBehaviour
 
         ReverseCam();
 
+        BoostFOV();
+
         mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 10.0f * Time.deltaTime);        
     }
 
@@ -98,6 +100,18 @@ public class CameraController : MonoBehaviour
         transform.position = moveVector;
 
         transform.rotation = rotationVector;
+    }
+
+    public void BoostFOV()
+    {
+        if (playerObject.GetComponent<KartController>().isBoosting == true)
+        {
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.boostFOV, camSettings.boostZoomSpeed * Time.deltaTime);
+        }
+        else
+        {
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.originalFOV, camSettings.boostZoomSpeed * Time.deltaTime);
+        }
     }
 
     public void RotateCam()
