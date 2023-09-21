@@ -8,6 +8,7 @@ public class TransitionManager : MonoBehaviour
     public static TransitionManager instance;
 
     [HideInInspector] public bool gameIsPaused;
+    [HideInInspector] public bool isGameOver;
 
     private void Awake()
     {
@@ -26,6 +27,13 @@ public class TransitionManager : MonoBehaviour
         {
             Time.timeScale = 1.0f;
         }
+    }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+
+        //show game over screen
     }
 
     public void PauseAndResume()
