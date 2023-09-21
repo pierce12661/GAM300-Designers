@@ -25908,7 +25908,7 @@ GameObject:
   - component: {fileID: 1007942410}
   m_Layer: 7
   m_Name: Anchors
-  m_TagString: Untagged
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -27510,7 +27510,6 @@ MonoBehaviour:
   isReversing: 0
   currentSpeed: 0
   slowSpeed: 0
-  boostSpeed: 0
   originalSpeed: 0
   realSpeed: 0
   brakeSpeed: 0
@@ -27559,6 +27558,7 @@ MonoBehaviour:
   anchors: {fileID: 1007942410}
   grappleAnchor: {fileID: 0}
   joint: {fileID: 0}
+  closestAnchor: {fileID: 0}
   grapplingCD: 1
   grappleKeyLeft: 106
   grappleKeyMid: 107
