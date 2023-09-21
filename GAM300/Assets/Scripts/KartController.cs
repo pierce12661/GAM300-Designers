@@ -11,6 +11,8 @@ public class KartController : MonoBehaviour
 
     public Rigidbody sphere;
 
+    private Grapple grappleScript;
+
     // Inputs
     private float acceleration;
     private float steerAmount;
@@ -25,7 +27,7 @@ public class KartController : MonoBehaviour
     // Speed Settings 
     [HideInInspector] public float currentSpeed;
     [HideInInspector] public float slowSpeed;
-    [HideInInspector] public float boostSpeed;
+    //[HideInInspector] public float boostSpeed;
     [HideInInspector] public float originalSpeed;
     [HideInInspector] public float realSpeed;
     [HideInInspector] public float brakeSpeed;
@@ -59,6 +61,7 @@ public class KartController : MonoBehaviour
     [HideInInspector] public bool isBoosting;
     [HideInInspector] public float boostParticleTimer;
     private float boostInitialCD;
+    private float boostSpeed = 10f;
     [SerializeField] private float boostCountdown;
 
     //Particles
@@ -74,6 +77,9 @@ public class KartController : MonoBehaviour
     {
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
         boostInitialCD = boostCountdown;
+
+        grappleScript = this.GetComponent<Grapple>();
+
         SpeedSettings();
     }
 
@@ -326,7 +332,7 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        boostSpeed = maxSpeed + 15.0f; //sets a max speed
+        //boostSpeed = maxSpeed + 15.0f; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed * 0.1f; //sets a slow debuff speed
