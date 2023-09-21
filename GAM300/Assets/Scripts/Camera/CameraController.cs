@@ -10,11 +10,11 @@ public class CameraController : MonoBehaviour
     public class CameraSettings
     {
         [Header("Camera Settings")]
-        public float zoomSpeed;
+        public float boostZoomSpeed;
         public float moveSpeed;
         public float rotationSpeed;
         public float originalFOV;
-        public float zoomFOV;
+        public float boostFOV;
         public float mouseX_Sensitivity;
         public float mouseY_Sensitivity;
         public float maxVerticalClampAngle;
@@ -50,6 +50,9 @@ public class CameraController : MonoBehaviour
 
     public GameObject playerObject;
 
+    private float reverseElapsedTime;
+
+
     private void Awake()
     {
         instance = this;
@@ -75,6 +78,8 @@ public class CameraController : MonoBehaviour
 
         ReverseCam();
 
+        BoostFOV();
+
         mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 10.0f * Time.deltaTime);        
     }
 
@@ -97,6 +102,18 @@ public class CameraController : MonoBehaviour
         transform.rotation = rotationVector;
     }
 
+    public void BoostFOV()
+    {
+        if (playerObject.GetComponent<KartController>().isBoosting == true)
+        {
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.boostFOV, camSettings.boostZoomSpeed * Time.deltaTime);
+        }
+        else
+        {
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.originalFOV, camSettings.boostZoomSpeed * Time.deltaTime);
+        }
+    }
+
     public void RotateCam()
     {
         camXrotation -= Input.GetAxis(inputSettings.MouseY_Axis) * camSettings.mouseY_Sensitivity;
@@ -116,16 +133,20 @@ public class CameraController : MonoBehaviour
 
         
     }
-
+    
     public void ReverseCam()
     {
         if (playerObject.GetComponent<KartController>().isReversing)
         {
-            center.localRotation = Quaternion.Lerp(center.localRotation, Quaternion.Euler(0, 180, 0), 3.0f * Time.deltaTime);
+            reverseElapsedTime += 1.0f * Time.deltaTime;
+
+            if(reverseElapsedTime > 2.5f)
+                center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 180, 0), 3.0f * Time.deltaTime);
         }
         else
         {
-            center.localRotation = Quaternion.Lerp(center.localRotation, Quaternion.Euler(0, 0, 0), 5.0f * Time.deltaTime);
+            reverseElapsedTime = 0;
+            center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 0, 0), 6.0f * Time.deltaTime);
         }
     }
 }
