@@ -4,12 +4,7 @@ using UnityEngine;
 
 public class Traps : MonoBehaviour
 {
-    public static Traps instance;
-
     public float trapID;
-
-    [HideInInspector] public bool trapHit;
-    [HideInInspector] public bool stunned;
 
     [SerializeField] private GameObject playerObject;
 
@@ -21,11 +16,6 @@ public class Traps : MonoBehaviour
 
 
     Vector3 spinRotation;
-
-    private void Awake()
-    {
-        instance = this;
-    }
 
     private void Start()
     {
@@ -49,19 +39,19 @@ public class Traps : MonoBehaviour
     {
         Debug.Log("Player has entered");
 
-        trapHit = true;
+        playerObject.GetComponent<KartController>().trapHit = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        trapHit = false;
+        playerObject.GetComponent<KartController>().trapHit = false;
 
         Debug.Log("Player has exit");
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        trapHit = true;
+        playerObject.GetComponent<KartController>().trapHit = true;
 
         //playerObject.GetComponent<KartController>().sphere.AddExplosionForce(50000.0f, collision.GetContact(0).point, 2);
 
@@ -76,7 +66,7 @@ public class Traps : MonoBehaviour
     {
         if (trapID == 0)
         {
-            if (trapHit)
+            if (playerObject.GetComponent<KartController>().trapHit)
             {
                 elapsedTime = Mathf.Lerp(elapsedTime, 5.0f, 2.5f * Time.deltaTime);
 
@@ -101,7 +91,7 @@ public class Traps : MonoBehaviour
 
     public void PendulumTrap(GameObject player)
     {
-        if (trapID == 1 && trapHit)
+        if (trapID == 1 && playerObject.GetComponent<KartController>().trapHit)
         {
             if (forceTime < 0.15f)
             {
@@ -111,17 +101,17 @@ public class Traps : MonoBehaviour
                 Vector3 direction = player.GetComponent<KartController>().sphere.position - transform.position;
 
                 player.GetComponent<KartController>().sphere.AddForce(direction * 125, ForceMode.Acceleration);
-                stunned = true;
+                playerObject.GetComponent<KartController>().stunned = true;
             }
             else
             {
-                trapHit = false;
+                playerObject.GetComponent<KartController>().trapHit = false;
                 forceTime = 0;
             }
             
         }
 
-        if (stunned)
+        if (playerObject.GetComponent<KartController>().stunned)
         {
             stunnedTime += 1.0f * Time.deltaTime;
 
@@ -131,7 +121,7 @@ public class Traps : MonoBehaviour
 
             if (stunnedTime > 2.5f)
             {
-                stunned = false;
+                playerObject.GetComponent<KartController>().stunned = false;
                 stunnedTime = 0;
                 Debug.Log("offStun");
             }
@@ -140,7 +130,7 @@ public class Traps : MonoBehaviour
 
     public void WallTrap()
     {
-        if(trapID == 2 && trapHit)
+        if(trapID == 2 && playerObject.GetComponent<KartController>().trapHit)
         {
             if(forceTime < 0.15f)
             {
@@ -163,7 +153,7 @@ public class Traps : MonoBehaviour
             }
             else
             {
-                trapHit = false;
+                playerObject.GetComponent<KartController>().trapHit = false;
                 forceTime = 0;
             }
         }

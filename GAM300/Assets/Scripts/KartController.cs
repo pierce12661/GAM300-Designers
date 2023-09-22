@@ -57,6 +57,8 @@ public class KartController : MonoBehaviour
 
     private float particleTimer;
 
+    public Transform gravitypos;
+
     [Header("Boost")]
     [HideInInspector] public bool isBoosting;
     [HideInInspector] public float boostParticleTimer;
@@ -72,6 +74,10 @@ public class KartController : MonoBehaviour
     [SerializeField] private GameObject exhaustParticlesHolder;
     [SerializeField] private Transform FlameLeft, FlameRight;
     [SerializeField] private Transform SmokeLeft, SmokeRight;
+
+    //Traps
+    [HideInInspector] public bool trapHit;
+    [HideInInspector] public bool stunned;
 
     private void Start()
     {
@@ -126,10 +132,13 @@ public class KartController : MonoBehaviour
         {
             airTime += 1.0f * Time.deltaTime;
 
+
             if(airTime > 1f)
             {
+
                 Debug.Log("airTime hit");
-                sphere.AddForce(-transform.up * 10, ForceMode.Acceleration);    
+                sphere.AddForceAtPosition(-transform.up * 15, gravitypos.position,ForceMode.Acceleration);
+                //sphere.AddForce(-transform.forward * 50, ForceMode.Acceleration);
             }
         }
         else
@@ -143,7 +152,7 @@ public class KartController : MonoBehaviour
         acceleration = Input.GetAxis(VERTICAL);
         steerAmount = Input.GetAxis(HORIZONTAL);
 
-        if (!Traps.instance.trapHit && !Traps.instance.stunned)
+        if (!trapHit && !stunned)
         {
             if (acceleration != 0)
             {
@@ -226,7 +235,7 @@ public class KartController : MonoBehaviour
 
     public void Steering()
     {
-        if (touchingGround && !Traps.instance.stunned)
+        if (touchingGround && !stunned)
         {
             if (realSpeed >= 0.01f || realSpeed <= -0.001) //If the kart is at rest, unable to rotate
             {
