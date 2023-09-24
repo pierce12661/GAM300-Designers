@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
         [Header("Camera Settings")]
         public float boostZoomSpeed;
         public float moveSpeed;
+        public float airTimeCamSpeed;
         public float rotationSpeed;
         public float originalFOV;
         public float boostFOV;
@@ -21,6 +22,7 @@ public class CameraController : MonoBehaviour
         public float minVerticalClampAngle;
         public float maxHorizontalClampAngle;
         public float minHorizontalClampAngle;
+        
     }
 
     [SerializeField]
@@ -52,6 +54,8 @@ public class CameraController : MonoBehaviour
 
     private float reverseElapsedTime;
 
+    private float originalCamSpeed;
+
 
     private void Awake()
     {
@@ -67,6 +71,8 @@ public class CameraController : MonoBehaviour
         mainCamOriginalPos = mainCam.transform.localPosition;
 
         Cursor.lockState = CursorLockMode.Locked;
+
+        originalCamSpeed = camSettings.moveSpeed;
     }
 
     private void Update()
@@ -79,6 +85,8 @@ public class CameraController : MonoBehaviour
         ReverseCam();
 
         BoostFOV();
+
+        AirTime();
 
         mainCam.transform.localPosition = Vector3.Lerp(mainCam.transform.localPosition, mainCamOriginalPos, 10.0f * Time.deltaTime);        
     }
@@ -147,6 +155,20 @@ public class CameraController : MonoBehaviour
         {
             reverseElapsedTime = 0;
             center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 0, 0), 6.0f * Time.deltaTime);
+        }
+    }
+
+    public void AirTime()
+    {
+        if (!playerObject.GetComponent<KartController>().touchingGround)
+        {
+            camSettings.moveSpeed = Mathf.Lerp(camSettings.moveSpeed, camSettings.airTimeCamSpeed, 3.0f * Time.deltaTime);
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, 75, camSettings.boostZoomSpeed * Time.deltaTime);
+        }
+        else
+        {
+            camSettings.moveSpeed = Mathf.Lerp(camSettings.moveSpeed, originalCamSpeed, 3.0f * Time.deltaTime);
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.originalFOV, camSettings.boostZoomSpeed * Time.deltaTime);
         }
     }
 }

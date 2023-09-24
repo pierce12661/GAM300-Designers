@@ -57,6 +57,8 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = FindClosestLeftAnchor().transform;
                 StartGrappleAnchor();
                 StartGrappleBoost();
+
+                FeedbackHUD.instance.boosted = true;
             }
             if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
@@ -69,6 +71,8 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = FindClosestRightAnchor().transform;
                 StartGrappleAnchor();
                 StartGrappleBoost();
+
+                FeedbackHUD.instance.boosted = true;
             }
         }
         #endregion

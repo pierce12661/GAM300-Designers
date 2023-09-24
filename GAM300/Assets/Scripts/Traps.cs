@@ -5,8 +5,11 @@ using UnityEngine;
 public class Traps : MonoBehaviour
 {
     public float trapID;
+    private float IDchecker;
 
     [SerializeField] private GameObject playerObject;
+
+    private GameObject objectCollided;
 
     private float elapsedTime;
     private float stunnedTime;
@@ -37,34 +40,41 @@ public class Traps : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Player has entered");
+        if(this.gameObject.GetComponent<Traps>().trapID == 0)
+        {
+            Debug.Log("Player has entered");
 
-        playerObject.GetComponent<KartController>().trapHit = true;
+            IDchecker = this.gameObject.GetComponent<Traps>().trapID; //Switches the ID to the current trapID of the colliding trap
+
+            playerObject.GetComponent<KartController>().trapHit = true;
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        playerObject.GetComponent<KartController>().trapHit = false;
+        if (this.gameObject.GetComponent<Traps>().trapID == 0)
+        {
+            playerObject.GetComponent<KartController>().trapHit = false;
 
-        Debug.Log("Player has exit");
+            Debug.Log("Player has exit");
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        IDchecker = this.gameObject.GetComponent<Traps>().trapID; //Switches the ID to the current trapID of the colliding trap
+
         playerObject.GetComponent<KartController>().trapHit = true;
-
-        //playerObject.GetComponent<KartController>().sphere.AddExplosionForce(50000.0f, collision.GetContact(0).point, 2);
-
-
     }
     private void OnCollisionExit(Collision collision)
     {
-
+        
     }
 
     public void SlowTrap(GameObject player)
     {
-        if (trapID == 0)
+        if (IDchecker == 0)
         {
             if (playerObject.GetComponent<KartController>().trapHit)
             {
@@ -78,8 +88,6 @@ public class Traps : MonoBehaviour
                 {
                     player.GetComponent<KartController>().currentSpeed =
                     Mathf.Lerp(player.GetComponent<KartController>().currentSpeed, player.GetComponent<KartController>().slowSpeed, elapsedTime * Time.deltaTime);
-
-                    Debug.Log("speed = " + player.GetComponent<KartController>().currentSpeed);
                 }
             }
             else
@@ -91,7 +99,7 @@ public class Traps : MonoBehaviour
 
     public void PendulumTrap(GameObject player)
     {
-        if (trapID == 1 && playerObject.GetComponent<KartController>().trapHit)
+        if (IDchecker == 1 && playerObject.GetComponent<KartController>().trapHit)
         {
             if (forceTime < 0.15f)
             {
@@ -121,6 +129,7 @@ public class Traps : MonoBehaviour
 
             if (stunnedTime > 2.5f)
             {
+                IDchecker = 0;
                 playerObject.GetComponent<KartController>().stunned = false;
                 stunnedTime = 0;
                 Debug.Log("offStun");
@@ -130,7 +139,7 @@ public class Traps : MonoBehaviour
 
     public void WallTrap()
     {
-        if(trapID == 2 && playerObject.GetComponent<KartController>().trapHit)
+        if(IDchecker == 2 && playerObject.GetComponent<KartController>().trapHit)
         {
             if(forceTime < 0.15f)
             {
@@ -153,10 +162,10 @@ public class Traps : MonoBehaviour
             }
             else
             {
+                IDchecker = 0;
                 playerObject.GetComponent<KartController>().trapHit = false;
                 forceTime = 0;
             }
         }
     }
-
 }

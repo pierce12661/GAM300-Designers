@@ -14,8 +14,9 @@ public class KartController : MonoBehaviour
     private Grapple grappleScript;
 
     // Inputs
-    private float acceleration;
-    private float steerAmount;
+    [HideInInspector] public float acceleration;
+    [HideInInspector] public float accelerationControl;
+    [HideInInspector] public float steerAmount;
     private float reverseTimer;
     private float airTime;
 
@@ -39,7 +40,7 @@ public class KartController : MonoBehaviour
     private float newRotation;
     private float maxSteerAngle = 40f;
 
-    private bool touchingGround;
+    [HideInInspector] public bool touchingGround;
 
     [Header("Speed Settings")]
     public float maxSpeed;
@@ -74,6 +75,8 @@ public class KartController : MonoBehaviour
     [SerializeField] private GameObject exhaustParticlesHolder;
     [SerializeField] private Transform FlameLeft, FlameRight;
     [SerializeField] private Transform SmokeLeft, SmokeRight;
+
+    [SerializeField] private GameObject stunnedObject;
 
     //Traps
     [HideInInspector] public bool trapHit;
@@ -111,6 +114,7 @@ public class KartController : MonoBehaviour
 
         BoostParticles();
         SpeedParticles();
+        StunnedAnim();
 
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 
@@ -178,12 +182,32 @@ public class KartController : MonoBehaviour
             maxSpeed = brakeSpeed;
         }
 
-        currentSpeed = Mathf.Lerp(currentSpeed, acceleration * maxSpeed, 1.1f * Time.deltaTime); //takes Input amount * speed that is set in Inspector
+        if(acceleration > 0)
+        {
+            accelerationControl = Mathf.Lerp(accelerationControl, 0.5f * acceleration, 1.0f * Time.deltaTime);
+        }
+        else if(acceleration == 0)
+        {
+            accelerationControl = Mathf.Lerp(accelerationControl, 0.1f, 1.0f * Time.deltaTime);
+        }
+        else
+        {
+            accelerationControl = 0.6f;
+        }
+
+        currentSpeed = Mathf.Lerp(currentSpeed, acceleration * maxSpeed, accelerationControl * Time.deltaTime); //takes Input amount * speed that is set in Inspector
     }
 
     public void ReleaseAcceleration()
     {
-        currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.08f * Time.deltaTime); //Deccelerate till stop
+        if (touchingGround)
+        {
+            currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.08f * Time.deltaTime); //Deccelerate till stop
+        }
+        else
+        {
+            currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.4f * Time.deltaTime);
+        }
     }
 
     public void ResetSpeed()
@@ -362,6 +386,7 @@ public class KartController : MonoBehaviour
 
         sphere.AddForce(gameObject.GetComponent<Grapple>().grapplerObj.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
+
         CameraShake.instance.BoostShake();
     }
 
@@ -432,6 +457,18 @@ public class KartController : MonoBehaviour
             speedParticlesHolder_2.localScale = Vector3.Lerp(speedParticlesHolder_2.localScale, Vector3.zero, 1.0f * Time.deltaTime);
 
             particleTimer = 0;
+        }
+    }
+
+    public void StunnedAnim()
+    {
+        if (stunned)
+        {
+            stunnedObject.SetActive(true);
+        }
+        else
+        {
+            stunnedObject.SetActive(false);
         }
     }
 }

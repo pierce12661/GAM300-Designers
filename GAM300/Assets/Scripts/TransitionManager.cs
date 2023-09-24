@@ -10,6 +10,8 @@ public class TransitionManager : MonoBehaviour
     [HideInInspector] public bool gameIsPaused;
     [HideInInspector] public bool isGameOver;
 
+    public CanvasGroup gameOverScreen;
+
     private void Awake()
     {
         instance = this;
@@ -19,23 +21,39 @@ public class TransitionManager : MonoBehaviour
     {
         PauseAndResume();
 
-        if (Input.GetKeyDown(KeyCode.I) && Time.timeScale >= 1.0f)
+        GameOverScreen();
+
+        if (!isGameOver && Input.GetKey(KeyCode.R))
         {
-            Time.timeScale = 0.5f;
+            RestartGame();
         }
-        else if(Input.GetKeyDown(KeyCode.I) && Time.timeScale < 1)
-        {
-            Time.timeScale = 1.0f;
-        }
+    }
+
+    public void RestartGame()
+    {
+        OpenScene("Main");
     }
 
     public void GameOver()
     {
         isGameOver = true;
 
-        //show game over screen
+        Cursor.lockState = CursorLockMode.None;
     }
 
+    public void GameOverScreen()
+    {
+        if (isGameOver)
+        {
+            gameOverScreen.alpha = Mathf.Lerp(gameOverScreen.alpha, 1, 3.0f * Time.unscaledDeltaTime);
+
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.1f, 3.0f * Time.unscaledDeltaTime);
+        }
+        else
+        {
+            gameOverScreen.alpha = 0;
+        }
+    }
     public void PauseAndResume()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -65,8 +83,8 @@ public class TransitionManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-    public void OpenScene(string buildNumber) //Load by scene name
+    public void OpenScene(string sceneName) //Load by scene name
     {
-        SceneManager.LoadScene(buildNumber, LoadSceneMode.Single);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 }

@@ -58,7 +58,7 @@ public class TimeAttack : MonoBehaviour
 
         if(currentTime <= 0)
         {
-            TransitionManager.instance.isGameOver = true;
+            TransitionManager.instance.GameOver();
         }
     }
 
