@@ -258,7 +258,7 @@ public class KartController : MonoBehaviour
         Quaternion negativeNewAngle = Quaternion.Euler(0, -maxSteerAngle, 0);
         Quaternion defaultAngle = Quaternion.Euler(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
             if (!isReversing)
             {
@@ -272,7 +272,7 @@ public class KartController : MonoBehaviour
             }
             
         }
-        else if (Input.GetKey(KeyCode.LeftArrow))
+        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
             if (!isReversing)
             {
@@ -351,7 +351,7 @@ public class KartController : MonoBehaviour
         isBoosting = true;
         maxSpeed = boostSpeed;
 
-        sphere.AddForce(gameObject.GetComponent<Grapple>().grapplerObj.transform.forward * 1000, ForceMode.Acceleration); //boost force
+        sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
         CameraShake.instance.BoostShake();
     }
