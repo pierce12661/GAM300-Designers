@@ -32,6 +32,7 @@ public class TransitionManager : MonoBehaviour
     public void RestartGame()
     {
         OpenScene("Main");
+        Time.timeScale = 1;
     }
 
     public void GameOver()
