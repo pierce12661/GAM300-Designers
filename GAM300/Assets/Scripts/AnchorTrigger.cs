@@ -16,13 +16,13 @@ public class AnchorTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (grappleScript.anchors == null)
-        {
-            grappleScript.anchors = grappleScript.closestAnchor.transform;
-        }
+        //if (grappleScript.anchors == null)
+        //{
+        //    grappleScript.anchors = grappleScript.closestAnchor.transform;
+        //}
     }
     private void OnTriggerExit(Collider other)
     {
-        grappleScript.anchors = null;
+        //grappleScript.anchors = null;
     }
 }

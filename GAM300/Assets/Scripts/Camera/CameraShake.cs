@@ -31,7 +31,7 @@ public class CameraShake : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J)) //for testing purposes
+        if (Input.GetKeyDown(KeyCode.G)) //for testing purposes
         {
             camShaking = true;
         }

@@ -21,12 +21,13 @@ public class Grapple : MonoBehaviour
 
     public GameObject grapplerObj;
     public GameObject grappleLookAt;
-    public Transform anchors;
-    public Transform grappleAnchor;
+    //public Transform anchors;
     public SpringJoint joint;
+    public Transform grappleAnchor;
     public GameObject closestAnchor;
 
     private Vector3 grapplePoint;
+    //public bool grappleStopped;
 
     [Header("Cooldown")]
     public float grapplingCD;
@@ -36,7 +37,7 @@ public class Grapple : MonoBehaviour
     public KeyCode grappleKeyLeft = KeyCode.J;
     public KeyCode grappleKeyMid = KeyCode.K;
     public KeyCode grappleKeyRight = KeyCode.L;
-    public KeyCode grappleRemoveKey = KeyCode.Space;
+    public KeyCode grappleRemoveKey;
 
     private bool grappling;
 
@@ -44,49 +45,57 @@ public class Grapple : MonoBehaviour
     void Start()
     {
         kc = GetComponent<KartController>();
+        grappleRemoveKey = KeyCode.None;
     }
 
     // Update is called once per frame
     void Update()
     {
         #region Grapple Inputs
-        if (anchors != null)
+        if (closestAnchor != null)
         {
             if (joint == null && Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
+                grappleRemoveKey = grappleKeyLeft;
                 grappleAnchor = FindClosestLeftAnchor().transform;
                 StartGrappleAnchor();
-                StartGrappleBoost();
 
                 FeedbackHUD.instance.boosted = true;
+                //StartGrappleBoost();
             }
             if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
+                grappleRemoveKey = grappleKeyMid;
                 grappleAnchor = FindClosestMidAnchor().transform;
                 StartGrappleBoost();
             }
 
             if (joint == null && Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
+                grappleRemoveKey = grappleKeyRight;
                 grappleAnchor = FindClosestRightAnchor().transform;
                 StartGrappleAnchor();
-                StartGrappleBoost();
 
                 FeedbackHUD.instance.boosted = true;
+                //StartGrappleBoost();
             }
         }
         #endregion
 
         #region StopAnchor/StopGrapple
-        maxSpeed = kc.GetMaxSpeed();
-        if (maxSpeed > 30f && maxSpeed < 33f)
-        {
-            StopGrapple();
-        }
+        //maxSpeed = kc.GetMaxSpeed();
+        //if (maxSpeed > 30f && maxSpeed < 33f)
+        //{
+        //    StopGrapple();
+        //}
 
-        if (Input.GetKeyDown(grappleRemoveKey))
+        if (Input.GetKeyUp(grappleRemoveKey))
         {
-            StopAnchor();
+            if (joint != null)
+            {
+                StopAnchor();
+            }
+            else StopGrapple();
         }
         #endregion
 
@@ -130,12 +139,12 @@ public class Grapple : MonoBehaviour
 
                 Invoke(nameof(GrappleBoost), grappleDelayTime);
             }
-            else
-            {
-                grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+            //else
+            //{
+            //    grapplePoint = cam.position + cam.forward * maxGrappleDistance;
 
-                Invoke(nameof(StopGrapple), grappleDelayTime);
-            }
+            //    Invoke(nameof(StopGrapple), grappleDelayTime);
+            //}
             lr.enabled = true;
             lr.SetPosition(1, grapplePoint);
         }
@@ -160,12 +169,12 @@ public class Grapple : MonoBehaviour
 
                 Invoke(nameof(GrappleAnchor), grappleDelayTime);
             }
-            else
-            {
-                grapplePoint = cam.position + cam.forward * maxGrappleDistance;
+            //else
+            //{
+            //    grapplePoint = cam.position + cam.forward * maxGrappleDistance;
 
-                Invoke(nameof(StopAnchor), grappleDelayTime);
-            }
+            //    Invoke(nameof(StopAnchor), grappleDelayTime);
+            //}
             lr.enabled = true;
             lr.SetPosition(1, grapplePoint);
         }
@@ -184,7 +193,7 @@ public class Grapple : MonoBehaviour
         joint.minDistance = distanceFromPoint * 0f;
 
         // values
-        joint.spring = 12f;
+        joint.spring = 15f;
         joint.damper = 10f;
         joint.massScale = 5f;
     }
