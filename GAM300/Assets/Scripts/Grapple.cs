@@ -61,7 +61,7 @@ public class Grapple : MonoBehaviour
                 StartGrappleAnchor();
 
                 FeedbackHUD.instance.boosted = true;
-                //StartGrappleBoost();
+                StartGrappleBoost();
             }
             if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
@@ -77,7 +77,7 @@ public class Grapple : MonoBehaviour
                 StartGrappleAnchor();
 
                 FeedbackHUD.instance.boosted = true;
-                //StartGrappleBoost();
+                StartGrappleBoost();
             }
         }
         #endregion
