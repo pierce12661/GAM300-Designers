@@ -34,9 +34,9 @@ public class Grapple : MonoBehaviour
     private float grapplingCDTimer;
 
     [Header("Inputs")]
-    public KeyCode grappleKeyLeft = KeyCode.J;
-    public KeyCode grappleKeyMid = KeyCode.K;
-    public KeyCode grappleKeyRight = KeyCode.L;
+    public KeyCode grappleKeyLeft = KeyCode.Z;
+    public KeyCode grappleKeyMid = KeyCode.X;
+    public KeyCode grappleKeyRight = KeyCode.C;
     public KeyCode grappleRemoveKey;
 
     private bool grappling;
