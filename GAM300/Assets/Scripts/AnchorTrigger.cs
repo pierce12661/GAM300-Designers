@@ -7,7 +7,7 @@ public class AnchorTrigger : MonoBehaviour
 {
     public GameObject kartObject;
     public Grapple grappleScript;
-    //public Transform anchors;
+    public GameObject popupText;
 
     private void Start()
     {
@@ -16,13 +16,10 @@ public class AnchorTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (grappleScript.anchors == null)
-        //{
-        //    grappleScript.anchors = grappleScript.closestAnchor.transform;
-        //}
+        if (other.name == "Sphere") popupText.SetActive(true);
     }
     private void OnTriggerExit(Collider other)
     {
-        //grappleScript.anchors = null;
+        if (other.name == "Sphere") popupText.SetActive(false);
     }
 }
