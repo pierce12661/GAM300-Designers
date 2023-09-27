@@ -31,9 +31,10 @@ public class FeedbackHUD : MonoBehaviour
 
             FeedbackAnim.SetActive(true);
 
-            if(timer > 4.0f)
+            if(timer > 3.0f)
             {
                 boosted = false;
+                timer = 0;
             }
         }
         else
