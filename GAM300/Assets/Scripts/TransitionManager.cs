@@ -50,6 +50,8 @@ public class TransitionManager : MonoBehaviour
     {
         gameWin = true;
 
+        
+
         Cursor.lockState = CursorLockMode.None;
     }
 
@@ -59,13 +61,18 @@ public class TransitionManager : MonoBehaviour
         {
             if (gameWin)
             {
+                winScreenCanvasGroup.gameObject.SetActive(true);
+
                 winScreenCanvasGroup.alpha = Mathf.Lerp(winScreenCanvasGroup.alpha, 1, 3.0f * Time.unscaledDeltaTime);
+
 
                 Time.timeScale = Mathf.Lerp(Time.timeScale, 0.1f, 3.0f * Time.unscaledDeltaTime);
             }
             else
             {
                 winScreenCanvasGroup.alpha = 0;
+
+                winScreenCanvasGroup.gameObject.SetActive(false);
             }
         }
     }
@@ -74,6 +81,8 @@ public class TransitionManager : MonoBehaviour
     {
         if (isGameOver)
         {
+            gameOverScreen.gameObject.SetActive(true);
+
             gameOverScreen.alpha = Mathf.Lerp(gameOverScreen.alpha, 1, 3.0f * Time.unscaledDeltaTime);
 
             Time.timeScale = Mathf.Lerp(Time.timeScale, 0.1f, 3.0f * Time.unscaledDeltaTime);
@@ -81,6 +90,7 @@ public class TransitionManager : MonoBehaviour
         else
         {
             gameOverScreen.alpha = 0;
+            gameOverScreen.gameObject.SetActive(false);
         }
     }
     public void PauseAndResume()
@@ -117,10 +127,16 @@ public class TransitionManager : MonoBehaviour
         OpenScene("Menu");
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
     public void OpenScene(string sceneName) //Load by scene name
     {
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
         Time.timeScale = 1;
     }
+    
 }
