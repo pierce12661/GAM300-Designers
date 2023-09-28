@@ -13,6 +13,7 @@ public class TransitionManager : MonoBehaviour
 
     public CanvasGroup gameOverScreen;
     public CanvasGroup winScreenCanvasGroup;
+    public GameObject pauseScreen;
 
     private void Awake()
     {
@@ -49,8 +50,6 @@ public class TransitionManager : MonoBehaviour
     public void WinGame()
     {
         gameWin = true;
-
-        
 
         Cursor.lockState = CursorLockMode.None;
     }
@@ -95,10 +94,11 @@ public class TransitionManager : MonoBehaviour
     }
     public void PauseAndResume()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
         {
             if (!gameIsPaused)
             {
+                
                 PauseGame();
             }
             else
@@ -112,7 +112,11 @@ public class TransitionManager : MonoBehaviour
     {
         gameIsPaused = true;
 
+        Cursor.lockState = CursorLockMode.None;
+
         Time.timeScale = 0;
+
+        pauseScreen.SetActive(true);
     }
 
     public void ResumeGame()
@@ -120,6 +124,10 @@ public class TransitionManager : MonoBehaviour
         gameIsPaused = false;
 
         Time.timeScale = 1;
+
+        Cursor.lockState = CursorLockMode.Locked;
+
+        pauseScreen.SetActive(false);
     }
 
     public void MainMenuOpen()
