@@ -8,6 +8,7 @@ TagManager:
   - MidAnchor
   - RightAnchor
   - Anchors
+  - Road
   layers:
   - Default
   - TransparentFX

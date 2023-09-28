@@ -177,6 +177,8 @@ public class Grapple : MonoBehaviour
             //}
             lr.enabled = true;
             lr.SetPosition(1, grapplePoint);
+
+            CameraShake.instance.BoostShake();
         }
     }
 

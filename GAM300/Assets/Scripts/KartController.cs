@@ -52,31 +52,19 @@ public class KartController : MonoBehaviour
     [SerializeField] private Transform rearLeftTire;
     [SerializeField] private Transform rearRightTire;
 
-    public TextMeshProUGUI speedmeter; // IMPORTANT !!!!!!!!!!!!!!!! CLEAN UP LATER 
-
     private Quaternion carRot;
-
-    private float particleTimer;
 
     public Transform gravitypos;
 
     [Header("Boost")]
     [HideInInspector] public bool isBoosting;
-    [HideInInspector] public float boostParticleTimer;
     private float boostInitialCD;
     private float boostSpeed = 10f;
     [SerializeField] private float boostCountdown;
 
     //Particles
 
-    [Header("Particles")]
-    [SerializeField] private Transform speedParticlesHolder_1;
-    [SerializeField] private Transform speedParticlesHolder_2;
-    [SerializeField] private GameObject exhaustParticlesHolder;
-    [SerializeField] private Transform FlameLeft, FlameRight;
-    [SerializeField] private Transform SmokeLeft, SmokeRight;
-
-    [SerializeField] private GameObject stunnedObject;
+    
 
     //Traps
     [HideInInspector] public bool trapHit;
@@ -102,19 +90,12 @@ public class KartController : MonoBehaviour
 
         Steering();
 
-        SpeedMeter();
-
         TireRotation();
 
         GroundNormalRotation();
 
         BoostTimer();
 
-        //Particles
-
-        BoostParticles();
-        SpeedParticles();
-        StunnedAnim();
 
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 
@@ -155,6 +136,8 @@ public class KartController : MonoBehaviour
     {
         acceleration = Input.GetAxis(VERTICAL);
         steerAmount = Input.GetAxis(HORIZONTAL);
+
+        realSpeed = transform.InverseTransformDirection(sphere.velocity).z; //This is the real speed, not applied speed
 
         if (!trapHit && !stunned)
         {
@@ -264,8 +247,15 @@ public class KartController : MonoBehaviour
             if (realSpeed >= 0.01f || realSpeed <= -0.001) //If the kart is at rest, unable to rotate
             {
                 //Steering Kart
-
-                newRotation = steerAmount * steerSpeed * (1.0f * Time.deltaTime);
+                if (!isReversing)
+                {
+                    newRotation = steerAmount * steerSpeed * (1.0f * Time.deltaTime);
+                }
+                else
+                {
+                    newRotation = -steerAmount * steerSpeed * (1.0f * Time.deltaTime);
+                }
+                
 
                 //Steering Angle Cap
 
@@ -293,30 +283,36 @@ public class KartController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
         {
-            if (!isReversing)
-            {
-                frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-                frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-            }
-            else //if is reversing, the tire steering will swap angles
-            {
-                frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-                frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-            }
+            frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
+            frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
+
+            //if (!isReversing)
+            //{
+            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
+            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
+            //}
+            //else //if is reversing, the tire steering will swap angles
+            //{
+            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
+            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
+            //}
             
         }
         else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
         {
-            if (!isReversing)
-            {
-                frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-                frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-            }
-            else //if is reversing, the tire steering will swap angles
-            {
-                frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-                frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-            }
+            frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
+            frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
+
+            //if (!isReversing)
+            //{
+            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
+            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
+            //}
+            //else //if is reversing, the tire steering will swap angles
+            //{
+            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
+            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
+            //}
         }
         else //reset to normal 0 angle
         {
@@ -346,20 +342,6 @@ public class KartController : MonoBehaviour
             touchingGround = false;
             //transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.Euler(carRot.x + 0.01f, carRot.y,carRot.z), 2.0f * Time.deltaTime);
         }
-    }
-
-    public void SpeedMeter() // IMPORTANT !!!!!!!!!!!!!!!! CLEAN UP LATER 
-    {
-        realSpeed = transform.InverseTransformDirection(sphere.velocity).z; //This is the real speed, not applied speed
-
-        float realVelocity = realSpeed * 3;
-
-        if (realSpeed < 0f)
-        {
-            realVelocity = -realSpeed * 3;
-        }
-
-        speedmeter.text = realVelocity.ToString("f2");
     }
 
     public void SpeedSettings()
@@ -401,74 +383,6 @@ public class KartController : MonoBehaviour
             boostCountdown = 2f;
             maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
             isBoosting = false;
-        }
-    }
-
-    public void BoostParticles()
-    {
-        if (isBoosting)
-        {
-            exhaustParticlesHolder.SetActive(true); //activate particles
-            //exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.one, 20.0f * Time.deltaTime);
-
-            FlameLeft.localScale = Vector3.Lerp(FlameLeft.localScale, Vector3.one, 20.0f * Time.deltaTime);
-            FlameRight.localScale = Vector3.Lerp(FlameRight.localScale, Vector3.one, 20.0f * Time.deltaTime);
-            SmokeLeft.localScale = Vector3.Lerp(SmokeLeft.localScale, Vector3.one, 20.0f * Time.deltaTime);
-            SmokeRight.localScale = Vector3.Lerp(SmokeRight.localScale, Vector3.one, 20.0f * Time.deltaTime);
-
-            boostParticleTimer = 0;
-        }
-        else
-        {
-            //exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.zero, 10.0f * Time.deltaTime);
-
-            boostParticleTimer += 1.0f * Time.deltaTime;
-
-            FlameLeft.localScale = Vector3.Lerp(FlameLeft.localScale, Vector3.zero, 5.0f * Time.deltaTime);
-            FlameRight.localScale = Vector3.Lerp(FlameRight.localScale, Vector3.zero, 5.0f * Time.deltaTime);
-            SmokeLeft.localScale = Vector3.Lerp(SmokeLeft.localScale, Vector3.zero, 5.0f * Time.deltaTime);
-            SmokeRight.localScale = Vector3.Lerp(SmokeRight.localScale, Vector3.zero, 5.0f * Time.deltaTime);
-
-            if (boostParticleTimer > 3f)
-            {
-                exhaustParticlesHolder.SetActive(false);
-            }
-        }
-    }
-
-    public void SpeedParticles()
-    {
-        if(realSpeed > 25)
-        {
-            particleTimer += 1.0f * Time.deltaTime;
-
-            if(particleTimer > 10)
-            {
-                speedParticlesHolder_2.localScale = Vector3.Lerp(speedParticlesHolder_2.localScale,Vector3.one, 1.0f * Time.deltaTime);
-            }
-            else if(particleTimer > 4)
-            {
-                speedParticlesHolder_1.localScale = Vector3.Lerp(speedParticlesHolder_1.localScale, Vector3.one, 2.0f * Time.deltaTime);
-            }
-        }
-        else
-        {
-            speedParticlesHolder_1.localScale = Vector3.Lerp(speedParticlesHolder_1.localScale, Vector3.zero, 4.0f * Time.deltaTime);
-            speedParticlesHolder_2.localScale = Vector3.Lerp(speedParticlesHolder_2.localScale, Vector3.zero, 1.0f * Time.deltaTime);
-
-            particleTimer = 0;
-        }
-    }
-
-    public void StunnedAnim()
-    {
-        if (stunned)
-        {
-            stunnedObject.SetActive(true);
-        }
-        else
-        {
-            stunnedObject.SetActive(false);
         }
     }
 }

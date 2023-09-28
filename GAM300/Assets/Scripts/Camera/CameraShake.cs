@@ -36,10 +36,10 @@ public class CameraShake : MonoBehaviour
             camShaking = true;
         }
 
-        crashShake = playerObj.GetComponent<KartController>().realSpeed / 35;
+        crashShake = playerObj.GetComponent<KartController>().realSpeed / 40;
 
         HighSpeedSmallShake(speedShake, cam.transform); //when at high speeds, will have slight constant shake
-        CameraShakeRotation(crashShake, crashShake / 2, cam.transform); //When crashing, shakes rotations a little bit.
+        CameraShakeRotation(crashShake, 0.2f, cam.transform); //When crashing, shakes rotations a little bit.
     }
 
     private void LateUpdate()
@@ -83,7 +83,6 @@ public class CameraShake : MonoBehaviour
             obj.localEulerAngles = originalRot + Random.insideUnitSphere * strength;
         }
     }
-
     public void BoostShake()
     {
         camShaking = true;
