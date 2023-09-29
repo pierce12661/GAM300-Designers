@@ -117,18 +117,18 @@ public class KartController : MonoBehaviour
         {
             airTime += 1.0f * Time.deltaTime;
 
-
-            if(airTime > 1f)
+            if(airTime > 0.25f)
             {
 
                 Debug.Log("airTime hit");
-                sphere.AddForceAtPosition(-transform.up * 15, gravitypos.position,ForceMode.Acceleration);
-                //sphere.AddForce(-transform.forward * 50, ForceMode.Acceleration);
+
+                sphere.AddForce(-transform.up * 23, ForceMode.Acceleration);
             }
         }
         else
         {
             airTime = 0;
+           
         }
     }
 
@@ -165,7 +165,12 @@ public class KartController : MonoBehaviour
             maxSpeed = brakeSpeed;
         }
 
-        if(acceleration > 0)
+
+        if (isBoosting)
+        {
+            accelerationControl = 1.0f;
+        }
+        else if(acceleration > 0)
         {
             accelerationControl = Mathf.Lerp(accelerationControl, 0.5f * acceleration, 1.0f * Time.deltaTime);
         }
@@ -347,10 +352,10 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        //boostSpeed = maxSpeed + 15.0f; //sets a max speed
+        boostSpeed = maxSpeed * 1.1f; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
-        slowSpeed = maxSpeed * 0.1f; //sets a slow debuff speed
+        slowSpeed = maxSpeed * 0.3f; //sets a slow debuff speed
         highSpeedSteer = steerSpeed / 2; //for capping steering angle if the speed is high
         oringalSteerSpeed = steerSpeed;
         
