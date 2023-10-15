@@ -70,6 +70,8 @@ public class KartController : MonoBehaviour
     [HideInInspector] public bool trapHit;
     [HideInInspector] public bool stunned;
 
+    public Vector3 respawnPoint;
+
     private void Start()
     {
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
@@ -389,5 +391,15 @@ public class KartController : MonoBehaviour
             maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
             isBoosting = false;
         }
+    }
+
+    public void SetRespawnLastLocation(Vector3 lastPos)
+    {
+        respawnPoint = lastPos;
+    }
+
+    public void RespawnLastLocation()
+    {
+        sphere.transform.position = respawnPoint;
     }
 }
