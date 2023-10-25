@@ -34,6 +34,8 @@ public class KartController : MonoBehaviour
     [HideInInspector] public float brakeSpeed;
     [HideInInspector] public float reverseSpeed;
     [HideInInspector] public float highSpeedSteer;
+    [HideInInspector] public float boostSteer;
+    [HideInInspector] public float slowSteer;
     [HideInInspector] public float oringalSteerSpeed;
 
     // Rotation
@@ -57,10 +59,13 @@ public class KartController : MonoBehaviour
     public Transform gravitypos;
 
     [Header("Boost")]
-    [HideInInspector] public bool isBoosting;
+    [HideInInspector] public bool isInitialBoosting;
+    [HideInInspector] public bool isFinalBoosting;
     private float boostInitialCD;
-    private float boostSpeed = 10f;
+    private float initialBoostSpeed;
+    private float finalBoostSpeed;
     [SerializeField] private float boostCountdown;
+    [SerializeField] private float finalBoostCountdown;
 
     //Particles
 
@@ -121,9 +126,6 @@ public class KartController : MonoBehaviour
 
             if(airTime > 0.25f)
             {
-
-                Debug.Log("airTime hit");
-
                 sphere.AddForce(-transform.up * 23, ForceMode.Acceleration);
             }
         }
@@ -168,19 +170,27 @@ public class KartController : MonoBehaviour
         }
 
 
-        if (isBoosting)
+        if (isInitialBoosting) //if initial boosting, accelerate slightly faster
         {
-            accelerationControl = 1.0f;
+            accelerationControl = 0.9f;
         }
-        else if(acceleration > 0)
+        else if (isFinalBoosting) //if final boosting, accelerate fastest
+        {
+            accelerationControl = 1.1f;
+        }
+        else if (KartCollisionDetector.instance.isSpinning)
+        {
+            accelerationControl = 0.2f;
+        }
+        else if(acceleration > 0) //normal acceleration
         {
             accelerationControl = Mathf.Lerp(accelerationControl, 0.5f * acceleration, 1.0f * Time.deltaTime);
         }
-        else if(acceleration == 0)
+        else if(acceleration == 0) //release accelerator speed to slowly come to a stop
         {
             accelerationControl = Mathf.Lerp(accelerationControl, 0.1f, 1.0f * Time.deltaTime);
         }
-        else
+        else //reverse acceleration speed
         {
             accelerationControl = 0.6f;
         }
@@ -249,7 +259,7 @@ public class KartController : MonoBehaviour
 
     public void Steering()
     {
-        if (touchingGround && !stunned)
+        if (touchingGround)
         {
             if (realSpeed >= 0.01f || realSpeed <= -0.001) //If the kart is at rest, unable to rotate
             {
@@ -262,18 +272,33 @@ public class KartController : MonoBehaviour
                 {
                     newRotation = -steerAmount * steerSpeed * (1.0f * Time.deltaTime);
                 }
-                
+
 
                 //Steering Angle Cap
-
-                if (realSpeed > 24) // caps steering angle if the speed is high
+                if (!KartCollisionDetector.instance.isSpinning)
                 {
-                    steerSpeed = Mathf.Lerp(steerSpeed, highSpeedSteer, 2.0f * Time.deltaTime); 
+                    if (realSpeed > 24) // caps steering angle if the speed is high
+                    {
+                        if (!isInitialBoosting)
+                        {
+                            steerSpeed = Mathf.Lerp(steerSpeed, highSpeedSteer, 2.0f * Time.deltaTime);
+                        }
+                        else
+                        {
+                            steerSpeed = Mathf.Lerp(steerSpeed, boostSteer, 2.0f * Time.deltaTime);
+                        }
+                        
+                    }
+                    else
+                    {
+                        steerSpeed = Mathf.Lerp(steerSpeed, oringalSteerSpeed, 2.0f * Time.deltaTime);
+                    }
                 }
                 else
                 {
-                    steerSpeed = Mathf.Lerp(steerSpeed, oringalSteerSpeed, 2.0f * Time.deltaTime);
+                    steerSpeed = Mathf.Lerp(steerSpeed, slowSteer, 5.0f * Time.deltaTime);
                 }
+                
 
                 //Rotate Kart according to rotation
 
@@ -354,13 +379,15 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        boostSpeed = maxSpeed * 1.1f; //sets a max speed
+        initialBoostSpeed = maxSpeed * 1.05f; //sets a max speed
+        finalBoostSpeed = maxSpeed * 1.15f; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed * 0.3f; //sets a slow debuff speed
-        highSpeedSteer = steerSpeed / 2; //for capping steering angle if the speed is high
+        highSpeedSteer = steerSpeed / 2.4f; //for capping steering angle if the speed is high
+        boostSteer = steerSpeed / 1.15f; 
+        slowSteer = steerSpeed / 6;
         oringalSteerSpeed = steerSpeed;
-        
     }
 
     public float GetMaxSpeed()
@@ -368,28 +395,43 @@ public class KartController : MonoBehaviour
         return maxSpeed;
     }
 
-    public void BoostKart()
+    public void InitialBoostKart()
     {
-        isBoosting = true;
-        maxSpeed = boostSpeed;
+        isInitialBoosting = true;
+        maxSpeed = initialBoostSpeed;
 
         sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
-
 
         CameraShake.instance.BoostShake();
     }
 
+    public void FinalBoostKart()
+    {
+        isFinalBoosting = true;
+        maxSpeed = finalBoostSpeed;
+
+        sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
+
+    }
+
     public void BoostTimer()
     {
-        if (isBoosting && boostCountdown > 0)
+        if (!isFinalBoosting && isInitialBoosting && boostCountdown > 0)
         {
-            boostCountdown -= Time.deltaTime;
+            boostCountdown -= 1.0f * Time.deltaTime;
+        }
+        else if (isFinalBoosting && finalBoostCountdown > 0)
+        {
+            isInitialBoosting = false;
+            finalBoostCountdown -= 1.0f * Time.deltaTime;
         }
         else
         {
             boostCountdown = 2f;
+            finalBoostCountdown = 2f;
             maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
-            isBoosting = false;
+            isInitialBoosting = false;
+            isFinalBoosting = false;
         }
     }
 
