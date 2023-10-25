@@ -13,6 +13,7 @@ public class DeathTest : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        kc.currentSpeed = 0;
         kc.RespawnLastLocation();
     }
 }

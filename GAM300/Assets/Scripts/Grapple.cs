@@ -25,7 +25,7 @@ public class Grapple : MonoBehaviour
     public SpringJoint joint;
     public Transform grappleAnchor;
     public GameObject closestAnchor;
-
+    public bool hasGrappled;
     private Vector3 grapplePoint;
     //public bool grappleStopped;
 
@@ -34,9 +34,10 @@ public class Grapple : MonoBehaviour
     private float grapplingCDTimer;
 
     [Header("Inputs")]
-    public KeyCode grappleKeyLeft = KeyCode.Z;
-    public KeyCode grappleKeyMid = KeyCode.X;
-    public KeyCode grappleKeyRight = KeyCode.C;
+    //public KeyCode grappleKeyLeft = KeyCode.Z;
+    //public KeyCode grappleKeyMid = KeyCode.X;
+    //public KeyCode grappleKeyRight = KeyCode.C;
+    public KeyCode grappleKey;
     public KeyCode grappleRemoveKey;
 
     private bool grappling;
@@ -45,6 +46,7 @@ public class Grapple : MonoBehaviour
     void Start()
     {
         kc = GetComponent<KartController>();
+        grappleKey = KeyCode.Space;
         grappleRemoveKey = KeyCode.None;
     }
 
@@ -54,6 +56,16 @@ public class Grapple : MonoBehaviour
         #region Grapple Inputs
         if (closestAnchor != null)
         {
+            if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance (grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            {
+                grappleRemoveKey = grappleKey;
+                grappleAnchor = FindClosestAnchor().transform;
+                StartGrappleAnchor();
+                
+                FeedbackHUD.instance.boosted = true;
+                StartGrappleBoost();
+            }
+            /*
             if (joint == null && Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 grappleRemoveKey = grappleKeyLeft;
@@ -79,6 +91,7 @@ public class Grapple : MonoBehaviour
                 FeedbackHUD.instance.boosted = true;
                 StartGrappleBoost();
             }
+            */
         }
         #endregion
 
@@ -91,11 +104,14 @@ public class Grapple : MonoBehaviour
 
         if (Input.GetKeyUp(grappleRemoveKey))
         {
+            /*
             if (joint != null)
             {
                 StopAnchor();
             }
             else StopGrapple();
+            */
+            StopAnchor();
         }
         #endregion
 
@@ -205,14 +221,14 @@ public class Grapple : MonoBehaviour
         kc.BoostKart();
     }
 
-    private void StopGrapple()
+    /*private void StopGrapple()
     {
         grappling = false;
         grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
 
         lr.enabled = false;
-    }
+    }*/
 
     private void StopAnchor()
     {
@@ -245,6 +261,7 @@ public class Grapple : MonoBehaviour
         }
         return closest;
     }
+    /*
     public GameObject FindClosestLeftAnchor()
     {
         GameObject[] GOs = GameObject.FindGameObjectsWithTag("LeftAnchor");
@@ -299,4 +316,5 @@ public class Grapple : MonoBehaviour
         }
         return closest;
     }
+    */
 }

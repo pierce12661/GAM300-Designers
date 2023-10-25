@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnchorTrigger : MonoBehaviour
@@ -16,10 +17,16 @@ public class AnchorTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name == "Sphere") popupText.SetActive(true);
+        if (other.name == "Sphere") 
+        {
+            popupText.SetActive(true);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.name == "Sphere") popupText.SetActive(false);
+        if (other.name == "Sphere") 
+        {
+            popupText.SetActive(false);
+        }
     }
 }
