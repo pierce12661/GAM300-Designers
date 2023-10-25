@@ -75,6 +75,8 @@ public class KartController : MonoBehaviour
     [HideInInspector] public bool trapHit;
     [HideInInspector] public bool stunned;
 
+    public Vector3 respawnPoint;
+
     private void Start()
     {
         sphere.transform.parent = null; //Ensures that the sphere does not follow movement of the Kart by unparenting the sphere
@@ -431,5 +433,15 @@ public class KartController : MonoBehaviour
             isInitialBoosting = false;
             isFinalBoosting = false;
         }
+    }
+
+    public void SetRespawnLastLocation(Vector3 lastPos)
+    {
+        respawnPoint = lastPos;
+    }
+
+    public void RespawnLastLocation()
+    {
+        sphere.transform.position = respawnPoint;
     }
 }
