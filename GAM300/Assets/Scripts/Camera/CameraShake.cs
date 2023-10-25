@@ -11,11 +11,14 @@ public class CameraShake : MonoBehaviour
 
 
     [HideInInspector] public bool camShaking;
+    [HideInInspector] public bool boostShaking;
 
     private float speedShake;
     private float crashShake;
+    private float boostShakeStr;
 
     private float elapsedTime;
+    private float crashElapsedTime;
 
     private Quaternion targetRotation;
 
@@ -36,10 +39,12 @@ public class CameraShake : MonoBehaviour
             camShaking = true;
         }
 
-        crashShake = playerObj.GetComponent<KartController>().realSpeed / 40;
+        crashShake = playerObj.GetComponent<KartController>().realSpeed / 17;
+        boostShakeStr = playerObj.GetComponent<KartController>().realSpeed / 30;
 
         HighSpeedSmallShake(speedShake, cam.transform); //when at high speeds, will have slight constant shake
-        CameraShakeRotation(crashShake, 0.2f, cam.transform); //When crashing, shakes rotations a little bit.
+        CameraShakeRotation(crashShake, 0.4f, cam.transform); //When crashing, shakes rotations a little bit.
+        BoostShake(boostShakeStr, 0.3f, cam.transform);
     }
 
     private void LateUpdate()
@@ -53,6 +58,29 @@ public class CameraShake : MonoBehaviour
     {
         if (camShaking)
         {
+            if (crashElapsedTime < shakeTimer)
+            {
+                crashElapsedTime += 1.0f * Time.deltaTime;
+
+                Vector3 originalRot = obj.localEulerAngles;
+
+                obj.localEulerAngles = originalRot + Random.insideUnitSphere * strength;
+            }
+            else
+            {
+                camShaking = false;
+            }
+        }
+        else
+        {
+            crashElapsedTime = 0;
+        }
+    }
+
+    public void BoostShake(float strength, float shakeTimer, Transform obj)
+    {
+        if (boostShaking)
+        {
             if (elapsedTime < shakeTimer)
             {
                 elapsedTime += 1.0f * Time.deltaTime;
@@ -63,7 +91,7 @@ public class CameraShake : MonoBehaviour
             }
             else
             {
-                camShaking = false;
+                boostShaking = false;
             }
         }
         else
@@ -85,6 +113,6 @@ public class CameraShake : MonoBehaviour
     }
     public void BoostShake()
     {
-        camShaking = true;
+        boostShaking = true;
     }
 }

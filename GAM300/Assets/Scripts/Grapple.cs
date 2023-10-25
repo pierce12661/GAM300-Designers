@@ -40,6 +40,7 @@ public class Grapple : MonoBehaviour
     public KeyCode grappleRemoveKey;
 
     private bool grappling;
+    private bool sideGrapples;
 
     // Start is called before the first frame update
     void Start()
@@ -60,7 +61,8 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = FindClosestLeftAnchor().transform;
                 StartGrappleAnchor();
 
-                FeedbackHUD.instance.boosted = true;
+                sideGrapples = true;
+
                 StartGrappleBoost();
             }
             if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
@@ -76,7 +78,8 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = FindClosestRightAnchor().transform;
                 StartGrappleAnchor();
 
-                FeedbackHUD.instance.boosted = true;
+                sideGrapples = true;
+                
                 StartGrappleBoost();
             }
         }
@@ -137,7 +140,7 @@ public class Grapple : MonoBehaviour
             {
                 grapplePoint = hit.point;
 
-                Invoke(nameof(GrappleBoost), grappleDelayTime);
+                Invoke(nameof(InitialGrappleBoost), grappleDelayTime);
             }
             //else
             //{
@@ -200,9 +203,20 @@ public class Grapple : MonoBehaviour
         joint.massScale = 5f;
     }
 
-    private void GrappleBoost()
+    private void InitialGrappleBoost()
     {
-        kc.BoostKart();
+        kc.InitialBoostKart();
+    }
+
+    private void FinalGrappleBoost()
+    {
+        kc.FinalBoostKart();
+
+        if (sideGrapples)
+        {
+            FeedbackHUD.instance.boosted = true;
+            sideGrapples = false;
+        }
     }
 
     private void StopGrapple()
@@ -223,6 +237,8 @@ public class Grapple : MonoBehaviour
         grappling = false;
         grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
+
+        FinalGrappleBoost();
 
         lr.enabled = false;
     }

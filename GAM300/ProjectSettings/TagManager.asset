@@ -9,6 +9,8 @@ TagManager:
   - RightAnchor
   - Anchors
   - Road
+  - KartTag
+  - Trap
   layers:
   - Default
   - TransparentFX

@@ -11,11 +11,13 @@ public class CameraController : MonoBehaviour
     {
         [Header("Camera Settings")]
         public float boostZoomSpeed;
+        public float MegaBoostZoomSpeed;
         public float moveSpeed;
         public float airTimeCamSpeed;
         public float rotationSpeed;
         public float originalFOV;
         public float boostFOV;
+        public float megaBoostFOV;
         public float mouseX_Sensitivity;
         public float mouseY_Sensitivity;
         public float maxVerticalClampAngle;
@@ -112,9 +114,13 @@ public class CameraController : MonoBehaviour
 
     public void BoostFOV()
     {
-        if (playerObject.GetComponent<KartController>().isBoosting == true)
+        if (playerObject.GetComponent<KartController>().isInitialBoosting == true)
         {
-            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.boostFOV, camSettings.boostZoomSpeed * Time.deltaTime);
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.boostFOV, 2 * Time.deltaTime);
+        }
+        else if(playerObject.GetComponent<KartController>().isFinalBoosting == true)
+        {
+            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.megaBoostFOV, camSettings.MegaBoostZoomSpeed * Time.deltaTime);
         }
         else
         {
@@ -156,7 +162,7 @@ public class CameraController : MonoBehaviour
             reverseElapsedTime = 0;
             center.localRotation = Quaternion.Slerp(center.localRotation, Quaternion.Euler(0, 0, 0), 6.0f * Time.deltaTime);
         }
-    }
+    } 
 
     public void AirTime()
     {
