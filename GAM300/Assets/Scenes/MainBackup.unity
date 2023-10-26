@@ -8020,6 +8020,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1705143751}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!65 &79557297
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10612,6 +10614,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1933633847}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &154009830
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21512,6 +21516,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 963811499}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &366656217
 GameObject:
   m_ObjectHideFlags: 0
@@ -38575,6 +38581,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 2088925677}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &540108725
 GameObject:
   m_ObjectHideFlags: 0
@@ -45802,6 +45810,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 74420694}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &816125268
 GameObject:
   m_ObjectHideFlags: 0
@@ -46725,6 +46735,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 44324062}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &840832127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48185,6 +48197,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 524906637}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &901488788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48671,6 +48685,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1959178234}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &916749191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -56397,6 +56413,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 337514413}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &1003516333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -65274,6 +65292,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1838948572}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1262311652
 GameObject:
   m_ObjectHideFlags: 0
@@ -66086,6 +66106,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 2010146221}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1289296446
 GameObject:
   m_ObjectHideFlags: 0
@@ -71278,6 +71300,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 728022865}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &1457752434
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72206,11 +72230,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camSettings:
     boostZoomSpeed: 1
+    MegaBoostZoomSpeed: 0
     moveSpeed: 8
     airTimeCamSpeed: 4
     rotationSpeed: 12
     originalFOV: 65
     boostFOV: 100
+    megaBoostFOV: 0
     mouseX_Sensitivity: 5
     mouseY_Sensitivity: 5
     maxVerticalClampAngle: 22
@@ -74944,6 +74970,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 369549529}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1559586522
 GameObject:
   m_ObjectHideFlags: 0
@@ -78163,6 +78191,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 256872029}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1631193087
 GameObject:
   m_ObjectHideFlags: 0
@@ -78238,6 +78268,8 @@ MonoBehaviour:
   brakeSpeed: 0
   reverseSpeed: 0
   highSpeedSteer: 0
+  boostSteer: 0
+  slowSteer: 0
   oringalSteerSpeed: 0
   touchingGround: 0
   maxSpeed: 40
@@ -78247,8 +78279,10 @@ MonoBehaviour:
   rearLeftTire: {fileID: 2098609837}
   rearRightTire: {fileID: 1957064417}
   gravitypos: {fileID: 1694649164}
-  isBoosting: 0
+  isInitialBoosting: 0
+  isFinalBoosting: 0
   boostCountdown: 0
+  finalBoostCountdown: 0
   trapHit: 0
   stunned: 0
   respawnPoint: {x: 0, y: 0, z: 0}
@@ -78277,6 +78311,7 @@ MonoBehaviour:
   joint: {fileID: 0}
   grappleAnchor: {fileID: 0}
   closestAnchor: {fileID: 0}
+  hasGrappled: 0
   grapplingCD: 1
   grappleKey: 32
   grappleRemoveKey: 32
@@ -82242,6 +82277,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 541034956}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1771385550
 GameObject:
   m_ObjectHideFlags: 0
@@ -83110,6 +83147,7 @@ MonoBehaviour:
   cam: {fileID: 965769280}
   playerObj: {fileID: 1631193087}
   camShaking: 0
+  boostShaking: 0
 --- !u!1001 &1790915598
 PrefabInstance:
   m_ObjectHideFlags: 0

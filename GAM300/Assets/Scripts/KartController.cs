@@ -403,6 +403,7 @@ public class KartController : MonoBehaviour
         sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
         CameraShake.instance.BoostShake();
+        AudioManager.Instance.PlayDrift();
     }
 
     public void FinalBoostKart()

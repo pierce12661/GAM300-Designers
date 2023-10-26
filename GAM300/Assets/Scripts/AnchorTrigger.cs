@@ -33,14 +33,14 @@ public class AnchorTrigger : MonoBehaviour
     {
         if (other.name == "Sphere") 
         {
-            popupText.SetActive(true);
+            isAnchorTrigger = true;
         }
     }
     private void OnTriggerExit(Collider other)
     {
         if (other.name == "Sphere") 
         {
-            popupText.SetActive(false);
+            isAnchorTrigger = false;
         }
     }
 
