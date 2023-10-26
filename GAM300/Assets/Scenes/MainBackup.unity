@@ -5583,7 +5583,7 @@ GameObject:
   - component: {fileID: 34531553}
   m_Layer: 7
   m_Name: Right
-  m_TagString: RightAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6019,7 +6019,7 @@ GameObject:
   - component: {fileID: 46881213}
   m_Layer: 7
   m_Name: Right
-  m_TagString: RightAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7512,7 +7512,7 @@ GameObject:
   - component: {fileID: 71416266}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8020,6 +8020,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1705143751}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!65 &79557297
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8583,7 +8585,7 @@ GameObject:
   - component: {fileID: 86927102}
   m_Layer: 7
   m_Name: A3
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9364,7 +9366,7 @@ GameObject:
   - component: {fileID: 114879691}
   m_Layer: 7
   m_Name: A6
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10612,6 +10614,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1933633847}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &154009830
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12940,7 +12944,7 @@ GameObject:
   - component: {fileID: 252760564}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -13259,7 +13263,7 @@ GameObject:
   - component: {fileID: 259416090}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14628,7 +14632,7 @@ GameObject:
   - component: {fileID: 302020428}
   m_Layer: 7
   m_Name: A5
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21512,6 +21516,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 963811499}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &366656217
 GameObject:
   m_ObjectHideFlags: 0
@@ -21828,7 +21834,7 @@ GameObject:
   - component: {fileID: 373074167}
   m_Layer: 7
   m_Name: Right
-  m_TagString: RightAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29603,7 +29609,7 @@ GameObject:
   - component: {fileID: 437648114}
   m_Layer: 7
   m_Name: Mid
-  m_TagString: MidAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29782,7 +29788,7 @@ GameObject:
   - component: {fileID: 441670924}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38575,6 +38581,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 2088925677}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &540108725
 GameObject:
   m_ObjectHideFlags: 0
@@ -39889,7 +39897,7 @@ GameObject:
   - component: {fileID: 587455888}
   m_Layer: 7
   m_Name: A4
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43091,7 +43099,7 @@ GameObject:
   - component: {fileID: 710440309}
   m_Layer: 7
   m_Name: A9
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45802,6 +45810,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 74420694}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &816125268
 GameObject:
   m_ObjectHideFlags: 0
@@ -46418,7 +46428,7 @@ GameObject:
   - component: {fileID: 836555178}
   m_Layer: 7
   m_Name: A10 (1)
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46725,6 +46735,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 44324062}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &840832127
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -46984,7 +46996,7 @@ GameObject:
   - component: {fileID: 842825285}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47897,7 +47909,7 @@ GameObject:
   - component: {fileID: 878626858}
   m_Layer: 7
   m_Name: Mid
-  m_TagString: MidAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48185,6 +48197,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 524906637}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &901488788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -48671,6 +48685,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1959178234}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &916749191
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -54460,7 +54476,7 @@ GameObject:
   - component: {fileID: 947661786}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56397,6 +56413,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 337514413}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &1003516333
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -61356,7 +61374,7 @@ GameObject:
   - component: {fileID: 1134007507}
   m_Layer: 7
   m_Name: Right
-  m_TagString: RightAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -61450,7 +61468,7 @@ GameObject:
   - component: {fileID: 1138670205}
   m_Layer: 7
   m_Name: A13 (1)
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63820,7 +63838,7 @@ GameObject:
   - component: {fileID: 1214760256}
   m_Layer: 7
   m_Name: Right
-  m_TagString: RightAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65274,6 +65292,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 1838948572}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1262311652
 GameObject:
   m_ObjectHideFlags: 0
@@ -66086,6 +66106,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 2010146221}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1289296446
 GameObject:
   m_ObjectHideFlags: 0
@@ -68892,7 +68914,7 @@ GameObject:
   - component: {fileID: 1391067444}
   m_Layer: 7
   m_Name: Mid
-  m_TagString: MidAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68989,7 +69011,7 @@ GameObject:
   - component: {fileID: 1400864596}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71278,6 +71300,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 728022865}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1001 &1457752434
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72206,11 +72230,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camSettings:
     boostZoomSpeed: 1
+    MegaBoostZoomSpeed: 0
     moveSpeed: 8
     airTimeCamSpeed: 4
     rotationSpeed: 12
     originalFOV: 65
     boostFOV: 100
+    megaBoostFOV: 0
     mouseX_Sensitivity: 5
     mouseY_Sensitivity: 5
     maxVerticalClampAngle: 22
@@ -73032,7 +73058,7 @@ GameObject:
   - component: {fileID: 1506024575}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -73794,7 +73820,7 @@ GameObject:
   - component: {fileID: 1522718741}
   m_Layer: 7
   m_Name: A14
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -74944,6 +74970,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 369549529}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1559586522
 GameObject:
   m_ObjectHideFlags: 0
@@ -78163,6 +78191,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 256872029}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1631193087
 GameObject:
   m_ObjectHideFlags: 0
@@ -78238,6 +78268,8 @@ MonoBehaviour:
   brakeSpeed: 0
   reverseSpeed: 0
   highSpeedSteer: 0
+  boostSteer: 0
+  slowSteer: 0
   oringalSteerSpeed: 0
   touchingGround: 0
   maxSpeed: 40
@@ -78247,8 +78279,10 @@ MonoBehaviour:
   rearLeftTire: {fileID: 2098609837}
   rearRightTire: {fileID: 1957064417}
   gravitypos: {fileID: 1694649164}
-  isBoosting: 0
+  isInitialBoosting: 0
+  isFinalBoosting: 0
   boostCountdown: 0
+  finalBoostCountdown: 0
   trapHit: 0
   stunned: 0
   respawnPoint: {x: 0, y: 0, z: 0}
@@ -78277,10 +78311,9 @@ MonoBehaviour:
   joint: {fileID: 0}
   grappleAnchor: {fileID: 0}
   closestAnchor: {fileID: 0}
+  hasGrappled: 0
   grapplingCD: 1
-  grappleKeyLeft: 122
-  grappleKeyMid: 120
-  grappleKeyRight: 99
+  grappleKey: 32
   grappleRemoveKey: 32
 --- !u!1001 &1631990185
 PrefabInstance:
@@ -79756,7 +79789,7 @@ GameObject:
   - component: {fileID: 1690020051}
   m_Layer: 7
   m_Name: A11
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -79907,7 +79940,7 @@ GameObject:
   - component: {fileID: 1698340917}
   m_Layer: 7
   m_Name: A10
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82159,7 +82192,7 @@ GameObject:
   - component: {fileID: 1769113623}
   m_Layer: 7
   m_Name: A12
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82244,6 +82277,8 @@ MonoBehaviour:
   kartObject: {fileID: 1631193087}
   grappleScript: {fileID: 0}
   popupText: {fileID: 541034956}
+  controlPrompt: {fileID: 0}
+  isAnchorTrigger: 0
 --- !u!1 &1771385550
 GameObject:
   m_ObjectHideFlags: 0
@@ -83112,6 +83147,7 @@ MonoBehaviour:
   cam: {fileID: 965769280}
   playerObj: {fileID: 1631193087}
   camShaking: 0
+  boostShaking: 0
 --- !u!1001 &1790915598
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89799,7 +89835,7 @@ GameObject:
   - component: {fileID: 1843109858}
   m_Layer: 7
   m_Name: A8
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -89919,7 +89955,7 @@ GameObject:
   - component: {fileID: 1850286903}
   m_Layer: 7
   m_Name: A7
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90588,7 +90624,7 @@ GameObject:
   - component: {fileID: 1870610532}
   m_Layer: 7
   m_Name: A13
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -103093,7 +103129,7 @@ GameObject:
   - component: {fileID: 1978349149}
   m_Layer: 7
   m_Name: Left
-  m_TagString: LeftAnchor
+  m_TagString: Anchors
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104709,7 +104745,7 @@ GameObject:
   - component: {fileID: 2040129158}
   m_Layer: 7
   m_Name: A2
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104747,7 +104783,7 @@ GameObject:
   - component: {fileID: 2040504258}
   m_Layer: 7
   m_Name: A1
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105065,7 +105101,7 @@ GameObject:
   - component: {fileID: 2049984279}
   m_Layer: 7
   m_Name: A10 (2)
-  m_TagString: Anchors
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
