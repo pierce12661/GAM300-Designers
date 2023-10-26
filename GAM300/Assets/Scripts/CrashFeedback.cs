@@ -59,7 +59,7 @@ public class CrashFeedback : MonoBehaviour
     {
         if (KartCollisionDetector.instance.wallCrash)
         {
-            if(kc.currentSpeed > 0f)
+            if(kc.currentSpeed > -1f)
             {
                 kc.currentSpeed -= 3 * (kc.currentSpeed / kc.maxSpeed);
             }

@@ -66,35 +66,35 @@ public class Grapple : MonoBehaviour
                 FeedbackHUD.instance.boosted = true;
                 StartGrappleBoost();
             }
-            /*
-            if (joint == null && Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
-            {
-                grappleRemoveKey = grappleKeyLeft;
-                grappleAnchor = FindClosestLeftAnchor().transform;
-                StartGrappleAnchor();
+            
+            //if (joint == null && Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            //{
+            //    grappleRemoveKey = grappleKeyLeft;
+            //    grappleAnchor = FindClosestLeftAnchor().transform;
+            //    StartGrappleAnchor();
 
-                sideGrapples = true;
+            //    sideGrapples = true;
 
-                StartGrappleBoost();
-            }
-            if (Input.GetKeyDown(grappleKeyMid) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            //    StartGrappleBoost();
+            //}
+            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
-                grappleRemoveKey = grappleKeyMid;
+                grappleRemoveKey = grappleKey;
                 grappleAnchor = FindClosestMidAnchor().transform;
                 StartGrappleBoost();
             }
 
-            if (joint == null && Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
-            {
-                grappleRemoveKey = grappleKeyRight;
-                grappleAnchor = FindClosestRightAnchor().transform;
-                StartGrappleAnchor();
+            //if (joint == null && Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            //{
+            //    grappleRemoveKey = grappleKeyRight;
+            //    grappleAnchor = FindClosestRightAnchor().transform;
+            //    StartGrappleAnchor();
 
-                sideGrapples = true;
+            //    sideGrapples = true;
                 
-                StartGrappleBoost();
-            }
-            */
+            //    StartGrappleBoost();
+            //}
+            
         }
         #endregion
 
@@ -277,25 +277,25 @@ public class Grapple : MonoBehaviour
         }
         return closest;
     }
-    /*
-    public GameObject FindClosestLeftAnchor()
-    {
-        GameObject[] GOs = GameObject.FindGameObjectsWithTag("LeftAnchor");
-        GameObject closest = null;
-        float dist = Mathf.Infinity;
-        Vector3 pos = transform.position;
-        foreach (GameObject GO in GOs)
-        {
-            Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
-            {
-                closest = GO;
-                dist = currentDist;
-            }
-        }
-        return closest;
-    }
+
+    //public GameObject FindClosestLeftAnchor()
+    //{
+    //    GameObject[] GOs = GameObject.FindGameObjectsWithTag("LeftAnchor");
+    //    GameObject closest = null;
+    //    float dist = Mathf.Infinity;
+    //    Vector3 pos = transform.position;
+    //    foreach (GameObject GO in GOs)
+    //    {
+    //        Vector3 diff = GO.transform.position - pos;
+    //        float currentDist = diff.sqrMagnitude;
+    //        if (currentDist < dist)
+    //        {
+    //            closest = GO;
+    //            dist = currentDist;
+    //        }
+    //    }
+    //    return closest;
+    //}
     public GameObject FindClosestMidAnchor()
     {
         GameObject[] GOs = GameObject.FindGameObjectsWithTag("MidAnchor");
@@ -314,23 +314,23 @@ public class Grapple : MonoBehaviour
         }
         return closest;
     }
-    public GameObject FindClosestRightAnchor()
-    {
-        GameObject[] GOs = GameObject.FindGameObjectsWithTag("RightAnchor");
-        GameObject closest = null;
-        float dist = Mathf.Infinity;
-        Vector3 pos = transform.position;
-        foreach (GameObject GO in GOs)
-        {
-            Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
-            {
-                closest = GO;
-                dist = currentDist;
-            }
-        }
-        return closest;
-    }
-    */
+    //public GameObject FindClosestRightAnchor()
+    //{
+    //    GameObject[] GOs = GameObject.FindGameObjectsWithTag("RightAnchor");
+    //    GameObject closest = null;
+    //    float dist = Mathf.Infinity;
+    //    Vector3 pos = transform.position;
+    //    foreach (GameObject GO in GOs)
+    //    {
+    //        Vector3 diff = GO.transform.position - pos;
+    //        float currentDist = diff.sqrMagnitude;
+    //        if (currentDist < dist)
+    //        {
+    //            closest = GO;
+    //            dist = currentDist;
+    //        }
+    //    }
+    //    return closest;
+    //}
+
 }
