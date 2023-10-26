@@ -10,6 +10,7 @@ public class KartCollisionDetector : MonoBehaviour
     [HideInInspector] public bool wallCrash;
     [HideInInspector] public bool isSpinning;
     [HideInInspector] public Vector3 crashPoint;
+    [HideInInspector] public Vector3 singlePoint;
 
 
     private void Awake()
@@ -21,10 +22,6 @@ public class KartCollisionDetector : MonoBehaviour
     {
         if (collision.gameObject.tag != "Road" && collision.gameObject.layer != 6) //if not road or kart
         {
-            Debug.Log("Car has crashed");
-
-            Debug.Log(collision.GetContact(0).point);
-
             crashPoint = collision.GetContact(0).point;
 
             hasCrashed = true;
@@ -32,6 +29,7 @@ public class KartCollisionDetector : MonoBehaviour
             if(collision.gameObject.tag != "Trap")
             {
                 wallCrash = true;
+                Debug.Log("Car has crashed");
             }
         }
     }
@@ -40,8 +38,6 @@ public class KartCollisionDetector : MonoBehaviour
     {
         if (collision.gameObject.tag != "Road" && collision.gameObject.layer != 6)
         {
-            Debug.Log("Car exited");
-
             hasCrashed = false;
             wallCrash = false;
         }

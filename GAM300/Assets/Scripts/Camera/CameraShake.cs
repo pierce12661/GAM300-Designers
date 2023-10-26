@@ -12,12 +12,15 @@ public class CameraShake : MonoBehaviour
 
     [HideInInspector] public bool camShaking;
     [HideInInspector] public bool boostShaking;
+    [HideInInspector] public bool crashShaking;
 
     private float speedShake;
+    private float normalShake;
     private float crashShake;
     private float boostShakeStr;
 
     private float elapsedTime;
+    private float shakeElapsedTime;
     private float crashElapsedTime;
 
     private Quaternion targetRotation;
@@ -39,12 +42,14 @@ public class CameraShake : MonoBehaviour
             camShaking = true;
         }
 
-        crashShake = playerObj.GetComponent<KartController>().realSpeed / 17;
+        normalShake = playerObj.GetComponent<KartController>().realSpeed / 17;
         boostShakeStr = playerObj.GetComponent<KartController>().realSpeed / 30;
+        crashShake = playerObj.GetComponent<KartController>().realSpeed / 8;
 
         HighSpeedSmallShake(speedShake, cam.transform); //when at high speeds, will have slight constant shake
-        CameraShakeRotation(crashShake, 0.4f, cam.transform); //When crashing, shakes rotations a little bit.
+        CameraShakeRotation(normalShake, 0.4f, cam.transform); //When crashing, shakes rotations a little bit.
         BoostShake(boostShakeStr, 0.3f, cam.transform);
+        CrashShake(crashShake, 0.5f, cam.transform);
     }
 
     private void LateUpdate()
@@ -58,6 +63,29 @@ public class CameraShake : MonoBehaviour
     {
         if (camShaking)
         {
+            if (shakeElapsedTime < shakeTimer)
+            {
+                shakeElapsedTime += 1.0f * Time.deltaTime;
+
+                Vector3 originalRot = obj.localEulerAngles;
+
+                obj.localEulerAngles = originalRot + Random.insideUnitSphere * strength;
+            }
+            else
+            {
+                camShaking = false;
+            }
+        }
+        else
+        {
+            shakeElapsedTime = 0;
+        }
+    }
+
+    public void CrashShake(float strength, float shakeTimer, Transform obj)
+    {
+        if (crashShaking)
+        {
             if (crashElapsedTime < shakeTimer)
             {
                 crashElapsedTime += 1.0f * Time.deltaTime;
@@ -68,7 +96,7 @@ public class CameraShake : MonoBehaviour
             }
             else
             {
-                camShaking = false;
+                crashShaking = false;
             }
         }
         else
@@ -104,7 +132,7 @@ public class CameraShake : MonoBehaviour
     {
         if(playerObj.GetComponent<KartController>().realSpeed > 23)
         {
-            speedShake = Mathf.Lerp(speedShake, playerObj.GetComponent<KartController>().realSpeed / 650, 0.9f * Time.deltaTime);
+            speedShake = Mathf.Lerp(speedShake, playerObj.GetComponent<KartController>().realSpeed / 530, 0.9f * Time.deltaTime);
 
             Vector3 originalRot = obj.localEulerAngles;
 

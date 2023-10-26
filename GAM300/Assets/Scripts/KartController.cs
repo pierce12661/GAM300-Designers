@@ -69,7 +69,6 @@ public class KartController : MonoBehaviour
 
     //Particles
 
-    
 
     //Traps
     [HideInInspector] public bool trapHit;
@@ -91,6 +90,7 @@ public class KartController : MonoBehaviour
     {
         transform.position = sphere.transform.position; //makes the kart parent follow the sphere. 
 
+
         ResetSpeed();
 
         GetInput();
@@ -103,9 +103,10 @@ public class KartController : MonoBehaviour
 
         BoostTimer();
 
-
+        
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 
+        
     }
 
     private void FixedUpdate()
@@ -132,7 +133,8 @@ public class KartController : MonoBehaviour
         else
         {
             airTime = 0;
-           
+
+            sphere.AddForce(-transform.up * 100, ForceMode.Acceleration);
         }
     }
 
@@ -304,6 +306,15 @@ public class KartController : MonoBehaviour
 
                 transform.Rotate(xAngle: 0, yAngle: newRotation, zAngle: 0, Space.World);
             }
+        }
+    }
+
+    public void RotationRevert()
+    {
+
+        if (!touchingGround)
+        {
+
         }
     }
 

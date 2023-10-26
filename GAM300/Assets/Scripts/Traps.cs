@@ -108,7 +108,7 @@ public class Traps : MonoBehaviour
                 //player.GetComponent<KartController>().sphere.AddExplosionForce(50000.0f, col.GetContact(0).point, 2);
                 Vector3 direction = player.GetComponent<KartController>().sphere.position - transform.position;
 
-                player.GetComponent<KartController>().sphere.AddForce(direction * 125, ForceMode.Acceleration);
+                player.GetComponent<KartController>().sphere.AddForce(-direction * 125, ForceMode.Acceleration);
                 playerObject.GetComponent<KartController>().stunned = true;
             }
             else

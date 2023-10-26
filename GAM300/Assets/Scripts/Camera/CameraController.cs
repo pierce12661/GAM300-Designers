@@ -105,11 +105,33 @@ public class CameraController : MonoBehaviour
     {
         Vector3 moveVector = Vector3.Lerp(this.gameObject.transform.position, target.position, camSettings.moveSpeed * Time.deltaTime);
 
-        Quaternion rotationVector = Quaternion.Lerp(this.gameObject.transform.rotation, target.rotation, camSettings.moveSpeed * Time.deltaTime);
-
         transform.position = moveVector;
 
+        Quaternion rotationVector = Quaternion.Lerp(this.gameObject.transform.rotation, target.rotation, camSettings.moveSpeed * Time.deltaTime);
+
         transform.rotation = rotationVector;
+
+        if (!playerObject.GetComponent<CrashFeedback>().bounceBack)
+        {
+            center.localPosition = Vector3.Lerp(center.localPosition, Vector3.zero, 10.0f * Time.deltaTime);
+
+            Quaternion originalRot = Quaternion.Euler(0, 0, 0);
+
+            if(!playerObject.GetComponent<KartController>().isReversing)
+            center.localRotation = Quaternion.Lerp(center.localRotation, originalRot, 10.0f * Time.deltaTime);
+
+        }
+        else //Crash Cam
+        {
+            center.position = Vector3.Lerp(center.position, KartCollisionDetector.instance.crashPoint, 10.0f * Time.deltaTime);
+
+            Quaternion targetCrashRotation = Quaternion.Euler(center.localPosition.x, center.rotation.y, center.localPosition.z);
+
+            center.localRotation = Quaternion.Lerp(center.localRotation, targetCrashRotation,  100.0f * (playerObject.GetComponent<KartController>().currentSpeed / playerObject.GetComponent<KartController>().maxSpeed) * Time.deltaTime);
+
+            CameraShake.instance.crashShaking = true;
+        }
+
     }
 
     public void BoostFOV()
@@ -128,25 +150,23 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    public void RotateCam()
-    {
-        camXrotation -= Input.GetAxis(inputSettings.MouseY_Axis) * camSettings.mouseY_Sensitivity;
-        camYrotation += Input.GetAxis(inputSettings.MouseX_Axis) * camSettings.mouseX_Sensitivity;
+    //public void RotateCam()
+    //{
+    //    camXrotation -= Input.GetAxis(inputSettings.MouseY_Axis) * camSettings.mouseY_Sensitivity;
+    //    camYrotation += Input.GetAxis(inputSettings.MouseX_Axis) * camSettings.mouseX_Sensitivity;
 
-        camXrotation = Mathf.Clamp(camXrotation, camSettings.minVerticalClampAngle, camSettings.maxVerticalClampAngle);
+    //    camXrotation = Mathf.Clamp(camXrotation, camSettings.minVerticalClampAngle, camSettings.maxVerticalClampAngle);
 
-        //camYrotation = Mathf.Repeat(camYrotation, 360);
+    //    //camYrotation = Mathf.Repeat(camYrotation, 360);
 
-        camYrotation = Mathf.Clamp(camYrotation, camSettings.minHorizontalClampAngle, camSettings.maxHorizontalClampAngle);
+    //    camYrotation = Mathf.Clamp(camYrotation, camSettings.minHorizontalClampAngle, camSettings.maxHorizontalClampAngle);
 
-        Vector3 rotatingAngle = new Vector3(camXrotation, camYrotation, 0);
+    //    Vector3 rotatingAngle = new Vector3(camXrotation, camYrotation, 0);
 
-        Quaternion rotation = Quaternion.Slerp(center.transform.localRotation, Quaternion.Euler(rotatingAngle), camSettings.rotationSpeed * Time.deltaTime);
+    //    Quaternion rotation = Quaternion.Slerp(center.transform.localRotation, Quaternion.Euler(rotatingAngle), camSettings.rotationSpeed * Time.deltaTime);
 
-        center.transform.localRotation = rotation;
-
-        
-    }
+    //    center.transform.localRotation = rotation;
+    //}
     
     public void ReverseCam()
     {
