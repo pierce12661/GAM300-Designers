@@ -66,10 +66,7 @@ public class KartController : MonoBehaviour
     private float finalBoostSpeed;
     [SerializeField] private float boostCountdown;
     [SerializeField] private float finalBoostCountdown;
-
-    //Particles
-
-
+    
     //Traps
     [HideInInspector] public bool trapHit;
     [HideInInspector] public bool stunned;
@@ -324,7 +321,7 @@ public class KartController : MonoBehaviour
         Quaternion negativeNewAngle = Quaternion.Euler(0, -maxSteerAngle, 0);
         Quaternion defaultAngle = Quaternion.Euler(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
             frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
@@ -341,7 +338,7 @@ public class KartController : MonoBehaviour
             //}
             
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
             frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
             frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
