@@ -23,15 +23,7 @@ public class SpeedMeter : MonoBehaviour
 
     public void SpeedSlider()
     {
-        if(kc.realSpeed > 0)
-        {
-            targetFill = new Vector3(kc.currentSpeed / kc.originalSpeed, sliderFill.localScale.y, sliderFill.localScale.z);
-        }
-        else
-        {
-            targetFill = new Vector3((kc.currentSpeed / kc.originalSpeed) * -1, sliderFill.localScale.y, sliderFill.localScale.z);
-        }
-        
+        targetFill = new Vector3(kc.currentBattery / kc.maxBattery, sliderFill.localScale.y, sliderFill.localScale.z);
 
         sliderFill.localScale = Vector3.Lerp(sliderFill.localScale, targetFill, 8.0f * Time.deltaTime);
     }

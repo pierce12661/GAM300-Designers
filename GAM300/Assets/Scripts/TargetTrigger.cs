@@ -14,7 +14,6 @@ public class TargetTrigger : MonoBehaviour
     private Vector3 originalTargetScale;
     private Vector3 pulseTargetScale_1;
     private Vector3 pulseTargetScale_2;
-    private Vector3 lockOnScale;
 
     private float elapsedTime;
     private float scaleTimer;
@@ -29,10 +28,9 @@ public class TargetTrigger : MonoBehaviour
 
     private void Start()
     {
-        originalTargetScale = new Vector3(1.2f,1.2f,1.2f);
-        pulseTargetScale_1 = new Vector3(0.7f, 0.7f, 0.7f);
-        pulseTargetScale_2 = new Vector3(0.85f, 0.85f, 0.85f);
-        lockOnScale = new Vector3(0.4f, 0.4f, 0.4f);
+        originalTargetScale = new Vector3(2f,2f,2f);
+        pulseTargetScale_1 = new Vector3(1.3f, 1.3f, 1.3f);
+        pulseTargetScale_2 = new Vector3(1.5f, 1.5f, 1.5f);
     }
 
     private void Update()
@@ -77,7 +75,7 @@ public class TargetTrigger : MonoBehaviour
             }
             else
             {
-                target.localScale = Vector3.Lerp(target.localScale, lockOnScale, 8.0f * Time.deltaTime);
+                target.localScale = Vector3.Lerp(target.localScale, Vector3.one, 8.0f * Time.deltaTime);
             }
             
         }

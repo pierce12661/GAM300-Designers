@@ -38,6 +38,10 @@ public class KartController : MonoBehaviour
     [HideInInspector] public float slowSteer;
     [HideInInspector] public float oringalSteerSpeed;
 
+    //Boost Battery
+    [HideInInspector] public float currentBattery;
+    [HideInInspector] public float maxBattery;
+
     // Rotation
     private float newRotation;
     private float maxSteerAngle = 40f;
@@ -390,8 +394,8 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        initialBoostSpeed = maxSpeed * 1.05f; //sets a max speed
-        finalBoostSpeed = maxSpeed * 1.15f; //sets a max speed
+        initialBoostSpeed = maxSpeed * 1.10f; //sets a max speed
+        finalBoostSpeed = initialBoostSpeed; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed * 0.3f; //sets a slow debuff speed
@@ -399,6 +403,10 @@ public class KartController : MonoBehaviour
         boostSteer = steerSpeed / 1.15f; 
         slowSteer = steerSpeed / 6;
         oringalSteerSpeed = steerSpeed;
+
+        //BatterySettings
+        maxBattery = 5f;
+        currentBattery = 0f;
     }
 
     public float GetMaxSpeed()
@@ -420,8 +428,9 @@ public class KartController : MonoBehaviour
     public void FinalBoostKart()
     {
         isFinalBoosting = true;
-        maxSpeed = finalBoostSpeed;
+        maxSpeed = finalBoostSpeed * (1 + (currentBattery/maxBattery / 2));
 
+        Debug.Log(maxSpeed + " final boost speed");
         sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
     }

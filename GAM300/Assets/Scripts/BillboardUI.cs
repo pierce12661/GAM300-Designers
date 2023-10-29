@@ -10,7 +10,7 @@ public class BillboardUI : MonoBehaviour
     Quaternion originalRotation;
     private void Start()
     {
-        //camTransform = FindObjectOfType<Camera>().transform;
+        camTransform = FindObjectOfType<Camera>().transform;
         //originalRotation = transform.rotation * Quaternion.Euler(-1,0,0);
 
         originalRotation = Quaternion.Euler(0, -1, 0);

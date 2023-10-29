@@ -118,6 +118,8 @@ public class Grapple : MonoBehaviour
         }
         #endregion
 
+        BoostBattery();
+
         // if timer > 0, keep counting down
         if (grapplingCDTimer > 0)
         {
@@ -235,6 +237,19 @@ public class Grapple : MonoBehaviour
         }
     }
 
+    private void BoostBattery()
+    {
+        if (grappling)
+        {
+            if(kc.currentBattery < kc.maxBattery)
+                kc.currentBattery += 2.0f * Time.deltaTime;
+        }
+        else
+        {
+            if (kc.currentBattery > 0)
+                kc.currentBattery -= 2.0f * Time.deltaTime;
+        }
+    }
     /*private void StopGrapple()
     {
         grappling = false;
