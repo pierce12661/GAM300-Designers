@@ -47,6 +47,7 @@ public class Grapple : MonoBehaviour
     public KeyCode grappleRemoveKey;
 
     private bool grappling;
+    private bool midGrappleBoost = false;
     private bool sideGrapples;
 
     // Start is called before the first frame update
@@ -99,15 +100,17 @@ public class Grapple : MonoBehaviour
         #region StopAnchor/StopGrapple
         if (Input.GetKeyUp(grappleRemoveKey))
         {
-            if (joint != null)
+            if (joint != null && Vector3.Distance (grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 StopAnchor();
                 FinalGrappleBoost();
                 StartAnchorDestroyCD();
             }
-            else 
+
+            if (Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
             {
                 StopGrapple();
+                FinalGrappleBoost();
                 StartMidAnchorDestroyCD();
             }
         }
@@ -233,11 +236,11 @@ public class Grapple : MonoBehaviour
     {
         kc.FinalBoostKart();
 
-        if (sideGrapples)
-        {
-            FeedbackHUD.instance.boosted = true;
-            sideGrapples = false;
-        }
+        // if (sideGrapples)
+        // {
+        //     FeedbackHUD.instance.boosted = true;
+        //     sideGrapples = false;
+        // }
     }
 
     private void StopGrapple()
