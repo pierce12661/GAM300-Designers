@@ -38,11 +38,11 @@ public class CrashFeedback : MonoBehaviour
 
                 if (kc.realSpeed < 12)
                 {
-                    multiplier = 25;
+                    multiplier = 40;
                 }
                 else
                 {
-                    multiplier = 30;
+                    multiplier = 50;
                 }
 
                 kc.sphere.AddForce(direction * multiplier, ForceMode.Acceleration);
@@ -57,7 +57,7 @@ public class CrashFeedback : MonoBehaviour
 
     public void BoolCheck()
     {
-        if (KartCollisionDetector.instance.wallCrash)
+        if (KartCollisionDetector.instance.wallCrash && !kc.isNotOnRoad)
         {
             if(kc.currentSpeed > -2f)
             {

@@ -75,6 +75,7 @@ public class KartController : MonoBehaviour
     //Traps
     [HideInInspector] public bool trapHit;
     [HideInInspector] public bool stunned;
+    [HideInInspector] public bool isNotOnRoad;
 
     public Vector3 respawnPoint;
 
@@ -130,7 +131,6 @@ public class KartController : MonoBehaviour
         {
             airTime += 1.0f * Time.deltaTime;
 
-            Debug.Log(targetAirForce);
             if (airTime > 0.15f)
             {
                 targetAirForce += 20.0f * Time.deltaTime;
@@ -387,6 +387,16 @@ public class KartController : MonoBehaviour
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * transform.rotation, 7.5f * Time.deltaTime);
             touchingGround = true;
+
+            if(hit.collider.gameObject.tag != "Road")
+            {
+                isNotOnRoad = true;
+            }
+            else
+            {
+                isNotOnRoad = false;
+            }
+
         }
         else
         {
