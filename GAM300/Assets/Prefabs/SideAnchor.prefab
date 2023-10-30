@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5187886144001922695}
   - component: {fileID: 410121139846323188}
   - component: {fileID: 5241291997755341619}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6231951815936202404}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6231951816558680472}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: SideAnchor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -214,7 +214,7 @@ GameObject:
   - component: {fileID: 6231951816559067944}
   - component: {fileID: 6231951816559067946}
   - component: {fileID: 6231951816559067947}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -387,7 +387,7 @@ GameObject:
   - component: {fileID: 6231951816798476223}
   - component: {fileID: 6231951816798476217}
   - component: {fileID: 6231951816798476222}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: LockOnTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 6231951817258201347}
   - component: {fileID: 6231951817258201344}
   - component: {fileID: 6231951817258201345}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -565,7 +565,7 @@ GameObject:
   - component: {fileID: 6231951817471485757}
   - component: {fileID: 6231951817471485699}
   - component: {fileID: 6231951817471485698}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: AnchorTrigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -629,7 +629,7 @@ GameObject:
   - component: {fileID: 4816311771608596895}
   - component: {fileID: 5102160784143566649}
   - component: {fileID: 4086180123552607932}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: SpaceBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
