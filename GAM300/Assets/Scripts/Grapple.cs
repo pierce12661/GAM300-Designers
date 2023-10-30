@@ -221,12 +221,12 @@ public class Grapple : MonoBehaviour
         float distanceFromPoint = Vector3.Distance(grappleStart.position, grappleAnchor.position);
 
         // distance that grapple will try to keep from grapple point, increaing max will increase length of the grapple
-        joint.maxDistance = distanceFromPoint * 0.1f;
+        joint.maxDistance = distanceFromPoint * 0.2f;
         joint.minDistance = distanceFromPoint * 0f;
 
         // values
-        joint.spring = 30f;
-        joint.damper = 15f;
+        joint.spring = 40f;
+        joint.damper = 40f;
         joint.massScale = 5f;
     }
 
