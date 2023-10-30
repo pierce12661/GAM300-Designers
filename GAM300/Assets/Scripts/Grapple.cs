@@ -261,7 +261,7 @@ public class Grapple : MonoBehaviour
     private void StopGrapple()
     {
         grappling = false;
-        grapplingCDTimer = grapplingCD;
+        //grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
 
         lr.enabled = false;

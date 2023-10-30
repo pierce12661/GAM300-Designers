@@ -69,12 +69,8 @@ public class ParticlesScript : MonoBehaviour
         {
             boostParticleTimer += 1.0f * Time.deltaTime;
 
-            Debug.Log("can reach this");
-
             if(boostParticleTimer < 1f)
             {
-                Debug.Log("can't touch this");
-
                 blastParticlesHolder.SetActive(true);
             }
             else
