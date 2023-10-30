@@ -21,14 +21,12 @@ public class Grapple : MonoBehaviour
 
     public GameObject grapplerObj;
     public GameObject grappleLookAt;
-    //public Transform anchors;
     public SpringJoint joint;
     public Transform grappleAnchor;
     public GameObject closestAnchor;
     public GameObject closestMidAnchor;
     public bool hasGrappled;
     private Vector3 grapplePoint;
-    //public bool grappleStopped;
 
     [Header("Cooldown")]
     public float grapplingCD;
@@ -47,7 +45,6 @@ public class Grapple : MonoBehaviour
     public KeyCode grappleRemoveKey;
 
     private bool grappling;
-    private bool midGrappleBoost = false;
     private bool sideGrapples;
 
     // Start is called before the first frame update
@@ -65,6 +62,7 @@ public class Grapple : MonoBehaviour
     void Update()
     {
         #region Grapple Inputs
+        // Used to grapple to side anchors
         if (closestAnchor != null)
         {
             if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
@@ -80,6 +78,7 @@ public class Grapple : MonoBehaviour
                 }
             }
         }
+        // Used to grapple to mid anchors
         if (closestMidAnchor != null)
         {
             if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
@@ -99,13 +98,16 @@ public class Grapple : MonoBehaviour
         #region StopAnchor/StopGrapple
         if (Input.GetKeyUp(grappleRemoveKey))
         {
+            // if joint is active, and within distance of closest anchor,
+            // releasing space will disable line renderer, perform final boost and destroy that anchor
             if (joint != null && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 StopAnchor();
                 FinalGrappleBoost();
                 StartAnchorDestroyCD();
             }
-
+            // if within distance of closest mid anchor,
+            // releasing space will disable line renderer, perform final boost and destroy that anchor
             if (Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
             {
                 StopGrapple();
@@ -123,20 +125,19 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
+        // destroying anchor and mid anchor after releasing grapple
         if (destroyAnchorCountdown < 0 && prevAnchorIsDestroying)
         {
             prevAnchorIsDestroying = false;
             destroyAnchorCountdown = initialDestroyAnchorCD;
             Destroy(closestAnchor);
         }
-
         if (destroyMidAnchorCountdown < 0 && prevMidAnchorIsDestroying)
         {
             prevMidAnchorIsDestroying = false;
             destroyMidAnchorCountdown = initialDestroyMidAnchorCD;
             Destroy(closestMidAnchor);
         }
-
         closestAnchor = FindClosestAnchor();
         closestMidAnchor = FindClosestMidAnchor();
     }
@@ -212,6 +213,7 @@ public class Grapple : MonoBehaviour
 
     private void GrappleAnchor()
     {
+        // instantiates a joint component
         joint = gameObject.AddComponent<SpringJoint>();
         joint.autoConfigureConnectedAnchor = false;
         joint.connectedAnchor = grapplePoint;
@@ -223,9 +225,9 @@ public class Grapple : MonoBehaviour
         joint.minDistance = distanceFromPoint * 0f;
 
         // values
-        joint.spring = 30f;
-        joint.damper = 15f;
-        joint.massScale = 5f;
+        joint.spring = 25f;
+        joint.damper = 12f;
+        joint.massScale = 2f;
     }
 
     private void InitialGrappleBoost()

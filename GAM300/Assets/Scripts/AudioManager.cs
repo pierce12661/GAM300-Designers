@@ -25,6 +25,15 @@ public class AudioManager : MonoBehaviour
         _instance = this;
     }
 
+    // Drag drop audio file into the list in AudioManager in inspector
+    // Add function to play sound
+    // Use index to play specific sound
+    // Example in PlayDrift(), do:
+    // _aSource.PlayOneShot(_aClips[0]);
+    // Go to where ever you want to play SFX, then do:
+    // AudioManager.Instance.[function];
+    // Example AudioManager.Instance.PlayDrift();
+
     void Start()
     {
         _aSource = GetComponent<AudioSource>();
