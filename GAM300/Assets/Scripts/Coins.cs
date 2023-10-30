@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Coins : MonoBehaviour
 {
-   public static Coins instance; 
-   public float coinCount;
+    public static Coins instance;
+
+    public static float coinCount;
+    public float finalScore;
 
     // Start is called before the first frame update
     void Start()
@@ -15,12 +17,24 @@ public class Coins : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {   
+
     }
 
-    public void AddCoin()
+    public void AddCoinCount()
     {
         coinCount += 1;
+    }
+
+    public void CalculateFinalScore()
+    {
+        finalScore = coinCount * (TimeAttack.instance.currentTime / 5);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        AddCoinCount();
+        Debug.Log(coinCount);
+        Destroy(gameObject);
     }
 }

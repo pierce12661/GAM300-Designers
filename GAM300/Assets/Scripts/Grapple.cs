@@ -26,6 +26,7 @@ public class Grapple : MonoBehaviour
     public GameObject closestAnchor;
     public GameObject closestMidAnchor;
     public bool hasGrappled;
+    private bool isGrapplingMid;
     private Vector3 grapplePoint;
 
     [Header("Cooldown")]
@@ -87,6 +88,7 @@ public class Grapple : MonoBehaviour
             {
                 grappleRemoveKey = grappleKey;
                 grappleAnchor = FindClosestMidAnchor().transform;
+                isGrapplingMid = true;
                 StartGrappleBoost();
 
                 if (grappling && grappleAnchor != null)
@@ -115,6 +117,7 @@ public class Grapple : MonoBehaviour
                 StopGrapple();
                 FinalGrappleBoost();
                 StartMidAnchorDestroyCD();
+                isGrapplingMid = false;
             }
         }
         #endregion
@@ -127,6 +130,7 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
+        #region Destroy Previous Anchor
         // destroying anchor and mid anchor after releasing grapple
         if (destroyAnchorCountdown < 0 && prevAnchorIsDestroying)
         {
@@ -140,8 +144,28 @@ public class Grapple : MonoBehaviour
             destroyMidAnchorCountdown = initialDestroyMidAnchorCD;
             Destroy(closestMidAnchor);
         }
+        #endregion
+
+        #region Find Closest Anchor
         closestAnchor = FindClosestAnchor();
         closestMidAnchor = FindClosestMidAnchor();
+        #endregion
+
+        // if space is still being held after exiting maxGrappleDistance, detach anchor and performs boost (Side Anchor)
+        if (joint != null && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) > maxGrappleDistance)
+        {
+            StopAnchor();
+            FinalGrappleBoost();
+            StartAnchorDestroyCD();
+        }
+
+        // if space is still being held after exiting maxGrappleDistance, detach anchor and performs boost (Mid Anchor)
+        if (isGrapplingMid && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) > maxGrappleDistance)
+        {
+            StopGrapple();
+            FinalGrappleBoost();
+            StartMidAnchorDestroyCD();
+        }
     }
 
     void LateUpdate()
