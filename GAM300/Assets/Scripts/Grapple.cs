@@ -62,8 +62,9 @@ public class Grapple : MonoBehaviour
                 grappleRemoveKey = grappleKey;
                 grappleAnchor = FindClosestAnchor().transform;
                 StartGrappleAnchor();
-                
-                FeedbackHUD.instance.boosted = true;
+
+                //FeedbackHUD.instance.boosted = true;
+                sideGrapples = true;
                 StartGrappleBoost();
             }
             
@@ -242,12 +243,12 @@ public class Grapple : MonoBehaviour
         if (grappling)
         {
             if(kc.currentBattery < kc.maxBattery)
-                kc.currentBattery += 2.0f * Time.deltaTime;
+                kc.currentBattery += 2f * Time.deltaTime;
         }
         else
         {
             if (kc.currentBattery > 0)
-                kc.currentBattery -= 2.0f * Time.deltaTime;
+                kc.currentBattery -= 1.5f * Time.deltaTime;
         }
     }
     /*private void StopGrapple()

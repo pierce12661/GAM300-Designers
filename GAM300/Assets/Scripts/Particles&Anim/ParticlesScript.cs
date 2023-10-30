@@ -23,12 +23,15 @@ public class ParticlesScript : MonoBehaviour
 
     private bool crashCheck;
 
+
     private Vector3 boostSize = new Vector3(1.3f, 1.3f, 1.3f);
-    private Vector3 initialBoostSize = new Vector3(0.7f, 0.7f, 0.7f);
+    private Vector3 initialBoostSize = new Vector3(0.45f, 0.45f, 0.45f);
     private Vector3 originalSize = new Vector3(0.3f, 0.3f, 0.3f);
 
     private void Update()
     {
+        boostSize = new Vector3(0.7f + kc.batteryPercentage/1.15f, 0.7f + kc.batteryPercentage / 1.15f, 0.7f + kc.batteryPercentage / 1.15f);
+
         BoostParticles();
         SpeedParticles();
         StunnedAnim();
@@ -39,7 +42,8 @@ public class ParticlesScript : MonoBehaviour
     {
         if (kc.isInitialBoosting && !KartCollisionDetector.instance.hasCrashed)
         {
-            blastParticlesHolder.SetActive(true); //activate particles
+            BlastParticles();
+
             //exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.one, 20.0f * Time.deltaTime);
 
             FlameLeft.localScale = Vector3.Lerp(FlameLeft.localScale, initialBoostSize, 20.0f * Time.deltaTime);
@@ -63,17 +67,29 @@ public class ParticlesScript : MonoBehaviour
         }
         else if (kc.acceleration > 0 && !KartCollisionDetector.instance.hasCrashed)
         {
+            boostParticleTimer += 1.0f * Time.deltaTime;
+
+            Debug.Log("can reach this");
+
+            if(boostParticleTimer < 1f)
+            {
+                Debug.Log("can't touch this");
+
+                blastParticlesHolder.SetActive(true);
+            }
+            else
+            {
+                blastParticlesHolder.SetActive(false);
+            }
+            
             //exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.zero, 10.0f * Time.deltaTime);
-
-            //boostParticleTimer += 1.0f * Time.deltaTime;
-
             FlameLeft.localScale = Vector3.Lerp(FlameLeft.localScale, (kc.currentSpeed / kc.maxSpeed + 0.2f) * originalSize, 5.0f * Time.deltaTime);
             FlameRight.localScale = Vector3.Lerp(FlameRight.localScale, (kc.currentSpeed / kc.maxSpeed + 0.2f) * originalSize, 5.0f * Time.deltaTime);
-            SmokeLeft.localScale = Vector3.Lerp(SmokeLeft.localScale, (kc.currentSpeed / kc.maxSpeed + 0.2f) * originalSize, 5.0f * Time.deltaTime);
-            SmokeRight.localScale = Vector3.Lerp(SmokeRight.localScale, (kc.currentSpeed / kc.maxSpeed + 0.2f) * originalSize, 5.0f * Time.deltaTime);
+            SmokeLeft.localScale = Vector3.Lerp(SmokeLeft.localScale, (kc.currentSpeed / kc.maxSpeed + 0.8f) * originalSize, 5.0f * Time.deltaTime);
+            SmokeRight.localScale = Vector3.Lerp(SmokeRight.localScale, (kc.currentSpeed / kc.maxSpeed + 0.8f) * originalSize, 5.0f * Time.deltaTime);
 
-            blastParticlesHolder2.SetActive(false);
-            blastParticlesHolder.SetActive(false);
+            blastParticlesHolder2.SetActive(false); //Deactivates all exhaust blastParticles
+            //blastParticlesHolder.SetActive(false);
 
         }
         else
@@ -87,6 +103,8 @@ public class ParticlesScript : MonoBehaviour
 
             blastParticlesHolder2.SetActive(false);
             blastParticlesHolder.SetActive(false);
+
+            boostParticleTimer = 0;
         }
     }
 
@@ -113,6 +131,30 @@ public class ParticlesScript : MonoBehaviour
             speedParticlesHolder_2.localScale = Vector3.Lerp(speedParticlesHolder_2.localScale, Vector3.zero, 1.0f * Time.deltaTime);
 
             particleTimer = 0;
+        }
+    }
+
+    public void BlastParticles()
+    {
+        if (kc.currentBattery / kc.maxBattery >= 0.2f && kc.currentBattery / kc.maxBattery <= 0.4f) //Activates first Blast
+        {
+            blastParticlesHolder.SetActive(true); //activate particles
+        }
+        else if (kc.currentBattery / kc.maxBattery > 0.4f && kc.currentBattery / kc.maxBattery <= 0.45f) //Deactivates first blast
+        {
+            blastParticlesHolder.SetActive(false);
+        }
+        else if(kc.currentBattery / kc.maxBattery > 0.5f && kc.currentBattery / kc.maxBattery <= 0.6f) //Activates second Blast
+        {
+            blastParticlesHolder.SetActive(true);
+        }
+        else if(kc.currentBattery / kc.maxBattery > 0.6f && kc.currentBattery / kc.maxBattery <= 0.7f) //Deactivates second blast
+        {
+            blastParticlesHolder.SetActive(false);
+        }
+        else if(kc.currentBattery / kc.maxBattery > 0.75f) //Activates third Blast
+        {
+            blastParticlesHolder.SetActive(true);
         }
     }
 

@@ -41,6 +41,7 @@ public class KartController : MonoBehaviour
     //Boost Battery
     [HideInInspector] public float currentBattery;
     [HideInInspector] public float maxBattery;
+    [HideInInspector] public float batteryPercentage;
 
     // Rotation
     private float newRotation;
@@ -79,6 +80,9 @@ public class KartController : MonoBehaviour
     [HideInInspector] public bool stunned;
 
     public Vector3 respawnPoint;
+
+
+    private float targetAirForce;
 
     private void Start()
     {
@@ -129,16 +133,19 @@ public class KartController : MonoBehaviour
         {
             airTime += 1.0f * Time.deltaTime;
 
-            if(airTime > 0.25f)
+            Debug.Log(targetAirForce);
+            if (airTime > 0.15f)
             {
-                sphere.AddForce(-transform.up * 23, ForceMode.Acceleration);
+                targetAirForce += 20.0f * Time.deltaTime;
+                sphere.AddForce(-transform.up * targetAirForce, ForceMode.Acceleration); //23
             }
         }
         else
         {
             airTime = 0;
-
-            sphere.AddForce(-transform.up * 100, ForceMode.Acceleration);
+            targetAirForce = 0;
+          
+            sphere.AddForce(-transform.up * 100, ForceMode.Acceleration); //fake Gravity
         }
     }
 
@@ -414,6 +421,13 @@ public class KartController : MonoBehaviour
         return maxSpeed;
     }
 
+    public float GetBatteryPercentage()
+    {
+        float percentage = currentBattery / maxBattery;
+
+        return percentage;
+    }
+
     public void InitialBoostKart()
     {
         isInitialBoosting = true;
@@ -427,6 +441,8 @@ public class KartController : MonoBehaviour
 
     public void FinalBoostKart()
     {
+        batteryPercentage = GetBatteryPercentage();
+
         isFinalBoosting = true;
         maxSpeed = finalBoostSpeed * (1 + (currentBattery/maxBattery / 2));
 
@@ -441,15 +457,15 @@ public class KartController : MonoBehaviour
         {
             boostCountdown -= 1.0f * Time.deltaTime;
         }
-        else if (isFinalBoosting && finalBoostCountdown > 0)
+        else if (isFinalBoosting && currentBattery > 0)
         {
             isInitialBoosting = false;
-            finalBoostCountdown -= 1.0f * Time.deltaTime;
+            //finalBoostCountdown -= 1.0f * Time.deltaTime;
         }
         else
         {
             boostCountdown = 2f;
-            finalBoostCountdown = 2f;
+            //finalBoostCountdown = 2f;
             maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
             isInitialBoosting = false;
             isFinalBoosting = false;
