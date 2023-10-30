@@ -15,5 +15,6 @@ public class DeathTest : MonoBehaviour
     {
         kc.currentSpeed = 0;
         kc.RespawnLastLocation();
+        kc.transform.LookAt(gameObject.transform.forward);
     }
 }
