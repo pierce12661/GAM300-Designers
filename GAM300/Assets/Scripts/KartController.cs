@@ -430,7 +430,7 @@ public class KartController : MonoBehaviour
         isInitialBoosting = true;
         maxSpeed = initialBoostSpeed;
 
-        sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
+        //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
         CameraShake.instance.BoostShake();
         AudioManager.Instance.PlayDrift();
@@ -444,7 +444,7 @@ public class KartController : MonoBehaviour
         maxSpeed = finalBoostSpeed * (1 + (currentBattery/maxBattery / 2));
 
         Debug.Log(maxSpeed + " final boost speed");
-        sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
+        //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
     }
 

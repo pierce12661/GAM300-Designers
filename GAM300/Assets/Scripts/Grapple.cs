@@ -65,6 +65,8 @@ public class Grapple : MonoBehaviour
         // Used to grapple to side anchors
         if (closestAnchor != null)
         {
+
+            //SideAnchors
             if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 grappleRemoveKey = grappleKey;
@@ -79,7 +81,7 @@ public class Grapple : MonoBehaviour
             }
         }
         // Used to grapple to mid anchors
-        if (closestMidAnchor != null)
+        if (closestMidAnchor != null) //MidAnchor
         {
             if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
             {
@@ -221,13 +223,13 @@ public class Grapple : MonoBehaviour
         float distanceFromPoint = Vector3.Distance(grappleStart.position, grappleAnchor.position);
 
         // distance that grapple will try to keep from grapple point, increaing max will increase length of the grapple
-        joint.maxDistance = distanceFromPoint * 0.1f;
+        joint.maxDistance = distanceFromPoint * 0.2f;
         joint.minDistance = distanceFromPoint * 0f;
 
         // values
-        joint.spring = 25f;
-        joint.damper = 12f;
-        joint.massScale = 2f;
+        joint.spring = 40f;
+        joint.damper = 40f;
+        joint.massScale = 5f;
     }
 
     private void InitialGrappleBoost()
@@ -291,11 +293,15 @@ public class Grapple : MonoBehaviour
         foreach (GameObject GO in GOs)
         {
             Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
+
+            if (diff.y <= 14)
             {
-                closest = GO;
-                dist = currentDist;
+                float currentDist = diff.sqrMagnitude;
+                if (currentDist < dist)
+                {
+                    closest = GO;
+                    dist = currentDist;
+                }
             }
         }
         return closest;
@@ -310,11 +316,17 @@ public class Grapple : MonoBehaviour
         foreach (GameObject GO in GOs)
         {
             Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
+
+            //Debug.Log(diff + "diff value");
+
+            if(diff.y <= 70)
             {
-                closest = GO;
-                dist = currentDist;
+                float currentDist = diff.sqrMagnitude;
+                if (currentDist < dist)
+                {
+                    closest = GO;
+                    dist = currentDist;
+                }
             }
         }
         return closest;
