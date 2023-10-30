@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class FeedbackHUD : MonoBehaviour
 {
@@ -9,9 +10,12 @@ public class FeedbackHUD : MonoBehaviour
     [SerializeField] private KartController kc;
 
     public GameObject FeedbackAnim;
+    public TextMeshProUGUI AnimText;
 
     [HideInInspector] public bool boosted;
     private float timer;
+
+    public List<string> wordVariation;
 
     private void Awake()
     {
@@ -28,6 +32,11 @@ public class FeedbackHUD : MonoBehaviour
         if (boosted)
         {
             timer += 1.0f * Time.deltaTime;
+
+            if(FeedbackAnim.activeInHierarchy == false)
+            {
+                AnimText.text = wordVariation[Random.Range(0, wordVariation.Count - 1)];
+            }
 
             FeedbackAnim.SetActive(true);
 

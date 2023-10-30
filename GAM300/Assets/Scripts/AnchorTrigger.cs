@@ -19,6 +19,7 @@ public class AnchorTrigger : MonoBehaviour
 
     private void Start()
     {
+        kartObject = GameObject.FindGameObjectWithTag("Player");
         grappleScript = kartObject.GetComponent<Grapple>();
 
         

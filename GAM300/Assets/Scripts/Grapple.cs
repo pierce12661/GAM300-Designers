@@ -67,15 +67,15 @@ public class Grapple : MonoBehaviour
         #region Grapple Inputs
         if (closestAnchor != null)
         {
-            if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance (grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 grappleRemoveKey = grappleKey;
                 grappleAnchor = FindClosestAnchor().transform;
                 StartGrappleAnchor();
-                
+
                 if (grappling && grappleAnchor != null)
                 {
-                    FeedbackHUD.instance.boosted = true;
+                    sideGrapples = true;
                     InitialGrappleBoost();
                 }
             }
@@ -90,7 +90,6 @@ public class Grapple : MonoBehaviour
 
                 if (grappling && grappleAnchor != null)
                 {
-                    FeedbackHUD.instance.boosted = true;
                     InitialGrappleBoost();
                 }
             }
@@ -100,7 +99,7 @@ public class Grapple : MonoBehaviour
         #region StopAnchor/StopGrapple
         if (Input.GetKeyUp(grappleRemoveKey))
         {
-            if (joint != null && Vector3.Distance (grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            if (joint != null && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 StopAnchor();
                 FinalGrappleBoost();
@@ -115,6 +114,8 @@ public class Grapple : MonoBehaviour
             }
         }
         #endregion
+
+        BoostBattery();
 
         // if timer > 0, keep counting down
         if (grapplingCDTimer > 0)
@@ -139,7 +140,7 @@ public class Grapple : MonoBehaviour
         closestAnchor = FindClosestAnchor();
         closestMidAnchor = FindClosestMidAnchor();
     }
-    
+
     void LateUpdate()
     {
         if (grappling && grappleAnchor != null)
@@ -204,7 +205,7 @@ public class Grapple : MonoBehaviour
             lr.SetPosition(1, grapplePoint);
 
             CameraShake.instance.BoostShake();
-            
+
             prevAnchorIsDestroying = true;
         }
     }
@@ -236,11 +237,25 @@ public class Grapple : MonoBehaviour
     {
         kc.FinalBoostKart();
 
-        // if (sideGrapples)
-        // {
-        //     FeedbackHUD.instance.boosted = true;
-        //     sideGrapples = false;
-        // }
+        if (sideGrapples)
+        {
+            FeedbackHUD.instance.boosted = true;
+            sideGrapples = false;
+        }
+    }
+
+    private void BoostBattery()
+    {
+        if (grappling)
+        {
+            if (kc.currentBattery < kc.maxBattery)
+                kc.currentBattery += 2f * Time.deltaTime;
+        }
+        else
+        {
+            if (kc.currentBattery > 0)
+                kc.currentBattery -= 1.5f * Time.deltaTime;
+        }
     }
 
     private void StopGrapple()
