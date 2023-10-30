@@ -14,8 +14,13 @@ public class ParticlesScript : MonoBehaviour
     [SerializeField] private Transform FlameLeft, FlameRight;
     [SerializeField] private Transform SmokeLeft, SmokeRight;
     [SerializeField] private GameObject crashParticles;
+    [SerializeField] private Transform rear_Right_WheelParticles;
+    [SerializeField] private Transform rear_Left_WheelParticles;
 
     [SerializeField] private GameObject stunnedObject;
+
+    [SerializeField] private Transform rearWheel_Right;
+    [SerializeField] private Transform rearWheel_Left;
 
     [HideInInspector] public float boostParticleTimer;
 
@@ -36,6 +41,7 @@ public class ParticlesScript : MonoBehaviour
         SpeedParticles();
         StunnedAnim();
         CrashParticles();
+        WheelParticles();
     }
 
     public void BoostParticles()
@@ -182,6 +188,23 @@ public class ParticlesScript : MonoBehaviour
         else
         {
             crashCheck = false;
+        }
+    }
+
+    public void WheelParticles()
+    {
+        rear_Right_WheelParticles.rotation = Quaternion.Euler(rearWheel_Right.rotation.eulerAngles.x - 15f, rearWheel_Right.rotation.eulerAngles.y - 180, rearWheel_Right.rotation.z * -1);
+        rear_Left_WheelParticles.rotation = Quaternion.Euler(rearWheel_Left.rotation.eulerAngles.x - 15f, rearWheel_Left.rotation.eulerAngles.y, rearWheel_Left.rotation.z * -1);
+
+        if (kc.isInitialBoosting && kc.gameObject.GetComponent<Grapple>().sideGrapples)
+        {
+            rear_Left_WheelParticles.localScale = Vector3.Lerp(rear_Left_WheelParticles.localScale, Vector3.one, 4.0f * Time.deltaTime);
+            rear_Right_WheelParticles.localScale = Vector3.Lerp(rear_Right_WheelParticles.localScale, Vector3.one, 4.0f * Time.deltaTime);
+        }
+        else
+        {
+            rear_Left_WheelParticles.localScale = Vector3.Lerp(rear_Left_WheelParticles.localScale, Vector3.zero, 4.0f * Time.deltaTime);
+            rear_Right_WheelParticles.localScale = Vector3.Lerp(rear_Right_WheelParticles.localScale, Vector3.zero, 4.0f * Time.deltaTime);
         }
     }
 }

@@ -38,11 +38,11 @@ public class CrashFeedback : MonoBehaviour
 
                 if (kc.realSpeed < 12)
                 {
-                    multiplier = 50;
+                    multiplier = 25;
                 }
                 else
                 {
-                    multiplier = 60;
+                    multiplier = 30;
                 }
 
                 kc.sphere.AddForce(direction * multiplier, ForceMode.Acceleration);

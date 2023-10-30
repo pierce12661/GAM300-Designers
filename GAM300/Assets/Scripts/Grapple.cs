@@ -48,7 +48,7 @@ public class Grapple : MonoBehaviour
 
     private bool grappling;
     private bool midGrappleBoost = false;
-    private bool sideGrapples;
+    [HideInInspector] public bool sideGrapples;
 
     // Start is called before the first frame update
     void Start()
