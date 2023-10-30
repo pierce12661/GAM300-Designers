@@ -67,6 +67,8 @@ public class Grapple : MonoBehaviour
         #region Grapple Inputs
         if (closestAnchor != null)
         {
+
+            //SideAnchors
             if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 grappleRemoveKey = grappleKey;
@@ -80,7 +82,7 @@ public class Grapple : MonoBehaviour
                 }
             }
         }
-        if (closestMidAnchor != null)
+        if (closestMidAnchor != null) //MidAnchor
         {
             if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
             {
@@ -289,11 +291,15 @@ public class Grapple : MonoBehaviour
         foreach (GameObject GO in GOs)
         {
             Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
+
+            if (diff.y <= 14)
             {
-                closest = GO;
-                dist = currentDist;
+                float currentDist = diff.sqrMagnitude;
+                if (currentDist < dist)
+                {
+                    closest = GO;
+                    dist = currentDist;
+                }
             }
         }
         return closest;
@@ -308,11 +314,17 @@ public class Grapple : MonoBehaviour
         foreach (GameObject GO in GOs)
         {
             Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
+
+            //Debug.Log(diff + "diff value");
+
+            if(diff.y <= 70)
             {
-                closest = GO;
-                dist = currentDist;
+                float currentDist = diff.sqrMagnitude;
+                if (currentDist < dist)
+                {
+                    closest = GO;
+                    dist = currentDist;
+                }
             }
         }
         return closest;
