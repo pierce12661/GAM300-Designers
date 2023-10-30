@@ -72,11 +72,14 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = FindClosestAnchor().transform;
                 StartGrappleAnchor();
                 
-                FeedbackHUD.instance.boosted = true;
-                InitialGrappleBoost();
+                if (grappling && grappleAnchor != null)
+                {
+                    FeedbackHUD.instance.boosted = true;
+                    InitialGrappleBoost();
+                }
             }
         }
-        if (closestMidAnchor!= null)
+        if (closestMidAnchor != null)
         {
             if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
             {
@@ -84,7 +87,11 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = FindClosestMidAnchor().transform;
                 StartGrappleBoost();
 
-                FeedbackHUD.instance.boosted = true;
+                if (grappling && grappleAnchor != null)
+                {
+                    FeedbackHUD.instance.boosted = true;
+                    InitialGrappleBoost();
+                }
             }
         }
         #endregion
@@ -95,11 +102,14 @@ public class Grapple : MonoBehaviour
             if (joint != null)
             {
                 StopAnchor();
+                FinalGrappleBoost();
+                StartAnchorDestroyCD();
             }
-            else StopGrapple();
-
-            StartAnchorDestroyCD();
-            StartMidAnchorDestroyCD();
+            else 
+            {
+                StopGrapple();
+                StartMidAnchorDestroyCD();
+            }
         }
         #endregion
 
@@ -155,7 +165,7 @@ public class Grapple : MonoBehaviour
             {
                 grapplePoint = hit.point;
 
-                Invoke(nameof(InitialGrappleBoost), grappleDelayTime);
+                //Invoke(nameof(InitialGrappleBoost), grappleDelayTime);
             }
 
             lr.enabled = true;
@@ -236,8 +246,6 @@ public class Grapple : MonoBehaviour
         grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
 
-        FinalGrappleBoost();
-
         lr.enabled = false;
     }
 
@@ -250,8 +258,6 @@ public class Grapple : MonoBehaviour
         grappling = false;
         grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
-
-        FinalGrappleBoost();
 
         lr.enabled = false;
     }
