@@ -14,24 +14,38 @@ public class TransitionManager : MonoBehaviour
     public CanvasGroup gameOverScreen;
     public CanvasGroup winScreenCanvasGroup;
     public GameObject pauseScreen;
+    [HideInInspector] public bool isMainMenu;
 
     private void Awake()
     {
         instance = this;
+
+        isMainMenu = true;
     }
 
     private void Update()
     {
-        PauseAndResume();
-
-        GameOverScreen();
-
-        WinScreen();
-
-        if (!isGameOver && Input.GetKey(KeyCode.R))
+        if (!isMainMenu)
         {
-            RestartGame();
+            PauseAndResume();
+
+            GameOverScreen();
+
+            WinScreen();
+
+            if (!isGameOver && Input.GetKey(KeyCode.R))
+            {
+                RestartGame();
+            }
         }
+
+        if(SceneManager.GetActiveScene().buildIndex == 0)
+        {
+
+            isMainMenu = true;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else { isMainMenu = false; }
     }
 
     public void RestartGame()
@@ -133,6 +147,7 @@ public class TransitionManager : MonoBehaviour
     public void MainMenuOpen()
     {
         OpenScene("Menu");
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void QuitGame()

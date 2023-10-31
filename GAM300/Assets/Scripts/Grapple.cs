@@ -9,7 +9,6 @@ public class Grapple : MonoBehaviour
 {
     [Header("References")]
     private KartController kc;
-    public Transform cam;
     public Transform grappleStart;
     public LayerMask canBeGrappled;
     public LineRenderer lr;
@@ -84,7 +83,7 @@ public class Grapple : MonoBehaviour
         }
         if (closestMidAnchor != null) //MidAnchor
         {
-            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
+            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance && !TransitionManager.instance.isMainMenu)
             {
                 grappleRemoveKey = grappleKey;
                 grappleAnchor = FindClosestMidAnchor().transform;
@@ -93,6 +92,34 @@ public class Grapple : MonoBehaviour
                 if (grappling && grappleAnchor != null)
                 {
                     InitialGrappleBoost();
+                }
+            }
+
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////// FOR MAIN MENU
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            
+            if (TransitionManager.instance.isMainMenu && Fade.instance.titleFinish && !Fade.instance.isAtMenu && !Fade.instance.howToPlay) 
+            {
+                if (Input.GetKey(KeyCode.Space))
+                {
+                    grappling = true;
+
+                    grappleAnchor = FindClosestMidAnchor().transform;
+
+                    RaycastHit hit;
+
+                    if (Physics.Raycast(grappleStart.position, (grappleAnchor.position - grappleStart.position), out hit, maxGrappleDistance, canBeGrappled))
+                    {
+                        grapplePoint = hit.point;
+
+                        //Invoke(nameof(GrappleAnchor), grappleDelayTime);
+                    }
+
+                    lr.enabled = true;
+                    lr.SetPosition(1, grapplePoint);
+
+                    Invoke(nameof(StopGrapple), 2f);
                 }
             }
         }
@@ -248,15 +275,18 @@ public class Grapple : MonoBehaviour
 
     private void BoostBattery()
     {
-        if (grappling)
+        if (!TransitionManager.instance.isMainMenu)
         {
-            if (kc.currentBattery < kc.maxBattery)
-                kc.currentBattery += 2f * Time.deltaTime;
-        }
-        else
-        {
-            if (kc.currentBattery > 0)
-                kc.currentBattery -= 1.5f * Time.deltaTime;
+            if (grappling)
+            {
+                if (kc.currentBattery < kc.maxBattery)
+                    kc.currentBattery += 2f * Time.deltaTime;
+            }
+            else
+            {
+                if (kc.currentBattery > 0)
+                    kc.currentBattery -= 1.5f * Time.deltaTime;
+            }
         }
     }
 
