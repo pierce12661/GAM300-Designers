@@ -38,6 +38,11 @@ public class KartController : MonoBehaviour
     [HideInInspector] public float slowSteer;
     [HideInInspector] public float oringalSteerSpeed;
 
+    //Boost Battery
+    [HideInInspector] public float currentBattery;
+    [HideInInspector] public float maxBattery;
+    [HideInInspector] public float batteryPercentage;
+
     // Rotation
     private float newRotation;
     private float maxSteerAngle = 40f;
@@ -66,15 +71,16 @@ public class KartController : MonoBehaviour
     private float finalBoostSpeed;
     [SerializeField] private float boostCountdown;
     [SerializeField] private float finalBoostCountdown;
-
-    //Particles
-
-
+    
     //Traps
     [HideInInspector] public bool trapHit;
     [HideInInspector] public bool stunned;
+    [HideInInspector] public bool isNotOnRoad;
 
     public Vector3 respawnPoint;
+
+
+    private float targetAirForce;
 
     private void Start()
     {
@@ -125,16 +131,18 @@ public class KartController : MonoBehaviour
         {
             airTime += 1.0f * Time.deltaTime;
 
-            if(airTime > 0.25f)
+            if (airTime > 0.15f)
             {
-                sphere.AddForce(-transform.up * 23, ForceMode.Acceleration);
+                targetAirForce += 20.0f * Time.deltaTime;
+                sphere.AddForce(-transform.up * targetAirForce, ForceMode.Acceleration); //23
             }
         }
         else
         {
             airTime = 0;
-
-            sphere.AddForce(-transform.up * 100, ForceMode.Acceleration);
+            targetAirForce = 0;
+          
+            sphere.AddForce(-transform.up * 100, ForceMode.Acceleration); //fake Gravity
         }
     }
 
@@ -324,7 +332,7 @@ public class KartController : MonoBehaviour
         Quaternion negativeNewAngle = Quaternion.Euler(0, -maxSteerAngle, 0);
         Quaternion defaultAngle = Quaternion.Euler(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
             frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
@@ -341,7 +349,7 @@ public class KartController : MonoBehaviour
             //}
             
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        else if (Input.GetKey(KeyCode.LeftArrow))
         {
             frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
             frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
@@ -379,6 +387,16 @@ public class KartController : MonoBehaviour
         {
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.FromToRotation(transform.up * 2, hit.normal) * transform.rotation, 7.5f * Time.deltaTime);
             touchingGround = true;
+
+            if(hit.collider.gameObject.tag != "Road")
+            {
+                isNotOnRoad = true;
+            }
+            else
+            {
+                isNotOnRoad = false;
+            }
+
         }
         else
         {
@@ -390,8 +408,8 @@ public class KartController : MonoBehaviour
     public void SpeedSettings()
     {
         originalSpeed = maxSpeed; //set an original speed so that when speed is boosted by grappler, the speed boost is temporary and will lerp back to original speed
-        initialBoostSpeed = maxSpeed * 1.05f; //sets a max speed
-        finalBoostSpeed = maxSpeed * 1.15f; //sets a max speed
+        initialBoostSpeed = maxSpeed * 1.10f; //sets a max speed
+        finalBoostSpeed = initialBoostSpeed; //sets a max speed
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed * 0.3f; //sets a slow debuff speed
@@ -399,6 +417,10 @@ public class KartController : MonoBehaviour
         boostSteer = steerSpeed / 1.15f; 
         slowSteer = steerSpeed / 6;
         oringalSteerSpeed = steerSpeed;
+
+        //BatterySettings
+        maxBattery = 5f;
+        currentBattery = 0f;
     }
 
     public float GetMaxSpeed()
@@ -406,12 +428,19 @@ public class KartController : MonoBehaviour
         return maxSpeed;
     }
 
+    public float GetBatteryPercentage()
+    {
+        float percentage = currentBattery / maxBattery;
+
+        return percentage;
+    }
+
     public void InitialBoostKart()
     {
         isInitialBoosting = true;
         maxSpeed = initialBoostSpeed;
 
-        sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
+        //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
         CameraShake.instance.BoostShake();
         AudioManager.Instance.PlayDrift();
@@ -419,10 +448,13 @@ public class KartController : MonoBehaviour
 
     public void FinalBoostKart()
     {
-        isFinalBoosting = true;
-        maxSpeed = finalBoostSpeed;
+        batteryPercentage = GetBatteryPercentage();
 
-        sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
+        isFinalBoosting = true;
+        maxSpeed = finalBoostSpeed * (1 + (currentBattery/maxBattery / 2));
+
+        Debug.Log(maxSpeed + " final boost speed");
+        //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
     }
 
@@ -432,15 +464,15 @@ public class KartController : MonoBehaviour
         {
             boostCountdown -= 1.0f * Time.deltaTime;
         }
-        else if (isFinalBoosting && finalBoostCountdown > 0)
+        else if (isFinalBoosting && currentBattery > 0)
         {
             isInitialBoosting = false;
-            finalBoostCountdown -= 1.0f * Time.deltaTime;
+            //finalBoostCountdown -= 1.0f * Time.deltaTime;
         }
         else
         {
             boostCountdown = 2f;
-            finalBoostCountdown = 2f;
+            //finalBoostCountdown = 2f;
             maxSpeed = Mathf.Lerp(maxSpeed, originalSpeed, 2.0f * Time.deltaTime); //Lerps back to original speed in case of speed boost
             isInitialBoosting = false;
             isFinalBoosting = false;

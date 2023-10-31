@@ -32,20 +32,20 @@ public class CrashFeedback : MonoBehaviour
             {
                 forceTime += 1.0f * Time.deltaTime;
 
-                //Vector3 direction = kc.sphere.transform.position - KartCollisionDetector.instance.crashPoint;
+                Vector3 direction = kc.sphere.transform.position - KartCollisionDetector.instance.crashPoint;
 
-                //Debug.Log("forceTime working");
+                Debug.Log("forceTime working");
 
-                //if (kc.realSpeed < 12)
-                //{
-                //    multiplier = 10;
-                //}
-                //else
-                //{
-                //    multiplier = 5;
-                //}
+                if (kc.realSpeed < 12)
+                {
+                    multiplier = 40;
+                }
+                else
+                {
+                    multiplier = 50;
+                }
 
-                //kc.sphere.AddForce(direction * multiplier, ForceMode.Acceleration);
+                kc.sphere.AddForce(direction * multiplier, ForceMode.Acceleration);
             }
             else
             {
@@ -57,11 +57,11 @@ public class CrashFeedback : MonoBehaviour
 
     public void BoolCheck()
     {
-        if (KartCollisionDetector.instance.wallCrash)
+        if (KartCollisionDetector.instance.wallCrash && !kc.isNotOnRoad)
         {
-            if(kc.currentSpeed > -1f)
+            if(kc.currentSpeed > -2f)
             {
-                kc.currentSpeed -= 3 * (kc.currentSpeed / kc.maxSpeed);
+                kc.currentSpeed -= 4 * (kc.currentSpeed / kc.maxSpeed);
             }
 
             bounceBack = true;

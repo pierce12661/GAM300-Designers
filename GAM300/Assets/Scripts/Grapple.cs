@@ -25,6 +25,7 @@ public class Grapple : MonoBehaviour
     public SpringJoint joint;
     public Transform grappleAnchor;
     public GameObject closestAnchor;
+    public GameObject closestMidAnchor;
     public bool hasGrappled;
     private Vector3 grapplePoint;
     //public bool grappleStopped;
@@ -33,20 +34,29 @@ public class Grapple : MonoBehaviour
     public float grapplingCD;
     private float grapplingCDTimer;
 
+    //Destroy prev anchor
+    [SerializeField] private float destroyAnchorCountdown;
+    private float initialDestroyAnchorCD;
+    private bool prevAnchorIsDestroying = false;
+    [SerializeField] private float destroyMidAnchorCountdown;
+    private float initialDestroyMidAnchorCD;
+    private bool prevMidAnchorIsDestroying = false;
+
     [Header("Inputs")]
-    //public KeyCode grappleKeyLeft = KeyCode.Z;
-    //public KeyCode grappleKeyMid = KeyCode.X;
-    //public KeyCode grappleKeyRight = KeyCode.C;
     public KeyCode grappleKey;
     public KeyCode grappleRemoveKey;
 
     private bool grappling;
-    private bool sideGrapples;
+    private bool midGrappleBoost = false;
+    [HideInInspector] public bool sideGrapples;
 
     // Start is called before the first frame update
     void Start()
     {
         kc = GetComponent<KartController>();
+        initialDestroyAnchorCD = destroyAnchorCountdown;
+        initialDestroyAnchorCD = destroyMidAnchorCountdown;
+
         grappleKey = KeyCode.Space;
         grappleRemoveKey = KeyCode.None;
     }
@@ -57,66 +67,57 @@ public class Grapple : MonoBehaviour
         #region Grapple Inputs
         if (closestAnchor != null)
         {
-            if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance (grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+
+            //SideAnchors
+            if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 grappleRemoveKey = grappleKey;
                 grappleAnchor = FindClosestAnchor().transform;
                 StartGrappleAnchor();
-                
-                FeedbackHUD.instance.boosted = true;
-                StartGrappleBoost();
+
+                if (grappling && grappleAnchor != null)
+                {
+                    sideGrapples = true;
+                    InitialGrappleBoost();
+                }
             }
-            
-            //if (joint == null && Input.GetKeyDown(grappleKeyLeft) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
-            //{
-            //    grappleRemoveKey = grappleKeyLeft;
-            //    grappleAnchor = FindClosestLeftAnchor().transform;
-            //    StartGrappleAnchor();
-
-            //    sideGrapples = true;
-
-            //    StartGrappleBoost();
-            //}
-            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+        }
+        if (closestMidAnchor != null) //MidAnchor
+        {
+            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
             {
                 grappleRemoveKey = grappleKey;
                 grappleAnchor = FindClosestMidAnchor().transform;
                 StartGrappleBoost();
+
+                if (grappling && grappleAnchor != null)
+                {
+                    InitialGrappleBoost();
+                }
             }
-
-            //if (joint == null && Input.GetKeyDown(grappleKeyRight) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
-            //{
-            //    grappleRemoveKey = grappleKeyRight;
-            //    grappleAnchor = FindClosestRightAnchor().transform;
-            //    StartGrappleAnchor();
-
-            //    sideGrapples = true;
-                
-            //    StartGrappleBoost();
-            //}
-            
         }
         #endregion
 
         #region StopAnchor/StopGrapple
-        //maxSpeed = kc.GetMaxSpeed();
-        //if (maxSpeed > 30f && maxSpeed < 33f)
-        //{
-        //    StopGrapple();
-        //}
-
         if (Input.GetKeyUp(grappleRemoveKey))
         {
-            /*
-            if (joint != null)
+            if (joint != null && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
                 StopAnchor();
+                FinalGrappleBoost();
+                StartAnchorDestroyCD();
             }
-            else StopGrapple();
-            */
-            StopAnchor();
+
+            if (Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
+            {
+                StopGrapple();
+                FinalGrappleBoost();
+                StartMidAnchorDestroyCD();
+            }
         }
         #endregion
+
+        BoostBattery();
 
         // if timer > 0, keep counting down
         if (grapplingCDTimer > 0)
@@ -124,9 +125,24 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
+        if (destroyAnchorCountdown < 0 && prevAnchorIsDestroying)
+        {
+            prevAnchorIsDestroying = false;
+            destroyAnchorCountdown = initialDestroyAnchorCD;
+            Destroy(closestAnchor);
+        }
+
+        if (destroyMidAnchorCountdown < 0 && prevMidAnchorIsDestroying)
+        {
+            prevMidAnchorIsDestroying = false;
+            destroyMidAnchorCountdown = initialDestroyMidAnchorCD;
+            Destroy(closestMidAnchor);
+        }
+
         closestAnchor = FindClosestAnchor();
+        closestMidAnchor = FindClosestMidAnchor();
     }
-    
+
     void LateUpdate()
     {
         if (grappling && grappleAnchor != null)
@@ -138,7 +154,6 @@ public class Grapple : MonoBehaviour
         }
         else grapplerObj.transform.LookAt(grappleLookAt.transform);
     }
-
     private void StartGrappleBoost()
     {
         if (grapplingCDTimer > 0)
@@ -150,22 +165,21 @@ public class Grapple : MonoBehaviour
 
         // shoot line renderer in straight line from grappler start point to anchor point
         RaycastHit hit;
-        if (Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+        if (Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
         {
             if (Physics.Raycast(grappleStart.position, (grappleAnchor.position - grappleStart.position), out hit, maxGrappleDistance, canBeGrappled))
             {
                 grapplePoint = hit.point;
 
-                Invoke(nameof(InitialGrappleBoost), grappleDelayTime);
+                //Invoke(nameof(InitialGrappleBoost), grappleDelayTime);
             }
-            //else
-            //{
-            //    grapplePoint = cam.position + cam.forward * maxGrappleDistance;
 
-            //    Invoke(nameof(StopGrapple), grappleDelayTime);
-            //}
             lr.enabled = true;
             lr.SetPosition(1, grapplePoint);
+
+            CameraShake.instance.BoostShake();
+
+            prevMidAnchorIsDestroying = true;
         }
     }
 
@@ -188,16 +202,13 @@ public class Grapple : MonoBehaviour
 
                 Invoke(nameof(GrappleAnchor), grappleDelayTime);
             }
-            //else
-            //{
-            //    grapplePoint = cam.position + cam.forward * maxGrappleDistance;
 
-            //    Invoke(nameof(StopAnchor), grappleDelayTime);
-            //}
             lr.enabled = true;
             lr.SetPosition(1, grapplePoint);
 
             CameraShake.instance.BoostShake();
+
+            prevAnchorIsDestroying = true;
         }
     }
 
@@ -210,12 +221,12 @@ public class Grapple : MonoBehaviour
         float distanceFromPoint = Vector3.Distance(grappleStart.position, grappleAnchor.position);
 
         // distance that grapple will try to keep from grapple point, increaing max will increase length of the grapple
-        joint.maxDistance = distanceFromPoint * 0.1f;
+        joint.maxDistance = distanceFromPoint * 0.2f;
         joint.minDistance = distanceFromPoint * 0f;
 
         // values
-        joint.spring = 15f;
-        joint.damper = 10f;
+        joint.spring = 40f;
+        joint.damper = 40f;
         joint.massScale = 5f;
     }
 
@@ -235,14 +246,28 @@ public class Grapple : MonoBehaviour
         }
     }
 
-    /*private void StopGrapple()
+    private void BoostBattery()
+    {
+        if (grappling)
+        {
+            if (kc.currentBattery < kc.maxBattery)
+                kc.currentBattery += 2f * Time.deltaTime;
+        }
+        else
+        {
+            if (kc.currentBattery > 0)
+                kc.currentBattery -= 1.5f * Time.deltaTime;
+        }
+    }
+
+    private void StopGrapple()
     {
         grappling = false;
-        grapplingCDTimer = grapplingCD;
+        //grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
 
         lr.enabled = false;
-    }*/
+    }
 
     private void StopAnchor()
     {
@@ -253,8 +278,6 @@ public class Grapple : MonoBehaviour
         grappling = false;
         grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
-
-        FinalGrappleBoost();
 
         lr.enabled = false;
     }
@@ -268,34 +291,20 @@ public class Grapple : MonoBehaviour
         foreach (GameObject GO in GOs)
         {
             Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
+
+            if (diff.y <= 14)
             {
-                closest = GO;
-                dist = currentDist;
+                float currentDist = diff.sqrMagnitude;
+                if (currentDist < dist)
+                {
+                    closest = GO;
+                    dist = currentDist;
+                }
             }
         }
         return closest;
     }
 
-    //public GameObject FindClosestLeftAnchor()
-    //{
-    //    GameObject[] GOs = GameObject.FindGameObjectsWithTag("LeftAnchor");
-    //    GameObject closest = null;
-    //    float dist = Mathf.Infinity;
-    //    Vector3 pos = transform.position;
-    //    foreach (GameObject GO in GOs)
-    //    {
-    //        Vector3 diff = GO.transform.position - pos;
-    //        float currentDist = diff.sqrMagnitude;
-    //        if (currentDist < dist)
-    //        {
-    //            closest = GO;
-    //            dist = currentDist;
-    //        }
-    //    }
-    //    return closest;
-    //}
     public GameObject FindClosestMidAnchor()
     {
         GameObject[] GOs = GameObject.FindGameObjectsWithTag("MidAnchor");
@@ -305,32 +314,35 @@ public class Grapple : MonoBehaviour
         foreach (GameObject GO in GOs)
         {
             Vector3 diff = GO.transform.position - pos;
-            float currentDist = diff.sqrMagnitude;
-            if (currentDist < dist)
+
+            //Debug.Log(diff + "diff value");
+
+            if(diff.y <= 70)
             {
-                closest = GO;
-                dist = currentDist;
+                float currentDist = diff.sqrMagnitude;
+                if (currentDist < dist)
+                {
+                    closest = GO;
+                    dist = currentDist;
+                }
             }
         }
         return closest;
     }
-    //public GameObject FindClosestRightAnchor()
-    //{
-    //    GameObject[] GOs = GameObject.FindGameObjectsWithTag("RightAnchor");
-    //    GameObject closest = null;
-    //    float dist = Mathf.Infinity;
-    //    Vector3 pos = transform.position;
-    //    foreach (GameObject GO in GOs)
-    //    {
-    //        Vector3 diff = GO.transform.position - pos;
-    //        float currentDist = diff.sqrMagnitude;
-    //        if (currentDist < dist)
-    //        {
-    //            closest = GO;
-    //            dist = currentDist;
-    //        }
-    //    }
-    //    return closest;
-    //}
 
+     public void StartAnchorDestroyCD()
+    {
+        if (prevAnchorIsDestroying) 
+        {
+            destroyAnchorCountdown -= Time.deltaTime;
+        }
+    }
+
+    public void StartMidAnchorDestroyCD()
+    {
+        if (prevMidAnchorIsDestroying)
+        {
+            destroyMidAnchorCountdown -= Time.deltaTime;
+        }
+    }
 }
