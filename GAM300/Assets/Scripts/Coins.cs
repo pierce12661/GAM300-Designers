@@ -9,6 +9,11 @@ public class Coins : MonoBehaviour
     public static float coinCount;
     public float finalScore;
 
+    void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,7 +33,7 @@ public class Coins : MonoBehaviour
 
     public void CalculateFinalScore()
     {
-        finalScore = coinCount * (TimeAttack.instance.currentTime / 5);
+        finalScore = coinCount * (TimeAttack.instance.currentTime / 2);
     }
 
     private void OnTriggerEnter(Collider other)

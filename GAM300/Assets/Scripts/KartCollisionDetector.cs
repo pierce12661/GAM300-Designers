@@ -5,6 +5,7 @@ using UnityEngine;
 public class KartCollisionDetector : MonoBehaviour
 {
     public static KartCollisionDetector instance;
+    private KartController kc;
 
     [HideInInspector] public bool hasCrashed;
     [HideInInspector] public bool wallCrash;
@@ -16,6 +17,11 @@ public class KartCollisionDetector : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+
+    private void Start()
+    {
+        kc = GameObject.FindGameObjectWithTag("Player").GetComponent<KartController>();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -40,6 +46,23 @@ public class KartCollisionDetector : MonoBehaviour
         {
             hasCrashed = false;
             wallCrash = false;
+        }
+    }
+
+    public void Respawn()
+    {
+        if (RespawnManager.instance) RespawnManager.instance.Respawn(transform);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        RespawnManager.instance.GetRespawnPoint();
+        if (other.CompareTag("OOB"))
+        {
+            Debug.Log("Out of Bounds!");
+            kc.currentSpeed = 0;
+            kc.transform.LookAt(other.transform);
+            Respawn();
         }
     }
 }

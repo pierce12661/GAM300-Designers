@@ -43,7 +43,6 @@ public class Grapple : MonoBehaviour
 
     [Header("Inputs")]
     public KeyCode grappleKey;
-    public KeyCode grappleRemoveKey;
 
     private bool grappling;
     private bool sideGrapples;
@@ -56,22 +55,24 @@ public class Grapple : MonoBehaviour
         initialDestroyAnchorCD = destroyMidAnchorCountdown;
 
         grappleKey = KeyCode.Space;
-        grappleRemoveKey = KeyCode.None;
     }
 
     // Update is called once per frame
     void Update()
     {
+        #region Find Closest Anchor
+        closestAnchor = FindClosestAnchor();
+        closestMidAnchor = FindClosestMidAnchor();
+        #endregion
+
         #region Grapple Inputs
         // Used to grapple to side anchors
         if (closestAnchor != null)
         {
-
             //SideAnchors
-            if (joint == null && Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
             {
-                grappleRemoveKey = grappleKey;
-                grappleAnchor = FindClosestAnchor().transform;
+                grappleAnchor = closestAnchor.transform;
                 StartGrappleAnchor();
 
                 if (grappling && grappleAnchor != null)
@@ -86,8 +87,7 @@ public class Grapple : MonoBehaviour
         {
             if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance)
             {
-                grappleRemoveKey = grappleKey;
-                grappleAnchor = FindClosestMidAnchor().transform;
+                grappleAnchor = closestMidAnchor.transform;
                 isGrapplingMid = true;
                 StartGrappleBoost();
 
@@ -100,7 +100,7 @@ public class Grapple : MonoBehaviour
         #endregion
 
         #region StopAnchor/StopGrapple
-        if (Input.GetKeyUp(grappleRemoveKey))
+        if (Input.GetKeyUp(grappleKey))
         {
             // if joint is active, and within distance of closest anchor,
             // releasing space will disable line renderer, perform final boost and destroy that anchor
@@ -146,11 +146,6 @@ public class Grapple : MonoBehaviour
         }
         #endregion
 
-        #region Find Closest Anchor
-        closestAnchor = FindClosestAnchor();
-        closestMidAnchor = FindClosestMidAnchor();
-        #endregion
-
         // if space is still being held after exiting maxGrappleDistance, detach anchor and performs boost (Side Anchor)
         if (joint != null && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) > maxGrappleDistance)
         {
@@ -162,6 +157,7 @@ public class Grapple : MonoBehaviour
         // if space is still being held after exiting maxGrappleDistance, detach anchor and performs boost (Mid Anchor)
         if (isGrapplingMid && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) > maxGrappleDistance)
         {
+            isGrapplingMid = false;
             StopGrapple();
             FinalGrappleBoost();
             StartMidAnchorDestroyCD();
@@ -261,7 +257,7 @@ public class Grapple : MonoBehaviour
         kc.InitialBoostKart();
     }
 
-    private void FinalGrappleBoost()
+    public void FinalGrappleBoost()
     {
         kc.FinalBoostKart();
 
@@ -286,16 +282,18 @@ public class Grapple : MonoBehaviour
         }
     }
 
-    private void StopGrapple()
+    public void StopGrapple()
     {
         grappling = false;
         //grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
 
         lr.enabled = false;
+
+        if (Input.GetKey(grappleKey)) Input.GetKeyUp(grappleKey);
     }
 
-    private void StopAnchor()
+    public void StopAnchor()
     {
         Destroy(joint);
         Destroy(gameObject.GetComponent<Rigidbody>());
@@ -306,6 +304,8 @@ public class Grapple : MonoBehaviour
         grappleAnchor = null;
 
         lr.enabled = false;
+
+        if (Input.GetKey(grappleKey)) Input.GetKeyUp(grappleKey);
     }
 
     public GameObject FindClosestAnchor()

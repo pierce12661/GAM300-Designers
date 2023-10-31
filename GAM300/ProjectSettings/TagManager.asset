@@ -4,13 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - LeftAnchor
   - MidAnchor
-  - RightAnchor
   - Anchors
   - Road
   - KartTag
   - Trap
+  - RespawnLookAt
+  - LeftAnchor
+  - RightAnchor
+  - OOB
   layers:
   - Default
   - TransparentFX

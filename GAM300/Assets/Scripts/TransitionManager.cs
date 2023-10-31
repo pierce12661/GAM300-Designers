@@ -49,6 +49,8 @@ public class TransitionManager : MonoBehaviour
 
     public void WinGame()
     {
+        Coins.instance.CalculateFinalScore();
+        Debug.Log(Coins.instance.finalScore);
         gameWin = true;
 
         Cursor.lockState = CursorLockMode.None;
