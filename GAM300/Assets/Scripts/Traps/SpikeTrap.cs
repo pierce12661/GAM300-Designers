@@ -34,6 +34,7 @@ public class SpikeTrap : MonoBehaviour
         if(other.name == "Sphere")
         {
             KartCollisionDetector.instance.isSpinning = true;
+            AudioManager.instance.PlaySpikeTrapHit();
         }
     }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     private static AudioManager _instance;
-    public static AudioManager Instance
+    public static AudioManager instance
     {
         get
         {
@@ -43,4 +43,89 @@ public class AudioManager : MonoBehaviour
     {
          _aSource.PlayOneShot(_aClips[0]);
     }
+
+    public void PlayExhaustBurst()
+    {
+        _aSource.PlayOneShot(_aClips[1]);
+    }
+    public void PlayBoostBurst()
+    {
+        _aSource.PlayOneShot(_aClips[2]);
+    }
+    public void PlayRev_1()
+    {
+        _aSource.PlayOneShot(_aClips[3]);
+    }
+    public void PlayBraking()
+    {
+        _aSource.PlayOneShot(_aClips[4]);
+    }
+    public void PlayShootGrappler()
+    {
+        _aSource.PlayOneShot(_aClips[5]);
+    }
+    public void PlayFallOutMap()
+    {
+        _aSource.PlayOneShot(_aClips[6]);
+    }
+    public void PlaySpikeTrapHit()
+    {
+        _aSource.PlayOneShot(_aClips[7]);
+    }
+    public void PlayCheckpoint()
+    {
+        _aSource.PlayOneShot(_aClips[8]);
+    }
+    public void PlayCoinPickUp()
+    {
+        _aSource.PlayOneShot(_aClips[9]);
+    }
+    public void PlayFlame()
+    {
+        _aSource.PlayOneShot(_aClips[10]);
+    }
+
+
+
+    #region MenuSounds
+    public void ButtonHover()
+    {
+        _aSource.PlayOneShot(_aClips[0]);
+    }
+
+    public void Select()
+    {
+        _aSource.PlayOneShot(_aClips[1]);
+    }
+
+    public void MenuGrappler()
+    {
+        _aSource.PlayOneShot(_aClips[2]);
+    }
+
+    public void MenuSkid()
+    {
+        _aSource.PlayOneShot(_aClips[3]);
+    }
+    public void InvokeMenuSkid(float timer)
+    {
+        Invoke("MenuSkid", timer);
+    }
+
+    public void MenuRev()
+    {
+        _aSource.PlayOneShot(_aClips[4]);
+    }
+
+    public void InvokeMenuRev(float timer)
+    {
+        Invoke("MenuRev", timer);
+    }
+
+    public void MenuStartGame()
+    {
+        _aSource.PlayOneShot(_aClips[5]);
+    }
+
+    #endregion Menu
 }

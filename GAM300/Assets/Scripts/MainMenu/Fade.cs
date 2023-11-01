@@ -139,6 +139,10 @@ public class Fade : MonoBehaviour
                     howToPlay = false;
                     failsafe = 0;
 
+                    AudioManager.instance.Select();
+                    AudioManager.instance.MenuGrappler();
+                    AudioManager.instance.InvokeMenuRev(0.3f);
+                    AudioManager.instance.InvokeMenuSkid(1.5f);
                     Invoke("MenuCheck", 2.2f);
                 }
             }

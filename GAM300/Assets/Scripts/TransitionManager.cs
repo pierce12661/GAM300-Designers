@@ -35,7 +35,9 @@ public class TransitionManager : MonoBehaviour
 
             if (!isGameOver && Input.GetKey(KeyCode.R))
             {
-                RestartGame();
+                //RestartGame();
+
+                KartCollisionDetector.instance.Respawn();
             }
         }
 

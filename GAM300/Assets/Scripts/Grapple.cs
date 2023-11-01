@@ -77,10 +77,14 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = closestAnchor.transform;
                 StartGrappleAnchor();
 
+                AudioManager.instance.PlayShootGrappler();
+                
+
                 if (grappling && grappleAnchor != null)
                 {
                     sideGrapples = true;
                     InitialGrappleBoost();
+                    AudioManager.instance.PlayDrift();
                 }
             }
         }
@@ -92,6 +96,8 @@ public class Grapple : MonoBehaviour
                 grappleAnchor = closestMidAnchor.transform;
                 isGrapplingMid = true;
                 StartGrappleBoost();
+
+                AudioManager.instance.PlayShootGrappler();
 
                 if (grappling && grappleAnchor != null)
                 {
@@ -130,7 +136,7 @@ public class Grapple : MonoBehaviour
         #endregion
 
         #region StopAnchor/StopGrapple
-        if (Input.GetKeyUp(grappleKey))
+        if (Input.GetKeyUp(grappleKey) && !TransitionManager.instance.isMainMenu)
         {
             // if joint is active, and within distance of closest anchor,
             // releasing space will disable line renderer, perform final boost and destroy that anchor

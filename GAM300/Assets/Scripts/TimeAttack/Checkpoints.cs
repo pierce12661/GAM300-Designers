@@ -21,6 +21,9 @@ public class Checkpoints : MonoBehaviour
             TimeAttack.instance.extendedTime = timeToExtend;
             TimeAttack.instance.currentTime += timeToExtend;
             TimeAttack.instance.TimeExtendText();
+
+            AudioManager.instance.PlayCheckpoint();
+
             hasPassed = true;
         }
         else

@@ -13,11 +13,23 @@ public class KartCollisionDetector : MonoBehaviour
     [HideInInspector] public Vector3 crashPoint;
     [HideInInspector] public Vector3 singlePoint;
 
+    public Transform test;
 
+    private bool onGrass;
     private void Awake()
     {
         instance = this;
     }
+
+    //private void Update()
+    //{
+    //    if (Input.GetKey(KeyCode.G))
+    //    {
+
+    //        RespawnManager.instance.SetRespawnPoint(test.position, test.rotation) ;
+    //        Respawn();
+    //    }
+    //}
 
     private void Start()
     {
@@ -26,7 +38,7 @@ public class KartCollisionDetector : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag != "Road" && collision.gameObject.layer != 6) //if not road or kart
+        if (collision.gameObject.tag != "Road" && collision.gameObject.layer != 6 && collision.gameObject.tag != "Grass") //if not road or kart
         {
             crashPoint = collision.GetContact(0).point;
 
@@ -42,7 +54,7 @@ public class KartCollisionDetector : MonoBehaviour
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.tag != "Road" && collision.gameObject.layer != 6)
+        if (collision.gameObject.tag != "Road" && collision.gameObject.layer != 6 && collision.gameObject.tag != "Grass")
         {
             hasCrashed = false;
             wallCrash = false;
@@ -52,22 +64,23 @@ public class KartCollisionDetector : MonoBehaviour
     public void Respawn()
     {
         if (RespawnManager.instance) RespawnManager.instance.Respawn(transform);
+
+        foreach (GameObject obj in kc.GetComponent<Grapple>().deactivatedAnchors)
+        {
+            obj.SetActive(true);
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        RespawnManager.instance.GetRespawnPoint();
+        //RespawnManager.instance.GetRespawnPoint();
         if (other.CompareTag("OOB"))
         {
             Debug.Log("Out of Bounds!");
             kc.currentSpeed = 0;
             kc.transform.LookAt(other.transform);
             Respawn();
-
-            foreach(GameObject obj in kc.GetComponent<Grapple>().deactivatedAnchors)
-            {
-                obj.SetActive(true);
-            }
+            AudioManager.instance.PlayFallOutMap();
         }
     }
 }

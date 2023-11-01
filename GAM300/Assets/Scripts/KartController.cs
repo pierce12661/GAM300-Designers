@@ -80,6 +80,8 @@ public class KartController : MonoBehaviour
 
     public Vector3 respawnPoint;
 
+    [HideInInspector] public bool hasRevved;
+    private float revCD;
 
     private float targetAirForce;
 
@@ -114,6 +116,13 @@ public class KartController : MonoBehaviour
         carRot = Quaternion.Euler(transform.localRotation.x, transform.localRotation.y, transform.localRotation.z);
 
         
+        if (revCD <= 0)
+        {
+            hasRevved = false;
+        }
+
+        Debug.Log(revCD);
+
     }
 
     private void FixedUpdate()
@@ -161,6 +170,12 @@ public class KartController : MonoBehaviour
                 if (touchingGround)
                 {
                     Accelerate();
+
+                    if (!hasRevved && acceleration > 0)
+                    {
+                        AudioManager.instance.PlayRev_1();
+                        hasRevved = true;
+                    }
                 }
             }
             else
@@ -174,10 +189,31 @@ public class KartController : MonoBehaviour
 
     public void Accelerate()
     {
+        if (revCD < 0.5f)
+        {
+            revCD += 2.0f * Time.deltaTime;
+        }
+
+
         if (acceleration < 0 && realSpeed > 0) //controlling the braking speed.
         {
+            if(!isBraking && realSpeed > 7)
+            {
+                AudioManager.instance.PlayBraking();
+            }
+
             isBraking = true;
             maxSpeed = brakeSpeed;
+
+            if(revCD > 0)
+            {
+                revCD -= 3.5f * Time.deltaTime;
+            }
+            else
+            {
+                revCD = 0;
+            }
+            
         }
 
 
@@ -196,6 +232,7 @@ public class KartController : MonoBehaviour
         else if(acceleration > 0) //normal acceleration
         {
             accelerationControl = Mathf.Lerp(accelerationControl, 0.5f * acceleration, 1.0f * Time.deltaTime);
+            isBraking = false;
         }
         else if(acceleration == 0) //release accelerator speed to slowly come to a stop
         {
@@ -213,11 +250,18 @@ public class KartController : MonoBehaviour
     {
         if (touchingGround)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.08f * Time.deltaTime); //Deccelerate till stop
+            if (revCD > 0f)
+            {
+                revCD -= 2.5f * Time.deltaTime;
+            }
+            else { revCD = 0; }
+
+            currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.08f * Time.deltaTime); //Deccelerate till stop 
         }
         else
         {
             currentSpeed = Mathf.Lerp(currentSpeed, 0, 0.4f * Time.deltaTime);
+            hasRevved = false;
         }
     }
 
@@ -237,6 +281,8 @@ public class KartController : MonoBehaviour
         {
             isReversing = true;
             maxSpeed = reverseSpeed; //25% of the original movespeed. caps reversing speed.
+
+
         }
         else
         {
@@ -327,6 +373,11 @@ public class KartController : MonoBehaviour
         }
     }
 
+    public void GrassSlow()
+    {
+
+    }
+
     public void TireRotation()
     {
         Quaternion positiveNewAngle = Quaternion.Euler(0, maxSteerAngle, 0);
@@ -392,6 +443,11 @@ public class KartController : MonoBehaviour
             if(hit.collider.gameObject.tag != "Road")
             {
                 isNotOnRoad = true;
+
+                if(hit.collider.gameObject.tag == "Grass")
+                {
+                    maxSpeed = slowSpeed;
+                }
             }
             else
             {
@@ -444,7 +500,6 @@ public class KartController : MonoBehaviour
         //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
 
         CameraShake.instance.BoostShake();
-        AudioManager.Instance.PlayDrift();
     }
 
     public void FinalBoostKart()
@@ -456,7 +511,6 @@ public class KartController : MonoBehaviour
 
         Debug.Log(maxSpeed + " final boost speed");
         //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force
-
     }
 
     public void BoostTimer()

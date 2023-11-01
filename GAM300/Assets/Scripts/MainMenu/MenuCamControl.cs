@@ -41,6 +41,10 @@ public class MenuCamControl : MonoBehaviour
                 Fade.instance.startScreenCanvas.GetComponent<Animator>().SetBool("GameStart", true);
 
                 Invoke("CheckingMenu", 3f);
+                AudioManager.instance.Select();
+                AudioManager.instance.MenuGrappler();
+                AudioManager.instance.InvokeMenuRev(0.5f);
+                AudioManager.instance.InvokeMenuSkid(3.2f);
             }
         }
         else

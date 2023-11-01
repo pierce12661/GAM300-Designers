@@ -32,7 +32,10 @@ public class MainMenuSelector : MonoBehaviour
     private void Start()
     {
         id = 0;
-        
+
+        AudioManager.instance.InvokeMenuSkid(1.3f);
+        AudioManager.instance.InvokeMenuRev(0.2f);
+
     }
     void Update()
     {
@@ -59,7 +62,8 @@ public class MainMenuSelector : MonoBehaviour
                 {
                     id = 2;
                 }
-                
+
+                AudioManager.instance.ButtonHover();
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -71,7 +75,9 @@ public class MainMenuSelector : MonoBehaviour
                 else
                 {
                     id = 0;
-                }   
+                }
+
+                AudioManager.instance.ButtonHover();
             }
         }
         else
@@ -129,18 +135,23 @@ public class MainMenuSelector : MonoBehaviour
             if (id == 0)
             {
                 Fade.instance.playGame = true;
-
+                //AudioManager.instance.MenuGrappler();
+                AudioManager.instance.MenuStartGame();
             }
             else if(id == 1)
             {
                 //OpenHowToPlay
                 Fade.instance.howToPlay = true;
                 Debug.Log("Open How To Play Screen");
+                AudioManager.instance.InvokeMenuRev(0.5f);
+                AudioManager.instance.InvokeMenuSkid(1.5f);
             }
             else
             {
                 confirmCheck = true;
             }
+
+            AudioManager.instance.Select();
         }
         
     }
@@ -154,10 +165,13 @@ public class MainMenuSelector : MonoBehaviour
             {
                 quitID = 1;
 
+                AudioManager.instance.ButtonHover();
             }
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 quitID = 0;
+
+                AudioManager.instance.ButtonHover();
             }
 
             for(int i = 0; i < quitSelect.Count; i++)
@@ -193,9 +207,13 @@ public class MainMenuSelector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if(quitID == 0)
+            AudioManager.instance.Select();
+
+            if (quitID == 0)
             {
                 confirmCheck = false;
+
+                
             }
             else
             {

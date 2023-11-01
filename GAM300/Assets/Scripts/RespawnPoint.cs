@@ -5,6 +5,7 @@ using UnityEngine;
 public class RespawnPoint : MonoBehaviour
 {
     private Grapple gs;
+    public Transform point;
     private void Start()
     {
         gs = GameObject.FindGameObjectWithTag("Player").GetComponent<Grapple>();
@@ -18,7 +19,7 @@ public class RespawnPoint : MonoBehaviour
         else
         {
             Debug.Log("Player passed Checkpoint!");
-            RespawnManager.instance.SetRespawnPoint(transform.position);
+            RespawnManager.instance.SetRespawnPoint(point.position,point.rotation );
             gs.deactivatedAnchors.Clear();
         }
     }

@@ -26,6 +26,9 @@ public class ParticlesScript : MonoBehaviour
 
     private bool crashCheck;
 
+    private bool burstHasPlayed;
+    private bool boostHasPlayed;
+
 
     private Vector3 boostSize = new Vector3(1.3f, 1.3f, 1.3f);
     private Vector3 initialBoostSize = new Vector3(0.45f, 0.45f, 0.45f);
@@ -67,18 +70,28 @@ public class ParticlesScript : MonoBehaviour
             SmokeRight.localScale = Vector3.Lerp(SmokeRight.localScale, boostSize, 20.0f * Time.deltaTime);
 
             boostParticleTimer = 0;
+
+            if (!boostHasPlayed) { AudioManager.instance.PlayBoostBurst(); AudioManager.instance.PlayFlame(); boostHasPlayed = true; }
         }
         else if (kc.acceleration > 0 && !KartCollisionDetector.instance.hasCrashed)
         {
             boostParticleTimer += 1.0f * Time.deltaTime;
 
-            if(boostParticleTimer < 1f)
+            if(boostParticleTimer < 0.2f)
             {
                 blastParticlesHolder.SetActive(true);
+
+                if (!burstHasPlayed)
+                {
+                    AudioManager.instance.PlayExhaustBurst();
+                    burstHasPlayed = true;
+                }
+                
             }
             else
             {
                 blastParticlesHolder.SetActive(false);
+                burstHasPlayed = false;
             }
             
             //exhaustParticles.transform.localScale = Vector3.Lerp(exhaustParticles.transform.localScale, Vector3.zero, 10.0f * Time.deltaTime);
@@ -90,6 +103,10 @@ public class ParticlesScript : MonoBehaviour
             blastParticlesHolder2.SetActive(false); //Deactivates all exhaust blastParticles
             //blastParticlesHolder.SetActive(false);
 
+            if (!kc.isFinalBoosting)
+            {
+                boostHasPlayed = false;
+            }
         }
         else
         {
@@ -104,6 +121,12 @@ public class ParticlesScript : MonoBehaviour
             blastParticlesHolder.SetActive(false);
 
             boostParticleTimer = 0;
+            burstHasPlayed = false;
+
+            if (!kc.isFinalBoosting)
+            {
+                boostHasPlayed = false;
+            }
         }
     }
 
@@ -138,22 +161,30 @@ public class ParticlesScript : MonoBehaviour
         if (kc.currentBattery / kc.maxBattery >= 0.2f && kc.currentBattery / kc.maxBattery <= 0.4f) //Activates first Blast
         {
             blastParticlesHolder.SetActive(true); //activate particles
+
+            if (!burstHasPlayed) { AudioManager.instance.PlayExhaustBurst(); burstHasPlayed = true; }
         }
         else if (kc.currentBattery / kc.maxBattery > 0.4f && kc.currentBattery / kc.maxBattery <= 0.45f) //Deactivates first blast
         {
             blastParticlesHolder.SetActive(false);
+            burstHasPlayed = false;
         }
-        else if(kc.currentBattery / kc.maxBattery > 0.5f && kc.currentBattery / kc.maxBattery <= 0.6f) //Activates second Blast
+        else if (kc.currentBattery / kc.maxBattery > 0.5f && kc.currentBattery / kc.maxBattery <= 0.6f) //Activates second Blast
         {
             blastParticlesHolder.SetActive(true);
+
+            if (!burstHasPlayed) { AudioManager.instance.PlayExhaustBurst(); burstHasPlayed = true; }
         }
-        else if(kc.currentBattery / kc.maxBattery > 0.6f && kc.currentBattery / kc.maxBattery <= 0.7f) //Deactivates second blast
+        else if (kc.currentBattery / kc.maxBattery > 0.6f && kc.currentBattery / kc.maxBattery <= 0.7f) //Deactivates second blast
         {
             blastParticlesHolder.SetActive(false);
+            burstHasPlayed = false;
         }
-        else if(kc.currentBattery / kc.maxBattery > 0.75f) //Activates third Blast
+        else if (kc.currentBattery / kc.maxBattery > 0.75f) //Activates third Blast
         {
             blastParticlesHolder.SetActive(true);
+
+            if (!burstHasPlayed) { AudioManager.instance.PlayExhaustBurst(); burstHasPlayed = true; }
         }
     }
 
