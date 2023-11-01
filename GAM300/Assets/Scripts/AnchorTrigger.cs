@@ -42,6 +42,9 @@ public class AnchorTrigger : MonoBehaviour
         if (other.name == "Sphere") 
         {
             isAnchorTrigger = false;
+            grappleScript.StopGrapple();
+            grappleScript.FinalGrappleBoost();
+            grappleScript.StartMidAnchorDestroyCD();
         }
     }
 

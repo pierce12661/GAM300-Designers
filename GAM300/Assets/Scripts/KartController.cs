@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using TMPro;
+using Unity.VisualScripting;
 
 public class KartController : MonoBehaviour
 {
@@ -477,15 +478,5 @@ public class KartController : MonoBehaviour
             isInitialBoosting = false;
             isFinalBoosting = false;
         }
-    }
-
-    public void SetRespawnLastLocation(Vector3 lastPos)
-    {
-        respawnPoint = lastPos;
-    }
-
-    public void RespawnLastLocation()
-    {
-        sphere.transform.position = respawnPoint;
     }
 }
