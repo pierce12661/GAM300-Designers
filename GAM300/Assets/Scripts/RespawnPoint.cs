@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class RespawnPoint : MonoBehaviour
 {
+    private Grapple gs;
+    private void Start()
+    {
+        gs = GameObject.FindGameObjectWithTag("Player").GetComponent<Grapple>();
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.name != "Sphere")
@@ -14,6 +19,7 @@ public class RespawnPoint : MonoBehaviour
         {
             Debug.Log("Player passed Checkpoint!");
             RespawnManager.instance.SetRespawnPoint(transform.position);
+            gs.deactivatedAnchors.Clear();
         }
     }
 }

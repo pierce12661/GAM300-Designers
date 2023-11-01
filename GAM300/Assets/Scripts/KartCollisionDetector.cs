@@ -63,6 +63,11 @@ public class KartCollisionDetector : MonoBehaviour
             kc.currentSpeed = 0;
             kc.transform.LookAt(other.transform);
             Respawn();
+
+            foreach(GameObject obj in kc.GetComponent<Grapple>().deactivatedAnchors)
+            {
+                obj.SetActive(true);
+            }
         }
     }
 }

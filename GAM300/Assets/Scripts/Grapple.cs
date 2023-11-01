@@ -47,6 +47,8 @@ public class Grapple : MonoBehaviour
     private bool midGrappleBoost = false;
     [HideInInspector] public bool sideGrapples;
 
+    [HideInInspector] public List<GameObject> deactivatedAnchors;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -164,13 +166,17 @@ public class Grapple : MonoBehaviour
         {
             prevAnchorIsDestroying = false;
             destroyAnchorCountdown = initialDestroyAnchorCD;
-            Destroy(closestAnchor);
+            closestAnchor.SetActive(false);
+
+            deactivatedAnchors.Add(closestAnchor);
         }
         if (destroyMidAnchorCountdown < 0 && prevMidAnchorIsDestroying)
         {
             prevMidAnchorIsDestroying = false;
             destroyMidAnchorCountdown = initialDestroyMidAnchorCD;
-            Destroy(closestMidAnchor);
+            closestMidAnchor.SetActive(false);
+
+            deactivatedAnchors.Add(closestMidAnchor);
         }
         #endregion
 
