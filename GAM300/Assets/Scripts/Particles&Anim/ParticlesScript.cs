@@ -17,8 +17,6 @@ public class ParticlesScript : MonoBehaviour
     [SerializeField] private Transform rear_Right_WheelParticles;
     [SerializeField] private Transform rear_Left_WheelParticles;
 
-    [SerializeField] private GameObject stunnedObject;
-
     [SerializeField] private Transform rearWheel_Right;
     [SerializeField] private Transform rearWheel_Left;
 
@@ -39,7 +37,6 @@ public class ParticlesScript : MonoBehaviour
 
         BoostParticles();
         SpeedParticles();
-        StunnedAnim();
         CrashParticles();
         WheelParticles();
     }
@@ -160,17 +157,17 @@ public class ParticlesScript : MonoBehaviour
         }
     }
 
-    public void StunnedAnim()
-    {
-        if (kc.stunned)
-        {
-            stunnedObject.SetActive(true);
-        }
-        else
-        {
-            stunnedObject.SetActive(false);
-        }
-    }
+    //public void StunnedAnim()
+    //{
+    //    if (kc.stunned)
+    //    {
+    //        stunnedObject.SetActive(true);
+    //    }
+    //    else
+    //    {
+    //        stunnedObject.SetActive(false);
+    //    }
+    //}
 
     public void CrashParticles()
     {
