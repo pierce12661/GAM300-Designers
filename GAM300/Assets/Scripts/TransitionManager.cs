@@ -52,6 +52,7 @@ public class TransitionManager : MonoBehaviour
     {
         OpenScene("Main");
         Time.timeScale = 1;
+        CoinManager.instance.ResetCoinCount();
     }
 
     public void GameOver()
@@ -63,8 +64,8 @@ public class TransitionManager : MonoBehaviour
 
     public void WinGame()
     {
-        Coins.instance.CalculateFinalScore();
-        Debug.Log(Coins.instance.finalScore);
+        CoinManager.instance.CalculateFinalScore();
+        Debug.Log(CoinManager.instance.finalScore);
         gameWin = true;
 
         Cursor.lockState = CursorLockMode.None;
