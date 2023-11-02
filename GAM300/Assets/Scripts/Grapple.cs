@@ -287,8 +287,8 @@ public class Grapple : MonoBehaviour
         joint.minDistance = distanceFromPoint * 0f;
 
         // values
-        joint.spring = 30f;
-        joint.damper = 25f;
+        joint.spring = 20f;
+        joint.damper = 40f;
         joint.massScale = 5f;
     }
 
