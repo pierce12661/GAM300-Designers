@@ -43,6 +43,8 @@ public class TimeAttack : MonoBehaviour
 
         TimeExtendAnim();
 
+        CheatCode();
+
     }
     public void TimeCountdown()
     {
@@ -105,5 +107,13 @@ public class TimeAttack : MonoBehaviour
     public void ShowTimer()
     {
         timerHUD.text = currentTime.ToString("f2");
+    }
+
+    public void CheatCode()
+    {
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            currentTime += 5f;
+        }
     }
 }

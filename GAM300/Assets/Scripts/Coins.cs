@@ -18,9 +18,7 @@ public class Coins : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        AddCoinCount();
         AudioManager.instance.PlayCoinPickUp();
-        Debug.Log(coinCount);
         CoinManager.instance.AddCoinCount();
         CoinManager.instance.UpdateCoinsHUD();
         Destroy(gameObject);
