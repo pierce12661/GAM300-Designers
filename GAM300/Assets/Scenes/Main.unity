@@ -477,7 +477,7 @@ MonoBehaviour:
   extendedTime: 0
   timeExtension: 0
   timerHUD: {fileID: 227883155}
-  extensionHUD: {fileID: 5756897873371030709, guid: a8aee8f283047ec409c2103c2902f2b5, type: 3}
+  extensionText: {fileID: 5756897873371030709, guid: a8aee8f283047ec409c2103c2902f2b5, type: 3}
 --- !u!4 &16058341
 Transform:
   m_ObjectHideFlags: 0
