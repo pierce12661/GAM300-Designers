@@ -31112,7 +31112,6 @@ MonoBehaviour:
   gameWin: 0
   gameOverScreen: {fileID: 683087969}
   winScreenCanvasGroup: {fileID: 1681745443}
-  pauseScreen: {fileID: 144742251}
   isMainMenu: 0
 --- !u!4 &892232334
 Transform:
@@ -58568,7 +58567,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 4d135756d6a02e749bee1907221aab4c, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.1
+  m_Volume: 0.053
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -61207,7 +61206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _aClips:
-  - {fileID: 8300000, guid: 2173b12f76687274e83078d10ed8bb35, type: 3}
+  - {fileID: 8300000, guid: d44ff68aee6f2db45a51814b3ec1c10d, type: 3}
   - {fileID: 8300000, guid: a87d2fff3de0f214ab734ee104058b80, type: 3}
   - {fileID: 8300000, guid: a89aa3154113aae459228bd7cd3cd2ce, type: 3}
   - {fileID: 8300000, guid: 6096d3e7e5659e34c8f79bdf20606dea, type: 3}
@@ -61240,7 +61239,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.3
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0

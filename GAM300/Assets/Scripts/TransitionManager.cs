@@ -11,9 +11,6 @@ public class TransitionManager : MonoBehaviour
     [HideInInspector] public bool isGameOver;
     [HideInInspector] public bool gameWin;
 
-    public CanvasGroup gameOverScreen;
-    public CanvasGroup winScreenCanvasGroup;
-    public GameObject pauseScreen;
     [HideInInspector] public bool isMainMenu;
 
     private void Awake()
@@ -48,6 +45,12 @@ public class TransitionManager : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
         else { isMainMenu = false; }
+
+
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            GameOver();
+        }
     }
 
     public void RestartGame()
@@ -69,8 +72,6 @@ public class TransitionManager : MonoBehaviour
         CoinManager.instance.CalculateFinalScore();
         Debug.Log(CoinManager.instance.finalScore);
         gameWin = true;
-
-        Cursor.lockState = CursorLockMode.None;
     }
 
     public void WinScreen()
@@ -79,18 +80,7 @@ public class TransitionManager : MonoBehaviour
         {
             if (gameWin)
             {
-                winScreenCanvasGroup.gameObject.SetActive(true);
-
-                winScreenCanvasGroup.alpha = Mathf.Lerp(winScreenCanvasGroup.alpha, 1, 3.0f * Time.unscaledDeltaTime);
-
-
-                Time.timeScale = Mathf.Lerp(Time.timeScale, 0.1f, 3.0f * Time.unscaledDeltaTime);
-            }
-            else
-            {
-                winScreenCanvasGroup.alpha = 0;
-
-                winScreenCanvasGroup.gameObject.SetActive(false);
+                Time.timeScale = Mathf.Lerp(Time.timeScale, 0.1f, 4.0f * Time.unscaledDeltaTime);
             }
         }
     }
@@ -99,31 +89,30 @@ public class TransitionManager : MonoBehaviour
     {
         if (isGameOver)
         {
-            gameOverScreen.gameObject.SetActive(true);
-
-            gameOverScreen.alpha = Mathf.Lerp(gameOverScreen.alpha, 1, 3.0f * Time.unscaledDeltaTime);
-
-            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.1f, 3.0f * Time.unscaledDeltaTime);
-        }
-        else
-        {
-            gameOverScreen.alpha = 0;
-            gameOverScreen.gameObject.SetActive(false);
+            Time.timeScale = Mathf.Lerp(Time.timeScale, 0.1f, 4.0f * Time.unscaledDeltaTime);
         }
     }
     public void PauseAndResume()
     {
-        if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
+        if (!isGameOver && !gameWin)
         {
-            if (!gameIsPaused)
+            if (Input.GetKeyDown(KeyCode.P) || Input.GetKeyDown(KeyCode.Escape))
             {
-                
-                PauseGame();
+                if (!gameIsPaused)
+                {
+
+                    PauseGame();
+                }
+                else
+                {
+                    if (PauseScreen.instance.ConfirmationCheck() == false && !PauseScreen.instance.buffer)
+                    {
+                        ResumeGame();
+                        AudioManager.instance.PlaySelect();
+                    }
+                }
             }
-            else
-            {
-                ResumeGame();
-            }
+            
         }
     }
 
@@ -131,11 +120,9 @@ public class TransitionManager : MonoBehaviour
     {
         gameIsPaused = true;
 
-        Cursor.lockState = CursorLockMode.None;
+        AudioManager.instance.PlaySelect();
 
         Time.timeScale = 0;
-
-        pauseScreen.SetActive(true);
     }
 
     public void ResumeGame()
@@ -145,8 +132,6 @@ public class TransitionManager : MonoBehaviour
         Time.timeScale = 1;
 
         Cursor.lockState = CursorLockMode.Locked;
-
-        pauseScreen.SetActive(false);
     }
 
     public void MainMenuOpen()

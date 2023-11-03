@@ -46,10 +46,13 @@ public class CameraShake : MonoBehaviour
         boostShakeStr = playerObj.GetComponent<KartController>().realSpeed / 30;
         crashShake = playerObj.GetComponent<KartController>().realSpeed / 8;
 
-        HighSpeedSmallShake(speedShake, cam.transform); //when at high speeds, will have slight constant shake
-        CameraShakeRotation(normalShake, 0.4f, cam.transform); //When crashing, shakes rotations a little bit.
-        BoostShake(boostShakeStr, 0.3f, cam.transform);
-        CrashShake(crashShake, 0.5f, cam.transform);
+        if(!TransitionManager.instance.isGameOver && !TransitionManager.instance.gameIsPaused && !TransitionManager.instance.gameWin)
+        {
+            HighSpeedSmallShake(speedShake, cam.transform); //when at high speeds, will have slight constant shake
+            CameraShakeRotation(normalShake, 0.4f, cam.transform); //When crashing, shakes rotations a little bit.
+            BoostShake(boostShakeStr, 0.3f, cam.transform);
+            CrashShake(crashShake, 0.5f, cam.transform);
+        }
     }
 
     private void LateUpdate()

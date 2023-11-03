@@ -48,14 +48,17 @@ public class TimeAttack : MonoBehaviour
     }
     public void TimeCountdown()
     {
-        if (!TransitionManager.instance.isGameOver)
+        if (!TransitionManager.instance.isGameOver && !TransitionManager.instance.gameWin)
         {
             currentTime -= 1.0f * Time.deltaTime;
             ColorChange();
         }
         else
         {
-            currentTime = 0f;
+            if (TransitionManager.instance.isGameOver)
+            {
+                currentTime = 0f;
+            }
         }
 
         if(currentTime <= 0)
