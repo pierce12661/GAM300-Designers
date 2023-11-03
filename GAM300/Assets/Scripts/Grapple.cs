@@ -166,6 +166,15 @@ public class Grapple : MonoBehaviour
             grapplingCDTimer -= Time.deltaTime;
         }
 
+        if(joint == null)
+        {
+            if(GetComponent<SpringJoint>()  != null)
+            {
+                Destroy(GetComponent<SpringJoint>());
+                Destroy(GetComponent<Rigidbody>());
+            }
+        }
+
         #region Destroy Previous Anchor
         // destroying anchor and mid anchor after releasing grapple
         if (destroyAnchorCountdown < 0 && prevAnchorIsDestroying)
@@ -341,13 +350,13 @@ public class Grapple : MonoBehaviour
         Destroy(joint);
         Destroy(gameObject.GetComponent<Rigidbody>());
 
-        joint = null;
+        
         grappling = false;
         grapplingCDTimer = grapplingCD;
         grappleAnchor = null;
 
         lr.enabled = false;
-
+        joint = null;
         if (Input.GetKey(grappleKey)) Input.GetKeyUp(grappleKey);
     }
 
