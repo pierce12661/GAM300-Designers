@@ -19,7 +19,7 @@ public class TimeAttack : MonoBehaviour
 
     public TextMeshProUGUI timerHUD;
 
-    public TextMeshProUGUI extensionHUD;
+    public TextMeshProUGUI extensionText;
 
     private Vector3 extensionTextPos;
 
@@ -97,10 +97,10 @@ public class TimeAttack : MonoBehaviour
 
     public void TimeExtendText()
     {
-        extensionHUD.text = "+ " + extendedTime;
+        extensionText.text = "+ " + extendedTime;
 
         //GameObject timeObj = Instantiate(extensionHUD.gameObject, extensionTextPos, Quaternion.identity);
-        GameObject timeObj = Instantiate(extensionHUD.gameObject,timerHUD.transform.parent);
+        GameObject timeObj = Instantiate(extensionText.gameObject,timerHUD.transform.parent);
 
     }
 

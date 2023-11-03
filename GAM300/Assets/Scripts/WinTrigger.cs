@@ -7,6 +7,7 @@ public class WinTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        TransitionManager.instance.WinGame();
+            TransitionManager.instance.WinGame();
+        
     }
 }
