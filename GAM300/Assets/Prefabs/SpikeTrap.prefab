@@ -120,6 +120,10 @@ PrefabInstance:
       propertyPath: m_ReceiveShadows
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 352017197298166820, guid: 0c53a15c31e985c44b30c15c8ff4798f, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 66afbe962e650e64ab6471e659f32b59, type: 2}
     - target: {fileID: 533193074659131909, guid: 0c53a15c31e985c44b30c15c8ff4798f, type: 3}
       propertyPath: m_LocalScale.y
       value: 0.8

@@ -13,6 +13,10 @@ public class TransitionManager : MonoBehaviour
 
     [HideInInspector] public bool isMainMenu;
 
+    private bool isCheating;
+
+    public Transform cheatScreen;
+
     private void Awake()
     {
         instance = this;
@@ -30,7 +34,9 @@ public class TransitionManager : MonoBehaviour
 
             WinScreen();
 
-            if (!isGameOver && Input.GetKey(KeyCode.R))
+            ShowCheats();
+
+            if (!isGameOver && !gameWin && !gameIsPaused && Input.GetKey(KeyCode.R))
             {
                 //RestartGame();
 
@@ -40,17 +46,52 @@ public class TransitionManager : MonoBehaviour
 
         if(SceneManager.GetActiveScene().buildIndex == 0)
         {
-
             isMainMenu = true;
             Cursor.lockState = CursorLockMode.Locked;
         }
         else { isMainMenu = false; }
 
 
-        if (Input.GetKeyDown(KeyCode.Alpha9))
+        //////////    Cheat Codes    //////////////
+
+        if(!isGameOver && !gameWin && !gameIsPaused)
         {
-            GameOver();
+            if (Input.GetKeyDown(KeyCode.Alpha7))
+            {
+                GameOver();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6))
+            {
+                WinGame();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5))
+            {
+                CoinManager.instance.AddCoinCount();
+                CoinManager.instance.UpdateCoinsHUD();
+                AudioManager.instance.PlayCoinPickUp();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4))
+            {
+                TimeAttack.instance.ToggleTimeAttack();
+                AudioManager.instance.PlayHover();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                TimeAttack.instance.IncreaseTime();
+                AudioManager.instance.PlayCheckpoint();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                KartCollisionDetector.instance.ToggleTraps();
+                AudioManager.instance.PlayHover();
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                ToggleCheats();
+                AudioManager.instance.PlaySpikeTrapHit();
+            }
         }
+        
     }
 
     public void RestartGame()
@@ -63,7 +104,7 @@ public class TransitionManager : MonoBehaviour
     public void GameOver()
     {
         isGameOver = true;
-
+        AudioManager.instance.PlayFallOutMap();
         Cursor.lockState = CursorLockMode.None;
     }
 
@@ -72,6 +113,8 @@ public class TransitionManager : MonoBehaviour
         CoinManager.instance.CalculateFinalScore();
         Debug.Log(CoinManager.instance.finalScore);
         gameWin = true;
+        AudioManager.instance.PlayCoinPickUp();
+        AudioManager.instance.PlayDrift();
     }
 
     public void WinScreen()
@@ -150,6 +193,30 @@ public class TransitionManager : MonoBehaviour
         SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
 
         Time.timeScale = 1;
+    }
+
+    public void ToggleCheats()
+    {
+        if (!isCheating)
+        {
+            isCheating = true;
+        }
+        else
+        {
+            isCheating = false;
+        }
+    }
+
+    public void ShowCheats()
+    {
+        if (isCheating)
+        {
+            cheatScreen.localScale = Vector3.Lerp(cheatScreen.localScale, new Vector3(0.007f, 0.007f, 0.007f), 14.0f * Time.deltaTime);
+        }
+        else
+        {
+            cheatScreen.localScale = Vector3.Lerp(cheatScreen.localScale,Vector3.zero, 18.0f * Time.deltaTime);
+        }
     }
     
 }

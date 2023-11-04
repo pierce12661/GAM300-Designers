@@ -16,6 +16,9 @@ public class KartCollisionDetector : MonoBehaviour
     public Transform test;
 
     private bool onGrass;
+
+    public GameObject traps;
+
     private void Awake()
     {
         instance = this;
@@ -81,6 +84,18 @@ public class KartCollisionDetector : MonoBehaviour
             kc.transform.LookAt(other.transform);
             Respawn();
             AudioManager.instance.PlayFallOutMap();
+        }
+    }
+
+    public void ToggleTraps()
+    {
+        if (traps.activeInHierarchy)
+        {
+            traps.SetActive(false);
+        }
+        else
+        {
+            traps.SetActive(true);
         }
     }
 }
