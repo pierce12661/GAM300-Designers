@@ -84,6 +84,14 @@ public class AudioManager : MonoBehaviour
     {
         _aSource.PlayOneShot(_aClips[10]);
     }
+    public void PlayHover()
+    {
+        _aSource.PlayOneShot(_aClips[11]);
+    }
+    public void PlaySelect()
+    {
+        _aSource.PlayOneShot(_aClips[12]);
+    }
 
 
 

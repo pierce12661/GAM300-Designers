@@ -69,70 +69,74 @@ public class Grapple : MonoBehaviour
 
         #region Grapple Inputs
         // Used to grapple to side anchors
-        if (closestAnchor != null)
+        if(!TransitionManager.instance.isGameOver && !TransitionManager.instance.gameWin)
         {
-            //SideAnchors
-            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
+            if (closestAnchor != null)
             {
-                grappleAnchor = closestAnchor.transform;
-                StartGrappleAnchor();
-
-                AudioManager.instance.PlayShootGrappler();
-                
-
-                if (grappling && grappleAnchor != null)
+                //SideAnchors
+                if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestAnchor.transform.position) < maxGrappleDistance)
                 {
-                    sideGrapples = true;
-                    InitialGrappleBoost();
-                    AudioManager.instance.PlayDrift();
-                }
-            }
-        }
-        // Used to grapple to mid anchors
-        if (closestMidAnchor != null) //MidAnchor
-        {
-            if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance && !TransitionManager.instance.isMainMenu)
-            {
-                grappleAnchor = closestMidAnchor.transform;
-                isGrapplingMid = true;
-                StartGrappleBoost();
+                    grappleAnchor = closestAnchor.transform;
+                    StartGrappleAnchor();
 
-                AudioManager.instance.PlayShootGrappler();
+                    AudioManager.instance.PlayShootGrappler();
 
-                if (grappling && grappleAnchor != null)
-                {
-                    InitialGrappleBoost();
-                }
-            }
 
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            /////////////////////////////////////////////// FOR MAIN MENU
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            
-            if (TransitionManager.instance.isMainMenu && Fade.instance.titleFinish && !Fade.instance.isAtMenu && !Fade.instance.howToPlay) 
-            {
-                if (Input.GetKey(KeyCode.Space))
-                {
-                    grappling = true;
-
-                    grappleAnchor = FindClosestMidAnchor().transform;
-
-                    RaycastHit hit;
-
-                    if (Physics.Raycast(grappleStart.position, (grappleAnchor.position - grappleStart.position), out hit, maxGrappleDistance, canBeGrappled))
+                    if (grappling && grappleAnchor != null)
                     {
-                        grapplePoint = hit.point;
-
-                        //Invoke(nameof(GrappleAnchor), grappleDelayTime);
+                        sideGrapples = true;
+                        InitialGrappleBoost();
+                        AudioManager.instance.PlayDrift();
                     }
+                }
+            }
+            // Used to grapple to mid anchors
+            if (closestMidAnchor != null) //MidAnchor
+            {
+                if (Input.GetKeyDown(grappleKey) && Vector3.Distance(grappleStart.position, closestMidAnchor.transform.position) < maxGrappleDistance && !TransitionManager.instance.isMainMenu)
+                {
+                    grappleAnchor = closestMidAnchor.transform;
+                    isGrapplingMid = true;
+                    StartGrappleBoost();
 
-                    lr.enabled = true;
-                    lr.SetPosition(1, grapplePoint);
+                    AudioManager.instance.PlayShootGrappler();
 
-                    Invoke(nameof(StopGrapple), 2f);
+                    if (grappling && grappleAnchor != null)
+                    {
+                        InitialGrappleBoost();
+                    }
+                }
+
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                /////////////////////////////////////////////// FOR MAIN MENU
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                if (TransitionManager.instance.isMainMenu && Fade.instance.titleFinish && !Fade.instance.isAtMenu && !Fade.instance.howToPlay)
+                {
+                    if (Input.GetKey(KeyCode.Space))
+                    {
+                        grappling = true;
+
+                        grappleAnchor = FindClosestMidAnchor().transform;
+
+                        RaycastHit hit;
+
+                        if (Physics.Raycast(grappleStart.position, (grappleAnchor.position - grappleStart.position), out hit, maxGrappleDistance, canBeGrappled))
+                        {
+                            grapplePoint = hit.point;
+
+                            //Invoke(nameof(GrappleAnchor), grappleDelayTime);
+                        }
+
+                        lr.enabled = true;
+                        lr.SetPosition(1, grapplePoint);
+
+                        Invoke(nameof(StopGrapple), 2f);
+                    }
                 }
             }
         }
+        
         #endregion
 
         #region StopAnchor/StopGrapple

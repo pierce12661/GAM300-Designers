@@ -121,8 +121,6 @@ public class KartController : MonoBehaviour
             hasRevved = false;
         }
 
-        Debug.Log(revCD);
-
     }
 
     private void FixedUpdate()

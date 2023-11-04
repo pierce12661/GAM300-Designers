@@ -15,6 +15,8 @@ public class TimeAttack : MonoBehaviour
 
     [HideInInspector] public bool timeExtension;
 
+    [HideInInspector] public bool isDisabled;
+
     private float elapsedTime;
 
     public TextMeshProUGUI timerHUD;
@@ -22,6 +24,8 @@ public class TimeAttack : MonoBehaviour
     public TextMeshProUGUI extensionText;
 
     private Vector3 extensionTextPos;
+
+    private bool hasPlayed;
 
 
     private void Awake()
@@ -31,6 +35,8 @@ public class TimeAttack : MonoBehaviour
     private void Start()
     {
         currentTime = timeStart;
+
+        hasPlayed = false;
 
         extensionTextPos = new Vector3(timerHUD.transform.position.x + 150f, timerHUD.transform.position.y, timerHUD.transform.position.z);
     }
@@ -42,25 +48,44 @@ public class TimeAttack : MonoBehaviour
         ShowTimer();
 
         TimeExtendAnim();
-
-        CheatCode();
-
     }
     public void TimeCountdown()
     {
-        if (!TransitionManager.instance.isGameOver)
+        if (!isDisabled)
         {
-            currentTime -= 1.0f * Time.deltaTime;
-            ColorChange();
+            if (!TransitionManager.instance.isGameOver && !TransitionManager.instance.gameWin)
+            {
+                currentTime -= 1.0f * Time.deltaTime;
+                ColorChange();
+            }
+            else
+            {
+                if (TransitionManager.instance.isGameOver)
+                {
+                    currentTime = 0f;
+                }
+            }
+
+            if (currentTime <= 0)
+            {
+                if (!hasPlayed)
+                {
+                    hasPlayed = true;
+                    TransitionManager.instance.GameOver();
+                }
+            }
+        }
+    }
+
+    public void ToggleTimeAttack()
+    {
+        if (!isDisabled)
+        {
+            isDisabled = true;
         }
         else
         {
-            currentTime = 0f;
-        }
-
-        if(currentTime <= 0)
-        {
-            TransitionManager.instance.GameOver();
+            isDisabled = false;
         }
     }
 
@@ -109,11 +134,8 @@ public class TimeAttack : MonoBehaviour
         timerHUD.text = currentTime.ToString("f2");
     }
 
-    public void CheatCode()
+    public void IncreaseTime()
     {
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            currentTime += 5f;
-        }
+        currentTime += 5f;
     }
 }

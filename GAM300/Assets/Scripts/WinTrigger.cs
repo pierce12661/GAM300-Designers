@@ -7,7 +7,9 @@ public class WinTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if(other.name == "Sphere")
+        {
             TransitionManager.instance.WinGame();
-        
+        }
     }
 }

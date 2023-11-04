@@ -22,7 +22,5 @@ public class Coins : MonoBehaviour
         CoinManager.instance.AddCoinCount();
         CoinManager.instance.UpdateCoinsHUD();
         Destroy(gameObject);
-
-        
     }
 }

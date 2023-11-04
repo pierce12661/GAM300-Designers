@@ -42,7 +42,15 @@ public class CoinManager : MonoBehaviour
 
     public void CalculateFinalScore()
     {
-        finalScore = coinCount * (TimeAttack.instance.currentTime / 2);
+        if(coinCount > 0)
+        {
+            finalScore = coinCount * (TimeAttack.instance.currentTime / 2);
+        }
+        else
+        {
+            finalScore = 1 * (TimeAttack.instance.currentTime / 2);
+        }
+        
     }
 
     public void UpdateCoinsHUD()
