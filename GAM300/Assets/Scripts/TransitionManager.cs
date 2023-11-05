@@ -79,7 +79,7 @@ public class TransitionManager : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                TimeAttack.instance.IncreaseTime();
+                TimeAttack.instance.ExtendTime(5);
                 AudioManager.instance.PlayCheckpoint();
             }
             if (Input.GetKeyDown(KeyCode.Alpha2))
