@@ -92,6 +92,14 @@ public class AudioManager : MonoBehaviour
     {
         _aSource.PlayOneShot(_aClips[12]);
     }
+    public void PlayDrop()
+    {
+        _aSource.PlayOneShot(_aClips[13]);
+    }
+    public void PlayBlockTrap()
+    {
+        _aSource.PlayOneShot(_aClips[14]);
+    }
 
 
 

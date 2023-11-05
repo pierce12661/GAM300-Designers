@@ -10,26 +10,21 @@ public class Checkpoints : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ExtendTime();
+        if(other.gameObject.name == "Sphere")
+        {
+            if (!hasPassed)
+            {
+                TimeAttack.instance.ExtendTime(timeToExtend);
+
+                hasPassed = true;
+            }
+            else
+            {
+                return;
+            }
+        }
+            
     }
 
-    public void ExtendTime()
-    {
-        if (!hasPassed)
-        {
-            TimeAttack.instance.timeExtension = true;
-            TimeAttack.instance.extendedTime = timeToExtend;
-            TimeAttack.instance.currentTime += timeToExtend;
-            TimeAttack.instance.TimeExtendText();
-
-            AudioManager.instance.PlayCheckpoint();
-
-            hasPassed = true;
-        }
-        else
-        {
-            return;
-        }
-        
-    }
+    
 }

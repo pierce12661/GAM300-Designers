@@ -25,6 +25,8 @@ public class KartController : MonoBehaviour
     private bool isBraking;
     private bool reverseCheck;
     private bool reverseStop;
+    private bool isAirTime;
+    private bool dropHasPlayed;
 
     // Speed Settings 
     [HideInInspector] public float currentSpeed;
@@ -141,6 +143,7 @@ public class KartController : MonoBehaviour
 
             if (airTime > 0.15f)
             {
+                isAirTime = true;
                 targetAirForce += 20.0f * Time.deltaTime;
                 sphere.AddForce(-transform.up * targetAirForce, ForceMode.Acceleration); //23
             }
@@ -149,7 +152,13 @@ public class KartController : MonoBehaviour
         {
             airTime = 0;
             targetAirForce = 0;
-          
+
+            if (isAirTime)
+            {
+                AudioManager.instance.PlayDrop();
+                isAirTime = false;
+            }
+
             sphere.AddForce(-transform.up * 100, ForceMode.Acceleration); //fake Gravity
         }
     }

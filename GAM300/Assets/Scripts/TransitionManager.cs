@@ -22,6 +22,8 @@ public class TransitionManager : MonoBehaviour
         instance = this;
 
         isMainMenu = true;
+
+        isCheating = true;
     }
 
     private void Update()

@@ -33,6 +33,8 @@ public class BlockTrap : MonoBehaviour
         {
             CrashForce();
             CameraShake.instance.camShaking = true;
+
+            AudioManager.instance.PlayBlockTrap();
         }
     }
 
@@ -40,7 +42,7 @@ public class BlockTrap : MonoBehaviour
     {
             rb.AddExplosionForce(1.5f * playerKart.realSpeed, KartCollisionDetector.instance.crashPoint, 5, 1.5f, ForceMode.Impulse);
 
-            slowSpeed = 0.5f * playerKart.currentSpeed;
+            slowSpeed = 0.65f * playerKart.currentSpeed;
 
             hitObject = this.gameObject;
             hasHit = true;

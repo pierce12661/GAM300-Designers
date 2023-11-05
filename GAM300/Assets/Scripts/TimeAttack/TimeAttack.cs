@@ -134,8 +134,36 @@ public class TimeAttack : MonoBehaviour
         timerHUD.text = currentTime.ToString("f2");
     }
 
+    public void ExtendTime(float timer)
+    {
+        //if (!hasPassed)
+        //{
+        //    TimeAttack.instance.timeExtension = true;
+        //    TimeAttack.instance.extendedTime = timeToExtend;
+        //    TimeAttack.instance.currentTime += timeToExtend;
+        //    TimeAttack.instance.TimeExtendText();
+
+        //    AudioManager.instance.PlayCheckpoint();
+
+        //    hasPassed = true;
+        //}
+        //else
+        //{
+        //    return;
+        //}
+
+        timeExtension = true;
+        extendedTime = timer;
+        currentTime += timer;
+        TimeExtendText();
+
+        AudioManager.instance.PlayCheckpoint();
+
+    }
+
     public void IncreaseTime()
     {
         currentTime += 5f;
+        timeExtension = true;
     }
 }
