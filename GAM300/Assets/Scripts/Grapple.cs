@@ -69,7 +69,7 @@ public class Grapple : MonoBehaviour
 
         #region Grapple Inputs
         // Used to grapple to side anchors
-        if(!TransitionManager.instance.isGameOver && !TransitionManager.instance.gameWin)
+        if(!TransitionManager.instance.isGameOver && !TransitionManager.instance.gameWin && !TransitionManager.instance.gameIsPaused)
         {
             if (closestAnchor != null)
             {
