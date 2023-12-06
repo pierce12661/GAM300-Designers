@@ -159,7 +159,7 @@ public class KartController : MonoBehaviour
                 isAirTime = false;
             }
 
-            sphere.AddForce(-transform.up * 100, ForceMode.Acceleration); //fake Gravity
+            sphere.AddForce(-transform.up * 90, ForceMode.Acceleration); //fake Gravity
         }
     }
 
