@@ -39,67 +39,216 @@ public class AudioManager : MonoBehaviour
         _aSource = GetComponent<AudioSource>();
     }
 
-    public void PlayDrift()
+    public void PlayGrappleShoot()
     {
-         _aSource.PlayOneShot(_aClips[0]);
+        _aSource.PlayOneShot(_aClips[Random.Range(0,3)]);
+    }
+
+    public void PlayCarDrop()
+    {
+        _aSource.PlayOneShot(_aClips[Random.Range(4, 6)]);
+    }
+
+    public void PlayCrash()
+    {
+        _aSource.PlayOneShot(_aClips[Random.Range(7, 9)]);
+    }
+
+    public void PlayBlockTrap()
+    {
+        _aSource.PlayOneShot(_aClips[Random.Range(10, 11)]);
+    }
+
+    public void PlaySpikeTrapHit()
+    {
+        _aSource.PlayOneShot(_aClips[Random.Range(12, 13)]);
+    }
+
+    public void PlayFallOutMap()
+    {
+        _aSource.PlayOneShot(_aClips[14]);
+    }
+
+    public void PlayRespawn()
+    {
+        _aSource.PlayOneShot(_aClips[15]);
     }
 
     public void PlayExhaustBurst()
     {
-        _aSource.PlayOneShot(_aClips[1]);
+        _aSource.PlayOneShot(_aClips[Random.Range(16, 17)]);
     }
-    public void PlayBoostBurst()
+
+    public void PlayExhaustBoost()
     {
-        _aSource.PlayOneShot(_aClips[2]);
+        _aSource.PlayOneShot(_aClips[Random.Range(18, 19)]);
     }
-    public void PlayRev_1()
+    public void PlayDrift()
     {
-        _aSource.PlayOneShot(_aClips[3]);
+        _aSource.PlayOneShot(_aClips[Random.Range(20, 21)]);
     }
+
     public void PlayBraking()
     {
-        _aSource.PlayOneShot(_aClips[4]);
+        _aSource.PlayOneShot(_aClips[Random.Range(22, 23)]);
     }
-    public void PlayShootGrappler()
+
+    public void PlayWinGame()
     {
-        _aSource.PlayOneShot(_aClips[5]);
+        _aSource.PlayOneShot(_aClips[Random.Range(24, 26)]);
     }
-    public void PlayFallOutMap()
+
+    public void PlayLoseGame()
     {
-        _aSource.PlayOneShot(_aClips[6]);
+        _aSource.PlayOneShot(_aClips[Random.Range(27, 29)]);
     }
-    public void PlaySpikeTrapHit()
+
+    public void PlayCountdown()
     {
-        _aSource.PlayOneShot(_aClips[7]);
+        _aSource.PlayOneShot(_aClips[30]);
     }
-    public void PlayCheckpoint()
+
+    public void PlayCountdownStart()
     {
-        _aSource.PlayOneShot(_aClips[8]);
+        _aSource.PlayOneShot(_aClips[31]);
     }
+
+    public void PlayTimerGentleWarning()
+    {
+        _aSource.PlayOneShot(_aClips[32]);
+    }
+
+    public void PlayLowTimerCountdown()
+    {
+        _aSource.PlayOneShot(_aClips[33]);
+    }
+    public void PlayLowTimerCountdownSevere()
+    {
+        _aSource.PlayOneShot(_aClips[34]);
+    }
+
+    public void PlayButtonHover()
+    {
+        _aSource.PlayOneShot(_aClips[35]);
+    }
+
+    public void PlayButtonSelect()
+    {
+        _aSource.PlayOneShot(_aClips[36]);
+    }
+
+    public void PlayButtonSelectClose()
+    {
+        _aSource.PlayOneShot(_aClips[37]);
+    }
+
+    public void PlayRev()
+    {
+        _aSource.PlayOneShot(_aClips[Random.Range(38, 39)]);
+    }
+
     public void PlayCoinPickUp()
     {
-        _aSource.PlayOneShot(_aClips[9]);
+        _aSource.PlayOneShot(_aClips[Random.Range(40, 41)]); 
     }
-    public void PlayFlame()
+
+    public void PlayCheckpoint()
     {
-        _aSource.PlayOneShot(_aClips[10]);
+        _aSource.PlayOneShot(_aClips[42]);
     }
-    public void PlayHover()
+
+    public void VO_Amazing()
     {
-        _aSource.PlayOneShot(_aClips[11]);
+        _aSource.PlayOneShot(_aClips[Random.Range(43, 44)]);
     }
-    public void PlaySelect()
+
+    public void VO_Awesome()
     {
-        _aSource.PlayOneShot(_aClips[12]);
+        _aSource.PlayOneShot(_aClips[Random.Range(45, 46)]);
     }
-    public void PlayDrop()
+
+    public void VO_Fantastic()
     {
-        _aSource.PlayOneShot(_aClips[13]);
+        _aSource.PlayOneShot(_aClips[Random.Range(47, 48)]);
     }
-    public void PlayBlockTrap()
+
+    public void VO_Great()
     {
-        _aSource.PlayOneShot(_aClips[14]);
+        _aSource.PlayOneShot(_aClips[Random.Range(49, 50)]);
     }
+
+    public void VO_Stunning()
+    {
+        _aSource.PlayOneShot(_aClips[Random.Range(51, 52)]);
+    }
+
+    public void NegativeVO()
+    {
+        _aSource.PlayOneShot(_aClips[Random.Range(53, 58)]);
+    }
+
+
+    //public void PlayDrift()
+    //{
+    //     _aSource.PlayOneShot(_aClips[0]);
+    //}
+
+    //public void PlayExhaustBurst()
+    //{
+    //    _aSource.PlayOneShot(_aClips[1]);
+    //}
+    //public void PlayBoostBurst()
+    //{
+    //    _aSource.PlayOneShot(_aClips[2]);
+    //}
+    //public void PlayRev_1()
+    //{
+    //    _aSource.PlayOneShot(_aClips[3]);
+    //}
+    //public void PlayBraking()
+    //{
+    //    _aSource.PlayOneShot(_aClips[4]);
+    //}
+    //public void PlayShootGrappler()
+    //{
+    //    _aSource.PlayOneShot(_aClips[5]);
+    //}
+    //public void PlayFallOutMap()
+    //{
+    //    _aSource.PlayOneShot(_aClips[6]);
+    //}
+    //public void PlaySpikeTrapHit()
+    //{
+    //    _aSource.PlayOneShot(_aClips[7]);
+    //}
+    //public void PlayCheckpoint()
+    //{
+    //    _aSource.PlayOneShot(_aClips[8]);
+    //}
+    //public void PlayCoinPickUp()
+    //{
+    //    _aSource.PlayOneShot(_aClips[9]);
+    //}
+    //public void PlayFlame()
+    //{
+    //    _aSource.PlayOneShot(_aClips[53]);
+    //}
+    //public void PlayHover()
+    //{
+    //    _aSource.PlayOneShot(_aClips[11]);
+    //}
+    //public void PlaySelect()
+    //{
+    //    _aSource.PlayOneShot(_aClips[12]);
+    //}
+    //public void PlayDrop()
+    //{
+    //    _aSource.PlayOneShot(_aClips[13]);
+    //}
+    //public void PlayBlockTrap()
+    //{
+    //    _aSource.PlayOneShot(_aClips[14]);
+    //}
 
 
 

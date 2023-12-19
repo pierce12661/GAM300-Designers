@@ -22,6 +22,8 @@ public class ParticlesScript : MonoBehaviour
 
     [HideInInspector] public float boostParticleTimer;
 
+    public AudioSource flame;
+
     private float particleTimer;
 
     private bool crashCheck;
@@ -42,6 +44,8 @@ public class ParticlesScript : MonoBehaviour
         SpeedParticles();
         CrashParticles();
         WheelParticles();
+
+        flame.volume = FlameLeft.transform.localScale.x / 5.4f;
     }
 
     public void BoostParticles()
@@ -71,7 +75,10 @@ public class ParticlesScript : MonoBehaviour
 
             boostParticleTimer = 0;
 
-            if (!boostHasPlayed) { AudioManager.instance.PlayBoostBurst(); AudioManager.instance.PlayFlame(); boostHasPlayed = true; }
+            if (!boostHasPlayed) { AudioManager.instance.PlayExhaustBoost(); boostHasPlayed = true; }
+            //AudioManager.instance.PlayFlame()
+
+
         }
         else if (kc.acceleration > 0 && !KartCollisionDetector.instance.hasCrashed)
         {

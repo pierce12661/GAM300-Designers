@@ -15,7 +15,11 @@ public class FeedbackHUD : MonoBehaviour
     [HideInInspector] public bool boosted;
     private float timer;
 
+    private int id;
+
     public List<string> wordVariation;
+
+    private bool hasPlayed;
 
     private void Awake()
     {
@@ -35,10 +39,51 @@ public class FeedbackHUD : MonoBehaviour
 
             if(FeedbackAnim.activeInHierarchy == false)
             {
-                AnimText.text = wordVariation[Random.Range(0, wordVariation.Count - 1)];
+                id = Random.Range(0, wordVariation.Count - 1);
+                AnimText.text = wordVariation[id];
+                hasPlayed = false;
             }
 
             FeedbackAnim.SetActive(true);
+
+            if (!hasPlayed)
+            {
+                switch (id)
+                {
+                    case 0:
+
+                        AudioManager.instance.VO_Amazing();
+
+                            break;
+
+                    case 1:
+
+                        AudioManager.instance.VO_Awesome();
+
+                        break;
+
+                    case 2:
+
+                        AudioManager.instance.VO_Fantastic();
+
+                        break;
+
+                    case 3:
+
+                        AudioManager.instance.VO_Great();
+
+                        break;
+
+                    case 4:
+
+                        AudioManager.instance.VO_Stunning();
+
+                        break;
+
+                }
+
+                hasPlayed = true;
+            }
 
             if(timer > 3.0f)
             {

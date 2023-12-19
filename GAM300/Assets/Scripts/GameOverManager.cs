@@ -63,7 +63,7 @@ public class GameOverManager : MonoBehaviour
             {
                 if (buttonsShown)
                 {
-                    AudioManager.instance.PlaySelect();
+                    AudioManager.instance.PlayButtonSelect();
                 }
                 else
                 {
@@ -100,7 +100,7 @@ public class GameOverManager : MonoBehaviour
                     selectionID = 0;
                 }
 
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -114,7 +114,7 @@ public class GameOverManager : MonoBehaviour
                     selectionID = 2;
                 }
 
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
         }
     }

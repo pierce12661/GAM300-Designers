@@ -28651,6 +28651,8 @@ MonoBehaviour:
   grappleKey: 32
   sideGrapples: 0
   deactivatedAnchors: []
+  driveLoop: {fileID: 0}
+  batteryLoop: {fileID: 0}
 --- !u!1 &705766020
 GameObject:
   m_ObjectHideFlags: 0
@@ -58565,7 +58567,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 4d135756d6a02e749bee1907221aab4c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f2ae160fe4b1cc44a9c686191868d11d, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.053
   m_Pitch: 1
@@ -61208,9 +61210,9 @@ MonoBehaviour:
   _aClips:
   - {fileID: 8300000, guid: d44ff68aee6f2db45a51814b3ec1c10d, type: 3}
   - {fileID: 8300000, guid: a87d2fff3de0f214ab734ee104058b80, type: 3}
-  - {fileID: 8300000, guid: a89aa3154113aae459228bd7cd3cd2ce, type: 3}
-  - {fileID: 8300000, guid: 6096d3e7e5659e34c8f79bdf20606dea, type: 3}
-  - {fileID: 8300000, guid: c32aa5aa5b26db94684851a9589e004e, type: 3}
+  - {fileID: 8300000, guid: 55f05a0dfa1c1044fae83b0c5b158857, type: 3}
+  - {fileID: 8300000, guid: 831530aa2184b864a9d11ad9181cb03c, type: 3}
+  - {fileID: 8300000, guid: c781b9676d3f42f4db78804e34a7fdc2, type: 3}
   - {fileID: 8300000, guid: 0cf2ba479074b034b830f2fbd77b5e67, type: 3}
 --- !u!4 &1701854503
 Transform:

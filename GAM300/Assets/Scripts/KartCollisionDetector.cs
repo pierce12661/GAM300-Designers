@@ -19,6 +19,8 @@ public class KartCollisionDetector : MonoBehaviour
 
     public GameObject traps;
 
+    private bool voCheck;
+
     private void Awake()
     {
         instance = this;
@@ -33,6 +35,11 @@ public class KartCollisionDetector : MonoBehaviour
     //        Respawn();
     //    }
     //}
+
+    private void Update()
+    {
+        VoiceOverChecker();
+    }
 
     private void Start()
     {
@@ -51,6 +58,20 @@ public class KartCollisionDetector : MonoBehaviour
             {
                 wallCrash = true;
                 Debug.Log("Car has crashed");
+
+                AudioManager.instance.PlayCrash();
+
+                if (voCheck)
+                {
+                    int randomChance;
+
+                    randomChance = Random.Range(0, 10);
+
+                    if(randomChance % 2 == 0)
+                    {
+                        AudioManager.instance.NegativeVO();
+                    }
+                }
             }
         }
     }
@@ -66,7 +87,10 @@ public class KartCollisionDetector : MonoBehaviour
 
     public void Respawn()
     {
-        if (RespawnManager.instance) RespawnManager.instance.Respawn(transform);
+        if (RespawnManager.instance)
+        {
+            RespawnManager.instance.Respawn(transform);
+        }
 
         foreach (GameObject obj in kc.GetComponent<Grapple>().deactivatedAnchors)
         {
@@ -74,6 +98,17 @@ public class KartCollisionDetector : MonoBehaviour
         }
     }
 
+    public void VoiceOverChecker()
+    {
+        if(kc.currentSpeed > 26f)
+        {
+            voCheck = true;
+        }
+        else
+        {
+            voCheck = false;
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
         //RespawnManager.instance.GetRespawnPoint();

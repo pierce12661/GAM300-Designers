@@ -13,9 +13,13 @@ public class TransitionManager : MonoBehaviour
 
     [HideInInspector] public bool isMainMenu;
 
+    private bool hasRespawn;
+
     private bool isCheating;
 
     public Transform cheatScreen;
+
+    private float respawnTime;
 
     private void Awake()
     {
@@ -41,8 +45,30 @@ public class TransitionManager : MonoBehaviour
             if (!isGameOver && !gameWin && !gameIsPaused && Input.GetKey(KeyCode.R))
             {
                 //RestartGame();
-
                 KartCollisionDetector.instance.Respawn();
+
+                if (!hasRespawn)
+                {
+                    AudioManager.instance.PlayRespawn();
+                    hasRespawn = true;
+                }
+            }
+
+            if (hasRespawn)
+            {
+                if(respawnTime < 2.0f)
+                {
+                    respawnTime += 1.0f * Time.deltaTime;
+                }
+                else
+                {
+                    hasRespawn = false;
+                }
+                
+            }
+            else
+            {
+                respawnTime = 0;
             }
         }
 
@@ -75,7 +101,7 @@ public class TransitionManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
                 TimeAttack.instance.ToggleTimeAttack();
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
             if (Input.GetKeyDown(KeyCode.Alpha3))
             {
@@ -85,7 +111,7 @@ public class TransitionManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
                 KartCollisionDetector.instance.ToggleTraps();
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
@@ -105,8 +131,13 @@ public class TransitionManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (!isGameOver)
+        {
+            AudioManager.instance.PlayLoseGame();
+        }
+
         isGameOver = true;
-        AudioManager.instance.PlayFallOutMap();
+        
         Cursor.lockState = CursorLockMode.None;
     }
 
@@ -115,7 +146,7 @@ public class TransitionManager : MonoBehaviour
         CoinManager.instance.CalculateFinalScore();
         Debug.Log(CoinManager.instance.finalScore);
         gameWin = true;
-        AudioManager.instance.PlayCoinPickUp();
+        AudioManager.instance.PlayWinGame();
         AudioManager.instance.PlayDrift();
     }
 
@@ -153,7 +184,7 @@ public class TransitionManager : MonoBehaviour
                     if (PauseScreen.instance.ConfirmationCheck() == false && !PauseScreen.instance.buffer)
                     {
                         ResumeGame();
-                        AudioManager.instance.PlaySelect();
+                        AudioManager.instance.PlayButtonSelect();
                     }
                 }
             }
@@ -165,7 +196,7 @@ public class TransitionManager : MonoBehaviour
     {
         gameIsPaused = true;
 
-        AudioManager.instance.PlaySelect();
+        AudioManager.instance.PlayButtonSelect();
 
         Time.timeScale = 0;
     }

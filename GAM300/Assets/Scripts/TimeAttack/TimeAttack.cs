@@ -27,6 +27,9 @@ public class TimeAttack : MonoBehaviour
 
     private bool hasPlayed;
 
+    private bool hasWarned;
+
+    private bool timeCheck;
 
     private void Awake()
     {
@@ -48,6 +51,14 @@ public class TimeAttack : MonoBehaviour
         ShowTimer();
 
         TimeExtendAnim();
+
+        TimeWarning();
+
+        if (Input.GetKeyDown(KeyCode.Alpha9))
+        {
+            currentTime -= 10;
+        }
+
     }
     public void TimeCountdown()
     {
@@ -142,5 +153,83 @@ public class TimeAttack : MonoBehaviour
         TimeExtendText();
 
         AudioManager.instance.PlayCheckpoint();
+    }
+
+    public void TimeWarning()
+    {
+        if (!TransitionManager.instance.isGameOver)
+        {
+            if (currentTime < 15.0f && !hasWarned)
+            {
+                AudioManager.instance.PlayTimerGentleWarning();
+                hasWarned = true;
+            }
+            else if(currentTime > 15.0f)
+            {
+                hasWarned = false;
+            }
+
+            if (currentTime <= 10.0f && currentTime > 9.0f && timeCheck == false)
+            {
+                AudioManager.instance.PlayLowTimerCountdown();
+                timeCheck = true;
+            }
+
+            if (currentTime <= 9.0f && currentTime > 8.0f && timeCheck == true)
+            {
+                AudioManager.instance.PlayLowTimerCountdown();
+                timeCheck = false;
+            }
+
+            if (currentTime <= 8.0f && currentTime > 7.0f && timeCheck == false)
+            {
+                AudioManager.instance.PlayLowTimerCountdown();
+                timeCheck = true;
+            }
+
+            if (currentTime <= 7.0f && currentTime > 6.0f && timeCheck == true)
+            {
+                AudioManager.instance.PlayLowTimerCountdown();
+                timeCheck = false;
+            }
+
+            if (currentTime <= 6.0f && currentTime > 5.0f && timeCheck == false)
+            {
+                AudioManager.instance.PlayLowTimerCountdown();
+                timeCheck = true;
+            }
+
+            if (currentTime <= 5.0f && currentTime > 4.0f && timeCheck == true)
+            {
+                AudioManager.instance.PlayLowTimerCountdownSevere();
+                timeCheck = false;
+            }
+
+            if (currentTime <= 4.0f && currentTime > 3.0f && timeCheck == false)
+            {
+                AudioManager.instance.PlayLowTimerCountdownSevere();
+                timeCheck = true;
+            }
+
+            if (currentTime <= 3.0f && currentTime > 2.0f && timeCheck == true)
+            {
+                AudioManager.instance.PlayLowTimerCountdownSevere();
+                timeCheck = false;
+
+            }
+
+            if (currentTime <= 2.0f && currentTime > 1.0f && timeCheck == false)
+            {
+                AudioManager.instance.PlayLowTimerCountdownSevere();
+                timeCheck = true;
+            }
+
+            if (currentTime <= 1.0f && currentTime > 0.0f && timeCheck == true)
+            {
+                AudioManager.instance.PlayLowTimerCountdownSevere();
+                timeCheck = false;
+            }
+        }
+        
     }
 }

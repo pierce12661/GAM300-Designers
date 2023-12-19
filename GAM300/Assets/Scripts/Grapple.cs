@@ -50,6 +50,13 @@ public class Grapple : MonoBehaviour
     [HideInInspector] public List<GameObject> deactivatedAnchors;
 
     // Start is called before the first frame update
+
+
+    bool haveplayed;
+
+    public AudioSource driveLoop;
+    public AudioSource batteryLoop;
+
     void Start()
     {
         kc = GetComponent<KartController>();
@@ -79,7 +86,7 @@ public class Grapple : MonoBehaviour
                     grappleAnchor = closestAnchor.transform;
                     StartGrappleAnchor();
 
-                    AudioManager.instance.PlayShootGrappler();
+                    AudioManager.instance.PlayGrappleShoot();
 
 
                     if (grappling && grappleAnchor != null)
@@ -99,7 +106,7 @@ public class Grapple : MonoBehaviour
                     isGrapplingMid = true;
                     StartGrappleBoost();
 
-                    AudioManager.instance.PlayShootGrappler();
+                    AudioManager.instance.PlayGrappleShoot();
 
                     if (grappling && grappleAnchor != null)
                     {
@@ -325,17 +332,58 @@ public class Grapple : MonoBehaviour
     {
         if (!TransitionManager.instance.isMainMenu)
         {
-            if (grappling)
+            if (!TransitionManager.instance.isGameOver)
             {
-                if (kc.currentBattery < kc.maxBattery)
-                    kc.currentBattery += 2f * Time.deltaTime;
+                driveLoop.pitch = (kc.currentBattery / kc.maxBattery) + 0.8f;
+
+                if (grappling)
+                {
+                    if (kc.currentBattery < kc.maxBattery)
+                    {
+                        kc.currentBattery += 2f * Time.deltaTime;
+
+                        if (!haveplayed)
+                        {
+                            batteryLoop.Play();
+                            haveplayed = true;
+                        }
+
+                        batteryLoop.volume = kc.currentBattery / kc.maxBattery / 6;
+                    }
+
+                }
+                else
+                {
+                    if (kc.currentBattery > 0)
+                    {
+                        kc.currentBattery -= 1.5f * Time.deltaTime;
+                    }
+                    else
+                    {
+                        haveplayed = false;
+                        batteryLoop.Stop();
+                    }
+
+                    batteryLoop.volume = Mathf.Lerp(batteryLoop.volume, 0, 3.0f * Time.deltaTime);
+
+                }
+
+                if (driveLoop.volume <= 0.3f && kc.acceleration >= 0)
+                {
+                    driveLoop.volume = kc.currentSpeed / kc.maxSpeed / 3f;
+                }
+                else
+                {
+                    driveLoop.volume = 0.2f;
+                }
+
+                driveLoop.pitch = 1f + kc.currentSpeed / kc.maxSpeed / 2;
             }
-            else
-            {
-                if (kc.currentBattery > 0)
-                    kc.currentBattery -= 1.5f * Time.deltaTime;
-            }
+
+            
         }
+            
+        
     }
 
     public void StopGrapple()

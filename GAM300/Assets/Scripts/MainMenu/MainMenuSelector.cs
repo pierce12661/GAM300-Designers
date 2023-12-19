@@ -207,16 +207,17 @@ public class MainMenuSelector : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            AudioManager.instance.Select();
+            
 
             if (quitID == 0)
             {
                 confirmCheck = false;
 
-                
+                AudioManager.instance.PlayButtonSelectClose();
             }
             else
             {
+                AudioManager.instance.Select();
                 TransitionManager.instance.QuitGame();
 
                 Debug.Log("quitGame");

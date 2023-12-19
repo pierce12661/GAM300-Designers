@@ -155,7 +155,7 @@ public class KartController : MonoBehaviour
 
             if (isAirTime)
             {
-                AudioManager.instance.PlayDrop();
+                AudioManager.instance.PlayCarDrop();
                 isAirTime = false;
             }
 
@@ -180,7 +180,7 @@ public class KartController : MonoBehaviour
 
                     if (!hasRevved && acceleration > 0)
                     {
-                        AudioManager.instance.PlayRev_1();
+                        AudioManager.instance.PlayRev();
                         hasRevved = true;
                     }
                 }
@@ -220,7 +220,6 @@ public class KartController : MonoBehaviour
             {
                 revCD = 0;
             }
-            
         }
 
 
@@ -371,20 +370,6 @@ public class KartController : MonoBehaviour
         }
     }
 
-    public void RotationRevert()
-    {
-
-        if (!touchingGround)
-        {
-
-        }
-    }
-
-    public void GrassSlow()
-    {
-
-    }
-
     public void TireRotation()
     {
         Quaternion positiveNewAngle = Quaternion.Euler(0, maxSteerAngle, 0);
@@ -395,34 +380,12 @@ public class KartController : MonoBehaviour
         {
             frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
             frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-
-            //if (!isReversing)
-            //{
-            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-            //}
-            //else //if is reversing, the tire steering will swap angles
-            //{
-            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-            //}
             
         }
         else if (Input.GetKey(KeyCode.LeftArrow))
         {
             frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
             frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-
-            //if (!isReversing)
-            //{
-            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, negativeNewAngle, 4.0f * Time.deltaTime);
-            //}
-            //else //if is reversing, the tire steering will swap angles
-            //{
-            //    frontLeftTire.localRotation = Quaternion.Lerp(frontLeftTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-            //    frontRightTire.localRotation = Quaternion.Lerp(frontRightTire.localRotation, positiveNewAngle, 4.0f * Time.deltaTime);
-            //}
         }
         else //reset to normal 0 angle
         {
@@ -477,6 +440,8 @@ public class KartController : MonoBehaviour
         reverseSpeed = originalSpeed * 0.25f;
         brakeSpeed = originalSpeed * 0.3f;
         slowSpeed = maxSpeed * 0.3f; //sets a slow debuff speed
+
+
         highSpeedSteer = steerSpeed / 2.4f; //for capping steering angle if the speed is high
         boostSteer = steerSpeed / 1.15f; 
         slowSteer = steerSpeed / 6;

@@ -10,6 +10,7 @@ public class WinTrigger : MonoBehaviour
         if(other.name == "Sphere")
         {
             TransitionManager.instance.WinGame();
+
         }
     }
 }

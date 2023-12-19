@@ -70,7 +70,7 @@ public class WinScreenController : MonoBehaviour
             {
                 if (buttonsShown)
                 {
-                    AudioManager.instance.PlaySelect();
+                    AudioManager.instance.PlayButtonSelect();
                 }
                 else
                 {
@@ -108,7 +108,7 @@ public class WinScreenController : MonoBehaviour
                     selectionID = 0;
                 }
 
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -122,7 +122,7 @@ public class WinScreenController : MonoBehaviour
                     selectionID = 2;
                 }
 
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
         }
     }

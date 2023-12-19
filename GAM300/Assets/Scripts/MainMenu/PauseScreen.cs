@@ -85,7 +85,7 @@ public class PauseScreen : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                AudioManager.instance.PlaySelect();
+                AudioManager.instance.PlayButtonSelect();
             }
         }
         else
@@ -109,7 +109,7 @@ public class PauseScreen : MonoBehaviour
 
         if (TransitionManager.instance.gameIsPaused && !isQuitConfirm && !isRestartConfirm && !isHowToPlay)
         {
-            bgmSource.volume = Mathf.Lerp(bgmSource.volume, 0.03f, 1.0f * Time.unscaledDeltaTime);
+            bgmSource.volume = Mathf.Lerp(bgmSource.volume, 0.02f, 1.0f * Time.unscaledDeltaTime);
 
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
@@ -122,7 +122,8 @@ public class PauseScreen : MonoBehaviour
                     selectionID = 0;
                 }
 
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
+
             }
 
             if (Input.GetKeyDown(KeyCode.UpArrow))
@@ -136,12 +137,20 @@ public class PauseScreen : MonoBehaviour
                     selectionID = 3;
                 }
 
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
         }
         else
         {
-            bgmSource.volume = Mathf.Lerp(bgmSource.volume, 0.05f, 1.0f * Time.unscaledDeltaTime);
+            if (TransitionManager.instance.isGameOver || TransitionManager.instance.gameWin)
+            {
+                bgmSource.volume = Mathf.Lerp(bgmSource.volume, 0.02f, 1.0f * Time.unscaledDeltaTime);
+            }
+            else
+            {
+                bgmSource.volume = Mathf.Lerp(bgmSource.volume, 0.08f, 1.0f * Time.unscaledDeltaTime);
+            }
+            
         }
     }
 
@@ -152,13 +161,13 @@ public class PauseScreen : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 confirmID = 1;
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
 
             if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 confirmID = 0;
-                AudioManager.instance.PlayHover();
+                AudioManager.instance.PlayButtonHover();
             }
         }
     }
@@ -262,7 +271,7 @@ public class PauseScreen : MonoBehaviour
         {
             ResetConfirmations();
 
-            AudioManager.instance.PlaySelect();
+            AudioManager.instance.PlayButtonSelect();
         }
 
         if(pageTimer <= 0)
@@ -341,7 +350,7 @@ public class PauseScreen : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && isHowToPlay)
         {
-            AudioManager.instance.PlaySelect();
+            AudioManager.instance.PlayButtonSelect();
 
             switch (confirmID)
             {
@@ -377,7 +386,6 @@ public class PauseScreen : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && isRestartConfirm)
         {
-            AudioManager.instance.PlaySelect();
 
             switch (confirmID)
             {
@@ -385,12 +393,15 @@ public class PauseScreen : MonoBehaviour
                     if(failsafe > duration)
                     {
                         isRestartConfirm = false;
+
+                        AudioManager.instance.PlayButtonSelectClose();
                     }
                     break;
 
                 case 1:
                     confirmID = 0;
                     isRestartConfirm = false;
+                    AudioManager.instance.PlayButtonSelect();
 
                     TransitionManager.instance.RestartGame();
                     break;
@@ -402,7 +413,7 @@ public class PauseScreen : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space) && isQuitConfirm)
         {
-            AudioManager.instance.PlaySelect();
+            
 
             switch (confirmID)
             {
@@ -410,10 +421,12 @@ public class PauseScreen : MonoBehaviour
                     if (failsafe > duration)
                     {
                         isQuitConfirm = false;
+                        AudioManager.instance.PlayButtonSelectClose();
                     }
                     break;
 
                 case 1:
+                    AudioManager.instance.PlayButtonSelect();
                     TransitionManager.instance.QuitGame();
 
                     Debug.Log("QUIT GAME");
