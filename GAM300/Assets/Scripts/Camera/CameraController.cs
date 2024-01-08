@@ -58,6 +58,10 @@ public class CameraController : MonoBehaviour
 
     private float originalCamSpeed;
 
+    [HideInInspector] public bool buttonPressed;
+
+    private float pressTime;
+
 
     private void Awake()
     {
@@ -138,7 +142,23 @@ public class CameraController : MonoBehaviour
     {
         if (playerObject.GetComponent<KartController>().isInitialBoosting == true)
         {
-            mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.boostFOV, 2 * Time.deltaTime);
+            if (!buttonPressed)
+            {
+                mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.boostFOV, 1 * Time.deltaTime);
+                pressTime = 0;
+            }
+            else
+            {
+                mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.originalFOV, 1.5f * Time.deltaTime);
+
+                pressTime += 1.0f * Time.deltaTime;
+
+                if(pressTime > 0.5f)
+                {
+                    buttonPressed = false;
+                }
+            }
+            
         }
         else if(playerObject.GetComponent<KartController>().isFinalBoosting == true)
         {

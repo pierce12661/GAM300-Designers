@@ -74,6 +74,7 @@ public class KartController : MonoBehaviour
     private float finalBoostSpeed;
     [SerializeField] private float boostCountdown;
     [SerializeField] private float finalBoostCountdown;
+    [HideInInspector] public float boostMultiplier;
     
     //Traps
     [HideInInspector] public bool trapHit;
@@ -479,7 +480,9 @@ public class KartController : MonoBehaviour
         batteryPercentage = GetBatteryPercentage();
 
         isFinalBoosting = true;
-        maxSpeed = finalBoostSpeed * (1 + (currentBattery/maxBattery / 2));
+        //maxSpeed = finalBoostSpeed * (1 + (currentBattery/maxBattery / 2)); // 1 / 1.8/ 2.5
+
+        maxSpeed = finalBoostSpeed * (1 + boostMultiplier);
 
         Debug.Log(maxSpeed + " final boost speed");
         //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force

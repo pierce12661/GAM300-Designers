@@ -51,8 +51,11 @@ public class Grapple : MonoBehaviour
 
     // Start is called before the first frame update
 
+    private int pressCount;
 
     bool haveplayed;
+
+    private bool hasPressed;
 
     public AudioSource driveLoop;
     public AudioSource batteryLoop;
@@ -69,6 +72,9 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GrappleMultiplier();
+        CountMultiplier();
+
         #region Find Closest Anchor
         closestAnchor = FindClosestAnchor();
         closestMidAnchor = FindClosestMidAnchor();
@@ -264,6 +270,59 @@ public class Grapple : MonoBehaviour
         }
     }
 
+    private void GrappleMultiplier()
+    {
+        if (grappling)
+        {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                if(pressCount < 3)
+                {
+                    if (kc.GetBatteryPercentage() >= 0.75f)
+                    {
+                        hasPressed = true;
+
+                        CameraController.instance.buttonPressed = true;
+
+                        pressCount++;
+
+                        Debug.Log("Presscount no = " + pressCount);
+                    }
+                }
+                else
+                {
+                    pressCount = 3;
+                }
+            }
+        }
+        else
+        {
+            pressCount = 0;
+        }
+    }
+
+    private void CountMultiplier()
+    {
+        switch (pressCount)
+        {
+            case 0:
+                kc.boostMultiplier = 0f;
+                    break;
+
+            case 1:
+                kc.boostMultiplier = 0.3f;
+                break;
+
+            case 2:
+                kc.boostMultiplier = 0.55f;
+                break;
+
+            case 3:
+                kc.boostMultiplier = 1f;
+                break;
+        }
+    }
+
     private void StartGrappleAnchor()
     {
         if (grapplingCDTimer > 0)
@@ -338,9 +397,9 @@ public class Grapple : MonoBehaviour
 
                 if (grappling)
                 {
-                    if (kc.currentBattery < kc.maxBattery)
+                    if (kc.currentBattery < kc.maxBattery && !hasPressed)
                     {
-                        kc.currentBattery += 2f * Time.deltaTime;
+                        kc.currentBattery += 7f * Time.deltaTime;
 
                         if (!haveplayed)
                         {
@@ -349,6 +408,23 @@ public class Grapple : MonoBehaviour
                         }
 
                         batteryLoop.volume = kc.currentBattery / kc.maxBattery / 6;
+                    }
+
+                    if (hasPressed)
+                    {
+                        if(kc.currentBattery > 0)
+                        {
+                            kc.currentBattery -= 2.5f;
+                        }
+                        else
+                        {
+                            kc.currentBattery = 0f;
+                            hasPressed = false;
+                            haveplayed = false;
+                            batteryLoop.Stop();
+                            batteryLoop.volume = Mathf.Lerp(batteryLoop.volume, 0, 5.0f * Time.deltaTime);
+                        }
+
                     }
 
                 }
