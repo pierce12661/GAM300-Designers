@@ -481,8 +481,9 @@ public class KartController : MonoBehaviour
 
         isFinalBoosting = true;
         //maxSpeed = finalBoostSpeed * (1 + (currentBattery/maxBattery / 2)); // 1 / 1.8/ 2.5
+        maxSpeed = finalBoostSpeed * 1.5f;
 
-        maxSpeed = finalBoostSpeed * (1 + boostMultiplier);
+        //maxSpeed = finalBoostSpeed * (1 + boostMultiplier);
 
         Debug.Log(maxSpeed + " final boost speed");
         //sphere.AddForce(gameObject.transform.forward * 1000, ForceMode.Acceleration); //boost force

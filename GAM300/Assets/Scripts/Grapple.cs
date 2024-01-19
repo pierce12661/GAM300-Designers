@@ -60,6 +60,13 @@ public class Grapple : MonoBehaviour
     public AudioSource driveLoop;
     public AudioSource batteryLoop;
 
+    bool isWithinTarget;
+
+    public GameObject targetSpot;
+    public Transform targetPos;
+    public GameObject left;
+    public GameObject right;
+
     void Start()
     {
         kc = GetComponent<KartController>();
@@ -72,8 +79,10 @@ public class Grapple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GrappleMultiplier();
-        CountMultiplier();
+        targetSpot.transform.position = targetPos.position;
+
+        GrappleMashButton();
+        //CountMultiplier();
 
         #region Find Closest Anchor
         closestAnchor = FindClosestAnchor();
@@ -94,6 +103,8 @@ public class Grapple : MonoBehaviour
 
                     AudioManager.instance.PlayGrappleShoot();
 
+                    SetTargetBar();
+
 
                     if (grappling && grappleAnchor != null)
                     {
@@ -111,7 +122,7 @@ public class Grapple : MonoBehaviour
                     grappleAnchor = closestMidAnchor.transform;
                     isGrapplingMid = true;
                     StartGrappleBoost();
-
+                    SetTargetBar();
                     AudioManager.instance.PlayGrappleShoot();
 
                     if (grappling && grappleAnchor != null)
@@ -119,6 +130,8 @@ public class Grapple : MonoBehaviour
                         InitialGrappleBoost();
                     }
                 }
+
+                
 
                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                 /////////////////////////////////////////////// FOR MAIN MENU
@@ -129,6 +142,8 @@ public class Grapple : MonoBehaviour
                     if (Input.GetKey(KeyCode.Space))
                     {
                         grappling = true;
+
+                        
 
                         grappleAnchor = FindClosestMidAnchor().transform;
 
@@ -270,29 +285,45 @@ public class Grapple : MonoBehaviour
         }
     }
 
-    private void GrappleMultiplier()
+    private void GrappleMashButton()
     {
         if (grappling)
         {
+            float target = targetSpot.transform.localPosition.x;
+            float leftValue = left.transform.localPosition.x;
+            float rightValue = right.transform.localPosition.x;
+
+            if (target > leftValue && target < rightValue)
+            {
+                isWithinTarget = true;
+            }
+            else
+            {
+                isWithinTarget = false;
+            }
+
             if (Input.GetKeyDown(KeyCode.C))
             {
-                if(pressCount < 3)
-                {
-                    if (kc.GetBatteryPercentage() >= 0.75f)
-                    {
-                        hasPressed = true;
+                kc.currentBattery += 4f;
 
-                        CameraController.instance.buttonPressed = true;
+                Debug.Log("is pressing C");
+                //if(pressCount < 3)
+                //{
+                //    if (kc.GetBatteryPercentage() >= 0.75f)
+                //    {
+                //        hasPressed = true;
 
-                        pressCount++;
+                //        CameraController.instance.buttonPressed = true;
 
-                        Debug.Log("Presscount no = " + pressCount);
-                    }
-                }
-                else
-                {
-                    pressCount = 3;
-                }
+                //        pressCount++;
+
+                //        Debug.Log("Presscount no = " + pressCount);
+                //    }
+                //}
+                //else
+                //{
+                //    pressCount = 3;
+                //}
             }
         }
         else
@@ -301,26 +332,40 @@ public class Grapple : MonoBehaviour
         }
     }
 
-    private void CountMultiplier()
+    //private void CountMultiplier()
+    //{
+    //    switch (pressCount)
+    //    {
+    //        case 0:
+    //            kc.boostMultiplier = 0f;
+    //                break;
+
+    //        case 1:
+    //            kc.boostMultiplier = 0.3f;
+    //            break;
+
+    //        case 2:
+    //            kc.boostMultiplier = 0.55f;
+    //            break;
+
+    //        case 3:
+    //            kc.boostMultiplier = 1f;
+    //            break;
+    //    }
+    //}
+
+    private void SetTargetBar()
     {
-        switch (pressCount)
-        {
-            case 0:
-                kc.boostMultiplier = 0f;
-                    break;
 
-            case 1:
-                kc.boostMultiplier = 0.3f;
-                break;
 
-            case 2:
-                kc.boostMultiplier = 0.55f;
-                break;
+        //if(setTarget == false)
+        //{
+            left.SetActive(true);
+            right.SetActive(true);
 
-            case 3:
-                kc.boostMultiplier = 1f;
-                break;
-        }
+            left.transform.localPosition = new Vector3(Random.Range(-0.4f,0.15f), 0f, 0f);
+            right.transform.localPosition = new Vector3(left.transform.localPosition.x + 0.32f, 0, 0);
+        //}
     }
 
     private void StartGrappleAnchor()
@@ -378,13 +423,21 @@ public class Grapple : MonoBehaviour
 
     public void FinalGrappleBoost()
     {
-        kc.FinalBoostKart();
-
-        if (sideGrapples)
+        if (isWithinTarget)
         {
-            FeedbackHUD.instance.boosted = true;
-            sideGrapples = false;
+            kc.FinalBoostKart();
+
+            if (sideGrapples)
+            {
+                FeedbackHUD.instance.boosted = true;
+                sideGrapples = false;
+            }
         }
+        else
+        {
+            CameraShake.instance.camShaking = true;
+        }
+        
     }
 
     private void BoostBattery()
@@ -410,22 +463,22 @@ public class Grapple : MonoBehaviour
                         batteryLoop.volume = kc.currentBattery / kc.maxBattery / 6;
                     }
 
-                    if (hasPressed)
-                    {
+                    //if (hasPressed)
+                    //{
                         if(kc.currentBattery > 0)
                         {
-                            kc.currentBattery -= 2.5f;
+                            kc.currentBattery -= 0.17f;
                         }
                         else
                         {
                             kc.currentBattery = 0f;
-                            hasPressed = false;
+                            //hasPressed = false;
                             haveplayed = false;
                             batteryLoop.Stop();
                             batteryLoop.volume = Mathf.Lerp(batteryLoop.volume, 0, 5.0f * Time.deltaTime);
                         }
 
-                    }
+                    //}
 
                 }
                 else
@@ -471,6 +524,9 @@ public class Grapple : MonoBehaviour
         lr.enabled = false;
 
         if (Input.GetKey(grappleKey)) Input.GetKeyUp(grappleKey);
+
+        left.SetActive(false);
+        right.SetActive(false);
     }
 
     public void StopAnchor()

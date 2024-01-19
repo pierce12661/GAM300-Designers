@@ -142,22 +142,22 @@ public class CameraController : MonoBehaviour
     {
         if (playerObject.GetComponent<KartController>().isInitialBoosting == true)
         {
-            if (!buttonPressed)
-            {
+            //if (!buttonPressed)
+            //{
                 mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.boostFOV, 1 * Time.deltaTime);
-                pressTime = 0;
-            }
-            else
-            {
-                mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.originalFOV, 1.5f * Time.deltaTime);
+                //pressTime = 0;
+            //}
+            //else
+            //{
+            //    mainCam.fieldOfView = Mathf.Lerp(mainCam.fieldOfView, camSettings.originalFOV, 1.5f * Time.deltaTime);
 
-                pressTime += 1.0f * Time.deltaTime;
+            //    pressTime += 1.0f * Time.deltaTime;
 
-                if(pressTime > 0.5f)
-                {
-                    buttonPressed = false;
-                }
-            }
+            //    if(pressTime > 0.5f)
+            //    {
+            //        buttonPressed = false;
+            //    }
+            //}
             
         }
         else if(playerObject.GetComponent<KartController>().isFinalBoosting == true)
