@@ -460,7 +460,7 @@ public class Grapple : MonoBehaviour
         }
         else
         {
-            CameraShake.instance.camShaking = true;
+            //CameraShake.instance.camShaking = true;
         }
         
     }
