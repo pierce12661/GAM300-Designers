@@ -56,6 +56,7 @@ public class Grapple : MonoBehaviour
     bool haveplayed;
 
     private bool hasPressed;
+    public bool buttonHasPressed;
 
     public AudioSource driveLoop;
     public AudioSource batteryLoop;
@@ -287,6 +288,11 @@ public class Grapple : MonoBehaviour
 
     private void GrappleMashButton()
     {
+        if(kc.currentBattery > kc.maxBattery)
+        {
+            kc.currentBattery = kc.maxBattery;
+        }
+
         if (grappling)
         {
             float target = targetSpot.transform.localPosition.x;
@@ -304,9 +310,19 @@ public class Grapple : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.C))
             {
-                kc.currentBattery += 4f;
+                if(kc.currentBattery < 2.5f)
+                {
+                    kc.currentBattery += 2.5f;
+                }
+                else if(kc.currentBattery > 2.5f)
+                {
+                    kc.currentBattery += 5f;
+                }
+                
 
-                Debug.Log("is pressing C");
+                buttonHasPressed = true;
+
+                Debug.Log("press C" + kc.currentBattery);
                 //if(pressCount < 3)
                 //{
                 //    if (kc.GetBatteryPercentage() >= 0.75f)
@@ -324,6 +340,15 @@ public class Grapple : MonoBehaviour
                 //{
                 //    pressCount = 3;
                 //}
+            }
+            //else
+            //{
+            //    buttonHasPressed = false;
+            //}
+
+            if (Input.GetKeyUp(KeyCode.C))
+            {
+                buttonHasPressed = false;
             }
         }
         else
@@ -452,7 +477,7 @@ public class Grapple : MonoBehaviour
                 {
                     if (kc.currentBattery < kc.maxBattery && !hasPressed)
                     {
-                        kc.currentBattery += 7f * Time.deltaTime;
+                        //kc.currentBattery += 7f * Time.deltaTime;
 
                         if (!haveplayed)
                         {
@@ -465,13 +490,21 @@ public class Grapple : MonoBehaviour
 
                     //if (hasPressed)
                     //{
-                        if(kc.currentBattery > 0)
+                        if (!buttonHasPressed) /*!Input.GetKeyDown(KeyCode.C))*/ 
                         {
-                            kc.currentBattery -= 0.17f;
+                            if(kc.currentBattery > 0)
+                            {
+                                kc.currentBattery -= 0.15f;
+                            }
+                            else
+                            {
+                                kc.currentBattery = 0;
+                            }
+                                //     Debug.Log(kc.currentBattery + " = current battery");
                         }
                         else
                         {
-                            kc.currentBattery = 0f;
+                            //kc.currentBattery = 0f;
                             //hasPressed = false;
                             haveplayed = false;
                             batteryLoop.Stop();
