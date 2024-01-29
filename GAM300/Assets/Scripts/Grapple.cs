@@ -61,12 +61,14 @@ public class Grapple : MonoBehaviour
     public AudioSource driveLoop;
     public AudioSource batteryLoop;
 
-    bool isWithinTarget;
+    [HideInInspector] public bool isWithinTarget;
 
     public GameObject targetSpot;
     public Transform targetPos;
     public GameObject left;
+    public GameObject left2;
     public GameObject right;
+    public GameObject right2;
 
     void Start()
     {
@@ -390,6 +392,14 @@ public class Grapple : MonoBehaviour
 
             left.transform.localPosition = new Vector3(Random.Range(-0.4f,0.15f), 0f, 0f);
             right.transform.localPosition = new Vector3(left.transform.localPosition.x + 0.32f, 0, 0);
+
+        left2.SetActive(true);
+        right2.SetActive(true);
+
+        left2.transform.localPosition = new Vector3(left.transform.localPosition.x * 300f, 0f, 0f);
+        right2.transform.localPosition = new Vector3(right.transform.localPosition.x * 300f, 0, 0);
+
+
         //}
     }
 
