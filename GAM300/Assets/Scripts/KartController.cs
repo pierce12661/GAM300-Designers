@@ -160,7 +160,7 @@ public class KartController : MonoBehaviour
                 isAirTime = false;
             }
 
-            sphere.AddForce(-transform.up * 100, ForceMode.Acceleration); //fake Gravity
+            sphere.AddForce(-transform.up * 90, ForceMode.Acceleration); //fake Gravity
         }
     }
 
@@ -341,7 +341,7 @@ public class KartController : MonoBehaviour
                 //Steering Angle Cap
                 if (!KartCollisionDetector.instance.isSpinning)
                 {
-                    if (realSpeed > 24) // caps steering angle if the speed is high
+                    if (realSpeed > 35) // caps steering angle if the speed is high (original 24)
                     {
                         if (!isInitialBoosting)
                         {
